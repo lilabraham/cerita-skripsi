@@ -3,6 +3,8 @@
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, BookOpen, Shield, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Button from "@/components/ui/Button";
+import Link from "next/link";
 
 const floatingCards = [
   {
@@ -28,7 +30,6 @@ const floatingCards = [
   },
 ];
 
-// ✅ Fix: eksplisit type Variants agar ease string dikenali
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -48,7 +49,8 @@ const itemVariants: Variants = {
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0a0a0f]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-base)]">
+
       {/* Animated background blobs */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -80,7 +82,7 @@ export default function HeroSection() {
 
       {/* Main content */}
       <motion.div
-        className="relative z-10 max-w-5xl mx-auto px-6 text-center"
+        className="relative z-10 container-cerita text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -99,7 +101,8 @@ export default function HeroSection() {
           className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6"
         >
           Jadilah Generasi{" "}
-          <span className="bg-gradient-to-r from-indigo-400 via-teal-400 to-indigo-400 bg-clip-text text-transparent">
+          {/* ✅ Pakai utility class dari globals.css */}
+          <span className="text-gradient-animated">
             Cerdas &amp; Kuat
           </span>
           <br />
@@ -109,37 +112,29 @@ export default function HeroSection() {
         {/* Subheadline */}
         <motion.p
           variants={itemVariants}
-          className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           Informasi akurat, mudah dipahami, dan bebas stigma. Karena pengetahuan
           adalah senjata terbaik untuk melindungi dirimu dan orang-orang yang kamu
           sayangi.
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* ✅ CTA Buttons — sekarang pakai Button component */}
         <motion.div
           variants={itemVariants}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
-          <motion.button
-            className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-semibold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300"
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Mulai Belajar Sekarang
-            <ArrowRight
-              size={18}
-              className="group-hover:translate-x-1 transition-transform"
-            />
-          </motion.button>
+          <Link href="/edukasi">
+            <Button variant="primary" size="lg" icon={ArrowRight}>
+              Mulai Belajar Sekarang
+            </Button>
+          </Link>
 
-          <motion.button
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/10 bg-white/5 text-white font-semibold text-base hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Kenali CERITA
-          </motion.button>
+          <Link href="/tentang">
+            <Button variant="secondary" size="lg">
+              Kenali CERITA
+            </Button>
+          </Link>
         </motion.div>
 
         {/* Floating stat cards */}
@@ -168,7 +163,7 @@ export default function HeroSection() {
               <card.icon size={22} className={card.color} />
               <div className="text-left">
                 <p className="text-white font-bold text-lg leading-none">{card.value}</p>
-                <p className="text-gray-400 text-xs mt-0.5">{card.label}</p>
+                <p className="text-[var(--text-muted)] text-xs mt-0.5">{card.label}</p>
               </div>
             </motion.div>
           ))}
@@ -176,7 +171,7 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--bg-base)] to-transparent pointer-events-none" />
     </section>
   );
 }

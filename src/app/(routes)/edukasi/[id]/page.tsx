@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { ArrowLeft, CheckCircle } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { materiData } from "@/data/content";
 import { notFound } from "next/navigation";
+import Badge from "@/components/ui/Badge";
 
 export default async function DetailEdukasi({
   params,
@@ -11,24 +13,21 @@ export default async function DetailEdukasi({
   const { id } = await params;
   const materi = materiData[id];
 
-  if (!materi) {
-    notFound();
-  }
+  if (!materi) notFound();
 
-  // Split konten berdasarkan baris kosong → array paragraf
   const paragraphs = materi.content
     .trim()
     .split("\n\n")
     .filter((p) => p.trim().length > 0);
 
   return (
-    <main className="min-h-screen bg-[#0a0a0f] pt-24 pb-16 px-6">
+    <main className="min-h-screen bg-[var(--bg-base)] pt-24 pb-16 px-6">
       <div className="max-w-3xl mx-auto">
 
         {/* Tombol Kembali */}
         <Link
           href="/edukasi"
-          className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm mb-8 transition-colors group"
+          className="inline-flex items-center gap-2 text-[var(--text-secondary)] hover:text-white text-sm mb-8 transition-colors group"
         >
           <ArrowLeft
             size={16}
@@ -37,12 +36,17 @@ export default async function DetailEdukasi({
           Kembali ke Daftar Modul
         </Link>
 
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+        {/* Header — ✅ Badge dipakai di sini */}
+        <div className="mb-10 space-y-3">
+          <Badge variant="primary" icon={BookOpen} dot>
+            Materi Edukasi
+          </Badge>
+          <h1 className="text-3xl md:text-4xl font-bold text-white">
             {materi.title}
           </h1>
-          <p className="text-indigo-400 font-medium">{materi.subtitle}</p>
+          <p className="text-[var(--text-secondary)] font-medium">
+            {materi.subtitle}
+          </p>
         </div>
 
         {/* Isi Materi */}
@@ -50,7 +54,7 @@ export default async function DetailEdukasi({
           {paragraphs.map((paragraph, index) => (
             <p
               key={index}
-              className="text-gray-300 leading-relaxed text-base"
+              className="text-[var(--text-secondary)] leading-relaxed text-base"
             >
               {paragraph.trim()}
             </p>
@@ -63,12 +67,11 @@ export default async function DetailEdukasi({
             <CheckCircle size={22} className="text-teal-400 mt-0.5 shrink-0" />
             <div>
               <p className="text-white font-semibold">Materi Selesai!</p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-[var(--text-secondary)] text-sm">
                 Kamu telah menyelesaikan modul ini. Mari uji pengetahuanmu!
               </p>
             </div>
           </div>
-
           <Link
             href={`/kuis?modul=${id}`}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-white font-semibold text-sm transition-colors whitespace-nowrap"
@@ -77,12 +80,12 @@ export default async function DetailEdukasi({
           </Link>
         </div>
 
-        {/* Link ke modul berikutnya */}
+        {/* Link modul berikutnya */}
         {materi.nextModule && (
           <div className="mt-6 text-center">
             <Link
               href={`/edukasi/${materi.nextModule}`}
-              className="text-sm text-gray-500 hover:text-indigo-400 transition-colors"
+              className="text-sm text-[var(--text-muted)] hover:text-indigo-400 transition-colors"
             >
               Lewati kuis → Lanjut ke modul berikutnya
             </Link>
