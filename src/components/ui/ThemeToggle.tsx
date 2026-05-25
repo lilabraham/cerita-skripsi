@@ -1,0 +1,34 @@
+// src/components/ui/ThemeToggle.tsx
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Hindari hydration mismatch
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <div className="w-9 h-9" />;
+
+  const isDark = theme === "dark";
+
+  return (
+    <button
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="w-9 h-9 flex items-center justify-center rounded-lg
+        border border-white/10 bg-white/5 hover:bg-white/10
+        dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10
+        transition-colors duration-200"
+      aria-label="Toggle theme"
+    >
+      {isDark ? (
+        <Sun className="w-4 h-4 text-yellow-400" />
+      ) : (
+        <Moon className="w-4 h-4 text-indigo-500" />
+      )}
+    </button>
+  );
+}

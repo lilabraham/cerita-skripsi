@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { ShieldAlert, Menu, X } from "lucide-react";
 import { useState } from "react";
+// ✅ Injeksi 1: Import komponen ThemeToggle
+import { ThemeToggle } from "@/components/ui/ThemeToggle"; 
 
 const navLinks = [
-  { label: "Home",         href: "/"      },
+  { label: "Home",        href: "/"      },
   { label: "Edukasi",      href: "/edukasi" },
   { label: "Kuis / Game",  href: "/kuis"  },
   { label: "Ruang Diskusi",href: "/forum" },
@@ -41,6 +43,9 @@ export default function Navbar() {
 
         {/* Right side — desktop */}
         <div className="hidden md:flex items-center gap-3">
+          {/* ✅ Injeksi 2: Pasang ThemeToggle untuk tampilan Desktop */}
+          <ThemeToggle />
+          
           <Link
             href="/tentang"
             className="px-4 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] text-sm font-medium hover:text-white hover:border-[var(--border-strong)] hover:bg-[var(--bg-elevated)] transition-all duration-200"
@@ -49,15 +54,19 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMenuOpen((prev) => !prev)}
-          className="md:hidden text-[var(--text-secondary)] hover:text-white transition-colors p-1"
-          aria-label="Toggle menu"
-        >
-          {/* ✅ Ganti icon saat menu terbuka */}
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {/* Mobile controls (Toggle + Hamburger) */}
+        {/* ✅ Injeksi 3: Membungkus tombol menu dan ThemeToggle di dalam flex agar sejajar di Mobile */}
+        <div className="md:hidden flex items-center gap-3">
+          <ThemeToggle />
+          
+          <button
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="text-[var(--text-secondary)] hover:text-white transition-colors p-1"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile dropdown */}

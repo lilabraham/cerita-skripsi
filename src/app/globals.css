@@ -1,4 +1,10 @@
+/* ============================================================
+   CERITA DESIGN SYSTEM — Global Styles
+   Sumber kebenaran untuk semua styling dasar. Jangan ubah
+   nilai di sini tanpa mengupdate lib/tokens.ts secara bersamaan.
+   ============================================================ */
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark, .dark *));
 
 /* ============================================================
    CERITA DESIGN SYSTEM — CSS Custom Properties
@@ -7,64 +13,67 @@
    ============================================================ */
 
 @layer base {
+  /* ── LIGHT MODE (default) ── */
   :root {
-    /* --- Background Layers --- */
-    --bg-base:     #0a0a0f;
-    --bg-surface:  #0f0f1a;
-    --bg-elevated: #16162a;
-    --bg-overlay:  #1e1e35;
+    --bg-base:     #f8fafc;
+    --bg-surface:  #ffffff;
+    --bg-elevated: #f1f5f9;
+    --bg-overlay:  #e2e8f0;
 
-    /* --- Brand Primary (Indigo) --- */
+    --text-primary:   #0f172a;
+    --text-secondary: #475569;
+    --text-muted:     #94a3b8;
+    --text-disabled:  #cbd5e1;
+
+    --border-subtle:  rgba(0, 0, 0, 0.05);
+    --border-default: rgba(0, 0, 0, 0.08);
+    --border-strong:  rgba(0, 0, 0, 0.15);
+
     --color-primary-300: #a5b4fc;
     --color-primary-400: #818cf8;
     --color-primary-500: #6366f1;
     --color-primary-600: #4f46e5;
 
-    /* --- Brand Secondary (Teal) --- */
     --color-secondary-400: #2dd4bf;
     --color-secondary-500: #14b8a6;
-    --color-secondary-600: #0d9488;
 
-    /* --- Accent (Orange/Coral) --- */
     --color-accent-400: #fb923c;
     --color-accent-500: #f97316;
 
-    /* --- Semantic --- */
-    --color-success: #34d399;
-    --color-danger:  #f43f5e;
-    --color-warning: #fbbf24;
-    --color-info:    #38bdf8;
+    --color-success: #16a34a;
+    --color-danger:  #e11d48;
+    --color-warning: #d97706;
+    --color-info:    #0284c7;
 
-    /* --- Text Hierarchy --- */
+    --shadow-elevation-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-elevation-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --shadow-glow-primary: 0 0 40px rgba(99, 102, 241, 0.12);
+  }
+
+   /* ── DARK MODE ── */
+  .dark {
+    --bg-base:     #0a0a0f;
+    --bg-surface:  #0f0f1a;
+    --bg-elevated: #16162a;
+    --bg-overlay:  #1e1e35;
+
     --text-primary:   #ffffff;
     --text-secondary: #a1a1aa;
     --text-muted:     #52525b;
     --text-disabled:  #3f3f46;
 
-    /* --- Border --- */
     --border-subtle:  rgba(255, 255, 255, 0.06);
     --border-default: rgba(255, 255, 255, 0.10);
     --border-strong:  rgba(255, 255, 255, 0.18);
 
-    /* --- Radius --- */
-    --radius-sm:  8px;
-    --radius-md:  12px;
-    --radius-lg:  16px;
-    --radius-xl:  20px;
-    --radius-2xl: 24px;
+    --color-success: #34d399;
+    --color-danger:  #f43f5e;
+    --color-warning: #fbbf24;
+    --color-info:    #38bdf8;
 
-    /* --- Shadows (dark mode glow) --- */
-    --shadow-glow-primary:   0 0 40px rgba(99, 102, 241, 0.15);
-    --shadow-glow-secondary: 0 0 40px rgba(20, 184, 166, 0.12);
-    --shadow-elevation-md:   0 8px 24px rgba(0, 0, 0, 0.5);
-    --shadow-elevation-lg:   0 16px 48px rgba(0, 0, 0, 0.6);
-
-    /* --- Animation --- */
-    --ease-out:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --duration-fast:   150ms;
-    --duration-normal: 250ms;
-    --duration-slow:   400ms;
+    --shadow-elevation-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-elevation-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+    --shadow-glow-primary: 0 0 40px rgba(99, 102, 241, 0.15);
   }
 
   /* --- Base resets --- */
@@ -74,21 +83,30 @@
     padding: 0;
   }
 
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
+   /* ── Base styles pakai variabel, otomatis switch ── */
   body {
     background-color: var(--bg-base);
     color: var(--text-primary);
     font-family: var(--font-jakarta), system-ui, sans-serif;
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+  }
+
+  p {
+    color: var(--text-secondary);
   }
 
   /* --- Typography base --- */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-space), var(--font-jakarta), sans-serif;
     font-weight: 700;
     line-height: 1.2;
@@ -118,13 +136,16 @@
   ::-webkit-scrollbar {
     width: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: var(--bg-base);
   }
+
   ::-webkit-scrollbar-thumb {
     background: var(--bg-overlay);
     border-radius: 999px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary-600);
   }
@@ -135,6 +156,7 @@
    ============================================================ */
 
 @layer utilities {
+
   /* --- Gradient text utility --- */
   .text-gradient-primary {
     background: linear-gradient(135deg, var(--color-primary-400), var(--color-secondary-400));
@@ -196,13 +218,11 @@
 
   /* --- Animated gradient text (hero) --- */
   .text-gradient-animated {
-    background: linear-gradient(
-      135deg,
-      var(--color-primary-400),
-      var(--color-secondary-400),
-      var(--color-primary-300),
-      var(--color-accent-400)
-    );
+    background: linear-gradient(135deg,
+        var(--color-primary-400),
+        var(--color-secondary-400),
+        var(--color-primary-300),
+        var(--color-accent-400));
     background-size: 300% 300%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -226,24 +246,53 @@
    ============================================================ */
 
 @keyframes gradient-shift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
-  50%       { box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.4);
+  }
 }
 
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Utility class untuk animasi float */
