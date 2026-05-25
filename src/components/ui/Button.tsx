@@ -40,14 +40,7 @@ const variantStyles: Record<ButtonVariant, string> = {
     "hover:text-indigo-200",
   ].join(" "),
 
-  ghost: [
-    "bg-transparent",
-    "text-gray-400",
-    "border border-white/0",
-    "hover:bg-white/5",
-    "hover:text-white",
-    "hover:border-white/10",
-  ].join(" "),
+  ghost: "text-[var(--text-primary)] border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5"
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

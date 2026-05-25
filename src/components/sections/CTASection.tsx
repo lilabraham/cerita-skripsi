@@ -1,7 +1,9 @@
+// C:\Users\LENOVO\Documents\cerita-app\src\components\sections\CTASection.tsx
+
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldAlert } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 
@@ -16,11 +18,11 @@ export default function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut" }}
           // ✅ FIX 2: Background kartu menjadi putih murni dengan border abu halus + shadow besar di Light Mode
-          className="relative overflow-hidden rounded-3xl border border-gray-100 dark:border-indigo-500/20 bg-white dark:bg-[var(--bg-surface)] shadow-2xl shadow-indigo-500/10 dark:shadow-none p-10 md:p-16 text-center transition-all duration-300"
+          className="relative overflow-hidden rounded-3xl border border-gray-200/60 dark:border-indigo-500/20 bg-white dark:bg-[var(--bg-surface)] shadow-[0_12px_56px_-10px_rgba(99,102,241,0.16),0_2px_16px_-4px_rgba(0,0,0,0.06)] dark:shadow-none p-12 md:p-20 text-center transition-all duration-300"
         >
           {/* Background blobs - Opacity dikurangi di light mode agar tidak "kotor" */}
-          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-indigo-500/10 dark:bg-indigo-600/15 blur-3xl pointer-events-none transition-colors" />
-          <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-teal-400/10 dark:bg-teal-500/10 blur-3xl pointer-events-none transition-colors" />
+          <div className="absolute -top-36 -left-20 w-[420px] h-[420px] rounded-full bg-indigo-500/[0.07] dark:bg-indigo-600/20 blur-[110px] pointer-events-none transition-colors" />
+<div className="absolute -bottom-16 -right-16 w-56 h-56 rounded-full bg-rose-400/[0.07] dark:bg-rose-500/14 blur-3xl pointer-events-none transition-colors" />
 
           {/* Icon */}
           <motion.div
@@ -29,18 +31,20 @@ export default function CTASection() {
             // ✅ FIX 3: Icon Box diperjelas di Light Mode
             className="inline-flex p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 mb-6 transition-colors"
           >
-            <ShieldAlert size={32} className="text-indigo-600 dark:text-indigo-400" />
+            <ShieldCheck size={32} className="text-indigo-600 dark:text-indigo-400" />
           </motion.div>
 
           {/* Text */}
           {/* ✅ FIX 4: Teks "Pengetahuan adalah" tidak lagi menghilang (text-white -> text-gray-900) */}
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 relative z-10 transition-colors">
+          <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl font-light tracking-tight text-gray-900 dark:text-white mb-6 relative z-10 transition-colors"
+>
             Pengetahuan adalah{" "}
             <span className="text-gradient-animated">
               Senjata Terbaik
             </span>
           </h2>
-          <p className="text-[var(--text-secondary)] text-lg max-w-xl mx-auto mb-10 relative z-10 transition-colors">
+          <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto mb-12 relative z-10 transition-colors leading-relaxed"
+>
             Jangan tunggu sampai terlambat. Mulai edukasi sekarang —
             gratis, mudah, dan bisa diselesaikan dalam 15 menit.
           </p>

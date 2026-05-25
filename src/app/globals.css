@@ -218,17 +218,13 @@
 
   /* --- Animated gradient text (hero) --- */
   .text-gradient-animated {
-    background: linear-gradient(135deg,
-        var(--color-primary-400),
-        var(--color-secondary-400),
-        var(--color-primary-300),
-        var(--color-accent-400));
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradient-shift 6s ease infinite;
-  }
+  background: linear-gradient(120deg, #9B8FFF 0%, #E05264 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 6s ease infinite;
+  background-size: 200% 200%;
+}
 
   /* --- Noise texture overlay (premium feel) --- */
   .noise-overlay::before {
@@ -245,18 +241,9 @@
    KEYFRAMES
    ============================================================ */
 
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
 }
 
 @keyframes float {
