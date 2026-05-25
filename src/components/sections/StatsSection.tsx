@@ -1,9 +1,10 @@
+// C:\Users\LENOVO\Documents\cerita-app\src\components\sections\StatsSection.tsx
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
 
-// ✅ FIX 1: Pergelap warna angka di Mode Terang (600/500) agar kontras di atas putih
 const stats = [
   {
     value: 526,
@@ -11,7 +12,9 @@ const stats = [
     label: "ODHIV di Indonesia",
     desc: "Per 2023, Indonesia masuk 10 besar negara dengan kasus HIV tertinggi di Asia.",
     color: "text-indigo-600 dark:text-indigo-400",
-    glow: "rgba(99,102,241,0.15)",
+    accent: "bg-indigo-50 dark:bg-indigo-500/10 border-indigo-100 dark:border-indigo-500/20",
+    bar: "bg-indigo-500",
+    glow: "rgba(99,102,241,0.10)",
   },
   {
     value: 35,
@@ -19,7 +22,9 @@ const stats = [
     label: "Kasus baru adalah remaja",
     desc: "1 dari 3 infeksi HIV baru di Indonesia terjadi pada kelompok usia 15–24 tahun.",
     color: "text-orange-500 dark:text-orange-400",
-    glow: "rgba(249,115,22,0.15)",
+    accent: "bg-orange-50 dark:bg-orange-500/10 border-orange-100 dark:border-orange-500/20",
+    bar: "bg-orange-500",
+    glow: "rgba(249,115,22,0.10)",
   },
   {
     value: 76,
@@ -27,7 +32,9 @@ const stats = [
     label: "Tidak sadar terinfeksi",
     desc: "Mayoritas remaja yang terinfeksi HIV tidak mengetahui status mereka sendiri.",
     color: "text-rose-600 dark:text-rose-400",
-    glow: "rgba(244,63,94,0.15)",
+    accent: "bg-rose-50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20",
+    bar: "bg-rose-500",
+    glow: "rgba(244,63,94,0.10)",
   },
   {
     value: 95,
@@ -35,7 +42,9 @@ const stats = [
     label: "Kasus bisa dicegah",
     desc: "Dengan pengetahuan yang benar, hampir semua kasus penularan HIV bisa dihindari.",
     color: "text-teal-600 dark:text-teal-400",
-    glow: "rgba(20,184,166,0.15)",
+    accent: "bg-teal-50 dark:bg-teal-500/10 border-teal-100 dark:border-teal-500/20",
+    bar: "bg-teal-500",
+    glow: "rgba(20,184,166,0.10)",
   },
 ];
 
@@ -67,6 +76,8 @@ function StatCard({
   label,
   desc,
   color,
+  accent,
+  bar,
   glow,
   index,
   startCounting,
@@ -78,27 +89,43 @@ function StatCard({
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      whileHover={{ y: -6, scale: 1.02 }}
-      // ✅ FIX 2: Styling Kartu Adaptif (Putih solid di Mode Terang, Surface di Mode Gelap)
-      className="relative flex flex-col gap-3 p-6 rounded-2xl border border-gray-200 dark:border-[var(--border-subtle)] bg-white dark:bg-[var(--bg-surface)] transition-all duration-300 hover:border-gray-300 dark:hover:border-[var(--border-default)] overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-none"
+      transition={{ duration: 0.55, delay: index * 0.1, ease: "easeOut" }}
+      whileHover={{ y: -5, scale: 1.015 }}
+      className="group relative flex flex-col gap-4 p-7 rounded-3xl border border-gray-100/80 dark:border-[var(--border-subtle)] bg-white/80 dark:bg-[var(--bg-surface)] backdrop-blur-sm transition-all duration-300 overflow-hidden"
       style={{
-        boxShadow: startCounting ? `0 0 40px ${glow}` : undefined,
+        boxShadow: startCounting
+          ? `0 4px 24px ${glow}, 0 1px 3px rgba(0,0,0,0.04)`
+          : "0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)",
       }}
     >
-      {/* Background glow blob (Lebih transparan di mode terang agar tidak kotor) */}
+      {/* Top accent stripe */}
+      <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${bar} opacity-60 group-hover:opacity-90 transition-opacity`} />
+
+      {/* Background glow */}
       <div
-        className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-3xl opacity-10 dark:opacity-20 pointer-events-none transition-opacity"
-        style={{ background: glow.replace("0.15", "1") }}
+        className="absolute -top-10 -right-10 w-36 h-36 rounded-full blur-3xl opacity-30 dark:opacity-20 pointer-events-none transition-opacity"
+        style={{ background: glow.replace("0.10", "1") }}
       />
 
-      <p className={`text-4xl md:text-5xl font-black tracking-tight transition-colors ${color}`}>
-        {count}
-        {suffix}
-      </p>
-      {/* ✅ FIX 3: Teks hantu di dalam kartu teratasi (text-white -> text-gray-900) */}
-      <p className="text-gray-900 dark:text-white font-semibold text-base transition-colors">{label}</p>
-      <p className="text-[var(--text-secondary)] text-sm leading-relaxed transition-colors">
+      {/* Accent pill */}
+      <div className={`inline-flex self-start px-3 py-1.5 rounded-xl border text-xs font-semibold tracking-wide ${accent} ${color} transition-colors`}>
+        {suffix === "%" ? "Persentase" : "Jumlah"}
+      </div>
+
+      {/* Number */}
+      <div>
+        <p className={`text-5xl md:text-6xl font-black tracking-tight leading-none transition-colors ${color}`}>
+          {count}
+          <span className="text-3xl md:text-4xl">{suffix}</span>
+        </p>
+        <p className="text-gray-900 dark:text-white font-semibold text-sm mt-2.5 transition-colors leading-snug">
+          {label}
+        </p>
+      </div>
+
+      <div className="h-px bg-gray-100 dark:bg-white/5" />
+
+      <p className="text-gray-500 dark:text-[var(--text-secondary)] text-sm leading-relaxed transition-colors">
         {desc}
       </p>
     </motion.div>
@@ -115,33 +142,42 @@ export default function StatsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="section-padding bg-[var(--bg-base)] transition-colors duration-300">
-      <div className="container-cerita">
+    <section className="relative section-padding bg-white/50 dark:bg-[var(--bg-base)] overflow-hidden transition-colors duration-300">
+
+      {/* Top bridge — blends seamlessly from HeroSection */}
+      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-white dark:from-[var(--bg-base)] to-transparent pointer-events-none z-0" />
+
+      {/* Ambient blobs — echo Hero's palette */}
+      <div className="absolute top-1/3 -right-24 w-[400px] h-[400px] rounded-full bg-orange-200/15 dark:bg-orange-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-16 w-[320px] h-[320px] rounded-full bg-indigo-200/15 dark:bg-indigo-500/5 blur-3xl pointer-events-none" />
+
+      {/* Bottom bridge — blends into FeaturesSection */}
+      <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white dark:from-[var(--bg-surface)] to-transparent pointer-events-none z-0" />
+
+      <div className="container-cerita relative z-10">
 
         {/* Header */}
         <motion.div
-          className="text-center mb-14"
+          className="text-center mb-16"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.p
+          <motion.span
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            // ✅ FIX 4: Label Atas diselaraskan
-            className="text-sm font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-widest mb-3 transition-colors"
+            className="inline-block px-4 py-1.5 rounded-full bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-500/20 text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-widest mb-5 transition-colors"
           >
             Fakta yang Harus Kamu Tahu
-          </motion.p>
+          </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: -16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            // ✅ FIX 5: Teks hantu pada Headline Utama teratasi!
-            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors"
+            className="text-3xl md:text-4xl font-black tracking-tight text-gray-900 dark:text-white mb-4 transition-colors"
           >
             HIV/AIDS di Indonesia{" "}
             <span className="text-gradient-warm">Lebih Dekat</span>{" "}
@@ -152,7 +188,7 @@ export default function StatsSection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-[var(--text-secondary)] max-w-xl mx-auto transition-colors"
+            className="text-gray-500 dark:text-[var(--text-secondary)] max-w-xl mx-auto text-base leading-relaxed transition-colors"
           >
             Data resmi Kementerian Kesehatan RI yang jarang dibahas di sekolah —
             tapi sangat penting untuk kamu ketahui.
@@ -180,7 +216,7 @@ export default function StatsSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
-          className="text-center text-xs text-[var(--text-disabled)] mt-8 transition-colors"
+          className="text-center text-xs text-gray-400 dark:text-[var(--text-disabled)] mt-10 transition-colors"
         >
           Sumber: Kementerian Kesehatan RI, UNAIDS 2023
         </motion.p>
