@@ -1,3 +1,5 @@
+// src/components/interactive/QuizEngine.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -15,10 +17,10 @@ interface QuizEngineProps {
 }
 
 function getResult(pct: number) {
-  if (pct === 100) return { label: "Sempurna!",         color: "text-emerald-400", variant: "success"   as const };
-  if (pct >= 80)   return { label: "Hampir Sempurna!",  color: "text-teal-400",    variant: "secondary" as const };
-  if (pct >= 60)   return { label: "Cukup Baik",        color: "text-indigo-400",  variant: "primary"   as const };
-  return            { label: "Perlu Belajar Lagi",      color: "text-orange-400",  variant: "accent"    as const };
+  if (pct === 100) return { label: "Sempurna!",         color: "text-black",   variant: "success"   as const };
+  if (pct >= 80)   return { label: "Hampir Sempurna!",  color: "text-black",   variant: "secondary" as const };
+  if (pct >= 60)   return { label: "Cukup Baik",        color: "text-black",   variant: "primary"   as const };
+  return            { label: "Perlu Belajar Lagi",      color: "text-black",   variant: "accent"    as const };
 }
 
 export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
@@ -70,15 +72,15 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
 
   function getOptionStyle(option: string) {
     if (selectedAnswer === null) {
-      return "border-[var(--border-default)] bg-[var(--bg-elevated)] hover:border-indigo-400/50 hover:bg-indigo-500/5 cursor-pointer text-[var(--text-secondary)]";
+      return "border-2 border-black dark:border-white bg-white dark:bg-gray-900 text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.7)] hover:bg-yellow-300 hover:text-black hover:border-black dark:hover:bg-yellow-400 dark:hover:text-black dark:hover:border-yellow-400 cursor-pointer active:translate-x-[4px] active:translate-y-[4px] active:shadow-none";
     }
     if (option === currentQ.correctAnswer) {
-      return "border-teal-500/50 bg-teal-500/10 text-teal-300 cursor-default";
+      return "border-2 border-black bg-lime-300 text-black cursor-default translate-x-[4px] translate-y-[4px]";
     }
     if (option === selectedAnswer) {
-      return "border-rose-500/50 bg-rose-500/10 text-rose-300 cursor-default";
+      return "border-2 border-black bg-pink-400 text-black cursor-default translate-x-[4px] translate-y-[4px]";
     }
-    return "border-[var(--border-subtle)] bg-[var(--bg-surface)] opacity-40 cursor-not-allowed text-[var(--text-muted)]";
+    return "border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 opacity-40 cursor-not-allowed text-gray-500 dark:text-gray-500";
   }
 
   // ── RESULT SCREEN ──────────────────────────────────────
@@ -89,49 +91,49 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-        className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-8 text-center space-y-6"
+        className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-8 text-center space-y-6"
       >
         {/* Trophy */}
         <motion.div
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="inline-flex p-5 rounded-2xl bg-yellow-500/10 border border-yellow-500/20"
+          className="inline-flex p-5 rounded-2xl border-4 border-black dark:border-white bg-yellow-300 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.8)]"
         >
-          <Award size={40} className="text-yellow-400" />
+          <Award size={40} className="text-black" />
         </motion.div>
 
         {/* Score */}
         <div className="space-y-2">
           <Badge variant={result.variant}>{result.label}</Badge>
-          <p className={`text-6xl font-black ${result.color}`}>
+          <p className={`text-7xl font-black text-black dark:text-white`}>
             {percentage}
-            <span className="text-2xl text-[var(--text-muted)]">%</span>
+            <span className="text-3xl text-gray-500 dark:text-gray-400">%</span>
           </p>
-          <p className="text-[var(--text-secondary)] text-sm">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
             Menjawab benar {score} dari {questions.length} soal
           </p>
         </div>
 
         {/* Score bar */}
         <div className="max-w-xs mx-auto space-y-2">
-          <div className="h-2 bg-[var(--bg-elevated)] rounded-full overflow-hidden">
+          <div className="h-6 bg-gray-100 dark:bg-gray-800 border-2 border-black dark:border-white overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${percentage}%` }}
               transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-              className="h-full bg-gradient-to-r from-indigo-500 to-teal-500 rounded-full"
+              className="h-full bg-yellow-300"
             />
           </div>
         </div>
 
         {/* Recap jawaban salah */}
         {wrongAnswers.length > 0 && (
-          <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-4 text-left space-y-2">
-            <p className="text-sm font-semibold text-rose-300">
+          <div className="rounded-xl border-2 border-black dark:border-white bg-pink-200 dark:bg-pink-900/40 p-4 text-left space-y-2">
+            <p className="text-sm font-black text-black dark:text-pink-200 uppercase tracking-tight">
               Perlu dipelajari ulang:
             </p>
             {wrongAnswers.map((idx) => (
-              <p key={idx} className="text-xs text-[var(--text-secondary)]">
+              <p key={idx} className="text-xs font-medium text-black/80 dark:text-pink-100">
                 · {questions[idx].question}
               </p>
             ))}
@@ -166,16 +168,17 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
       {/* Progress */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-indigo-400 font-semibold uppercase tracking-wider text-xs">
+          <span className="text-black dark:text-white font-black uppercase tracking-wider text-xs border-2 border-black dark:border-white px-3 py-0.5 bg-cyan-300 dark:bg-cyan-400 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.7)]">
             {modulId}
           </span>
           <Badge variant="primary" size="sm">
             {currentIndex + 1} / {questions.length}
           </Badge>
         </div>
-        <div className="h-1.5 bg-[var(--bg-elevated)] rounded-full overflow-hidden">
+        {/* Progress bar — chunky neo-brutalist */}
+        <div className="h-5 bg-gray-100 dark:bg-gray-800 border-2 border-black dark:border-white overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-indigo-500 to-teal-500 rounded-full"
+            className="h-full bg-yellow-300"
             initial={{ width: `${(currentIndex / questions.length) * 100}%` }}
             animate={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
             transition={{ duration: 0.4, ease: "easeOut" }}
@@ -191,10 +194,10 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
           animate={{ opacity: 1, x: 0  }}
           exit={{    opacity: 0, x: -32 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-6 md:p-8 space-y-6"
+          className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-6 md:p-8 space-y-6"
         >
           {/* Question */}
-          <h2 className="text-xl font-semibold text-white leading-relaxed">
+          <h2 className="text-xl md:text-2xl font-black text-black dark:text-white leading-relaxed">
             {currentQ.question}
           </h2>
 
@@ -208,8 +211,8 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
                 whileHover={selectedAnswer === null ? { scale: 1.01 } : {}}
                 whileTap={selectedAnswer  === null ? { scale: 0.99 } : {}}
                 className={cn(
-                  "text-left p-4 rounded-xl border transition-all duration-200",
-                  "flex items-center justify-between gap-3 text-sm font-medium",
+                  "text-left p-4 rounded-xl transition-all duration-200",
+                  "flex items-center justify-between gap-3 text-sm font-bold",
                   getOptionStyle(option)
                 )}
               >
@@ -222,7 +225,7 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 15 }}
                   >
-                    <CheckCircle2 size={18} className="text-teal-400 shrink-0" />
+                    <CheckCircle2 size={18} className="text-black shrink-0" />
                   </motion.span>
                 )}
                 {selectedAnswer !== null &&
@@ -233,7 +236,7 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 15 }}
                   >
-                    <XCircle size={18} className="text-rose-400 shrink-0" />
+                    <XCircle size={18} className="text-black shrink-0" />
                   </motion.span>
                 )}
               </motion.button>
@@ -249,16 +252,16 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
                 exit={{    opacity: 0, height: 0    }}
                 transition={{ duration: 0.3 }}
                 className={cn(
-                  "rounded-xl border p-4 text-sm leading-relaxed overflow-hidden",
+                  "rounded-xl border-2 border-black dark:border-white p-4 text-sm leading-relaxed overflow-hidden",
                   isCorrect
-                    ? "border-teal-500/20   bg-teal-500/5   text-teal-200"
-                    : "border-orange-500/20 bg-orange-500/5 text-orange-200"
+                    ? "bg-lime-300 text-black"
+                    : "bg-pink-300 dark:bg-pink-400 text-black"
                 )}
               >
-                <p className="font-semibold mb-1">
+                <p className="font-black mb-1 uppercase tracking-tight">
                   {isCorrect ? "✓ Tepat Sekali!" : "✗ Kurang Tepat."}
                 </p>
-                <p className="text-[var(--text-secondary)]">
+                <p className="text-black/80 font-medium">
                   {currentQ.explanation}
                 </p>
               </motion.div>

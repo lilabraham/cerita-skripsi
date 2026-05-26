@@ -1,5 +1,3 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\components\layout\Footer.tsx
-
 import Link from "next/link";
 import { ShieldAlert, Heart, ArrowUpRight } from "lucide-react";
 
@@ -16,38 +14,31 @@ const infoLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-gray-100 dark:border-[var(--border-default)] bg-white/80 dark:bg-[var(--bg-surface)] backdrop-blur-sm overflow-hidden transition-colors duration-300">
-
-      {/* Top gradient accent — visual closure dari CTASection */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-violet-300/50 dark:via-indigo-500/30 to-transparent" />
-
-      {/* Ambient glow — dark mode only, cinematic closure */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full bg-violet-500/[0.04] dark:bg-indigo-500/10 blur-3xl pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-6 pt-14 pb-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+    <footer className="border-t-4 border-black dark:border-white bg-white dark:bg-gray-950 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-6 pt-14 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
 
           {/* Kolom 1: Brand */}
           <div className="space-y-4">
             <Link href="/" className="inline-flex items-center gap-2 group">
-              <ShieldAlert size={22} className="text-violet-600 dark:text-indigo-400 transition-colors" />
-              <span className="font-black text-lg bg-gradient-to-r from-violet-700 to-indigo-500 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
+              <ShieldAlert size={22} className="text-violet-600 dark:text-violet-400" />
+              <span className="font-black text-xl bg-gradient-to-r from-violet-700 to-indigo-500 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent tracking-tight uppercase">
                 CERITA.
               </span>
             </Link>
-            <p className="text-sm leading-relaxed text-gray-500 dark:text-[var(--text-secondary)] max-w-[22ch] transition-colors">
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400 max-w-[22ch]">
               Platform edukasi interaktif untuk meningkatkan pengetahuan dan
               sikap remaja SMA mengenai pencegahan HIV/AIDS.
             </p>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-50 dark:bg-indigo-500/10 border border-violet-100 dark:border-indigo-500/20 transition-colors">
-              <ShieldAlert size={11} className="text-violet-500 dark:text-indigo-400" />
-              <span className="text-xs font-semibold text-violet-600 dark:text-indigo-400">Penelitian Skripsi 2026</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black dark:border-white bg-violet-300 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.7)]">
+              <ShieldAlert size={11} className="text-black" />
+              <span className="text-xs font-black uppercase tracking-wide">Penelitian Skripsi 2026</span>
             </div>
           </div>
 
           {/* Kolom 2: Navigasi */}
           <div className="space-y-4">
-            <h3 className="font-bold text-sm text-gray-900 dark:text-[var(--text-primary)] tracking-wide transition-colors">
+            <h3 className="font-black text-sm text-black dark:text-white tracking-tight uppercase">
               Eksplorasi
             </h3>
             <ul className="space-y-2.5">
@@ -55,7 +46,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group inline-flex items-center gap-1 text-sm text-gray-500 dark:text-[var(--text-secondary)] hover:text-violet-600 dark:hover:text-indigo-400 transition-colors duration-200"
+                    className="group inline-flex items-center gap-1 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:underline decoration-2 transition-colors duration-200"
                   >
                     {link.label}
                     <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -67,7 +58,7 @@ export default function Footer() {
 
           {/* Kolom 3: Info */}
           <div className="space-y-4">
-            <h3 className="font-bold text-sm text-gray-900 dark:text-[var(--text-primary)] tracking-wide transition-colors">
+            <h3 className="font-black text-sm text-black dark:text-white tracking-tight uppercase">
               Informasi
             </h3>
             <ul className="space-y-2.5">
@@ -75,7 +66,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group inline-flex items-center gap-1 text-sm text-gray-500 dark:text-[var(--text-secondary)] hover:text-violet-600 dark:hover:text-indigo-400 transition-colors duration-200"
+                    className="group inline-flex items-center gap-1 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:underline decoration-2 transition-colors duration-200"
                   >
                     {link.label}
                     <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -88,14 +79,14 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gray-100 dark:bg-[var(--border-subtle)] mb-6 transition-colors" />
+        <div className="h-1 bg-black dark:bg-white mb-6" />
 
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-gray-400 dark:text-[var(--text-muted)] transition-colors">
+          <p className="text-xs font-bold text-gray-500 dark:text-gray-500">
             © {new Date().getFullYear()} CERITA Project. All rights reserved.
           </p>
-          <p className="text-xs inline-flex items-center gap-1.5 text-gray-400 dark:text-[var(--text-muted)] transition-colors">
+          <p className="text-xs inline-flex items-center gap-1.5 font-bold text-gray-500 dark:text-gray-500">
             Dibuat dengan <Heart size={11} className="text-rose-500 fill-rose-500" /> untuk edukasi kesehatan.
           </p>
         </div>
