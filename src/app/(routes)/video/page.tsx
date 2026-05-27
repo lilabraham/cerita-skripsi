@@ -10,7 +10,7 @@ const VIDEO = {
   description:
     "Video ini membahas fakta-fakta penting seputar HIV/AIDS yang sering disalahpahami oleh remaja. Mulai dari cara penularan yang benar, mitos-mitos berbahaya, pentingnya deteksi dini, hingga bagaimana kita bisa hidup bebas stigma bersama. Karena pengetahuan adalah pertahanan terkuat kita.",
   tags: ["#EdukasiRemaja", "#BebasStigma", "#KesehatanSeksual", "#CegahHIV", "#CERITA2026"],
-  duration: "08:47",
+  duration: "03:31",
   category: "Kesehatan & Reproduksi",
 };
 
