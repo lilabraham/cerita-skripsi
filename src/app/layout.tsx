@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import Image from "next/image";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],

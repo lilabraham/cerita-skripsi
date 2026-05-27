@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image"; // 👈 PASTIKAN BARIS INI ADA
 import { ShieldAlert, Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import {
@@ -14,21 +15,20 @@ import {
 const navLinks = [
   { label: "Home",          href: "/"        },
   { label: "Edukasi",       href: "/edukasi" },
-  { label: "Kuis / Game",   href: "/kuis"    },
-  { label: "Ruang Diskusi", href: "/forum"   },
-  { label: "Video Edukasi", href: "/video"   },
+  { label: "Kuis",          href: "/kuis"    },
+  { label: "Forum",         href: "/forum"   },
+  { label: "Video",         href: "/video"   },
 ];
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const pathname  = usePathname();
-  const { scrollYProgress } = useScroll();
+  const [menuOpen, setMenuOpen]     = useState(false);
+  const [scrolled, setScrolled]     = useState(false);
+  const pathname                    = usePathname();
+  const { scrollYProgress }         = useScroll();
+  const navRef                      = useRef<HTMLUListElement>(null);
 
-  // Close mobile menu on route change
   useEffect(() => { setMenuOpen(false); }, [pathname]);
 
-  // Scroll shadow detection
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -39,97 +39,98 @@ export default function Navbar() {
     <>
       {/* ── SCROLL PROGRESS BAR ─────────────────────────── */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1.5 bg-yellow-300 z-[60] origin-left border-b-2 border-black"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 via-yellow-300 to-pink-500 z-[60] origin-left"
         style={{ scaleX: scrollYProgress, transformOrigin: "0% 50%" }}
       />
 
-      {/* ── NAVBAR ──────────────────────────────────────── */}
-      <motion.header
-        initial={{ y: -96, opacity: 0 }}
+      {/* ── FLOATING NAVBAR WRAPPER ─────────────────────── */}
+      <motion.div
+        initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0,   opacity: 1 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 border-b-4 border-black dark:border-white",
-          "bg-white/95 dark:bg-gray-950/95 backdrop-blur-md transition-shadow duration-300",
-          scrolled
-            ? "shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_6px_0px_0px_rgba(255,255,255,0.8)]"
-            : "shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(255,255,255,0.5)]"
-        )}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
       >
-        <nav className="container-cerita h-16 flex items-center justify-between">
-
+        {/* ── BRUTALIST PILL CONTAINER ────────────────────── */}
+        <div
+          className={cn(
+            "pointer-events-auto",
+            "relative flex items-center gap-2 h-14 px-3",
+            "rounded-2xl border-4 border-black dark:border-white",
+            "bg-violet-100 dark:bg-gray-950",
+            "transition-shadow duration-300",
+            scrolled
+              ? "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.8)]"
+              : "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)]"
+          )}
+        >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <motion.div
-              whileHover={{ rotate: [0, -12, 12, -6, 0], scale: 1.15 }}
-              transition={{ duration: 0.5 }}
+          <Link
+            href="/"
+            className="flex items-center gap-2 mr-1 pr-3 border-r-4 border-black dark:border-white group"
+          >
+            <div
+              className={cn(
+                "relative w-10 h-10 rounded-full overflow-hidden shrink-0",
+                "border-2 border-black dark:border-white",
+                "bg-white", /* Background selalu putih agar stiker terlihat jelas */
+                "shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.9)]",
+                "group-hover:-translate-y-0.5 group-hover:shadow-[2px_4px_0px_0px_rgba(0,0,0,1)] dark:group-hover:shadow-[2px_4px_0px_0px_rgba(255,255,255,0.9)]",
+                "transition-all duration-150"
+              )}
             >
-              <ShieldAlert size={24} className="text-violet-600 dark:text-violet-400" />
-            </motion.div>
-            <motion.span
-              whileHover={{ letterSpacing: "0.08em" }}
-              transition={{ duration: 0.2 }}
-              className="font-black text-xl bg-gradient-to-r from-violet-700 to-indigo-500 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent tracking-tight uppercase"
-            >
-              CERITA.
-            </motion.span>
+              <Image
+  src="/images/logo-cerita.png" // <--- Pakai garis miring di awal
+  alt="Logo CERITA"
+  fill
+  className="object-contain p-0.5"
+/>
+            </div>
           </Link>
 
-          {/* Desktop nav */}
-          <ul className="hidden md:flex items-center gap-1">
+          {/* ── DESKTOP NAV ─────────────────────────────── */}
+          <ul
+            ref={navRef}
+            className="hidden md:flex items-center gap-1"
+          >
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={cn(
-                      "relative flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-bold transition-colors duration-200 z-0",
-                      isActive
-                        ? "text-black"
-                        : "text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
-                    )}
-                  >
-                    {/* Animated active pill — layoutId makes it slide between links */}
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-pill"
-                        className="absolute inset-0 rounded-full bg-yellow-300 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] -z-10"
-                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                      />
-                    )}
-                    <span className="relative flex items-center gap-1.5">
-                      {isActive && (
-                        <motion.span
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="w-1.5 h-1.5 rounded-full bg-black flex-shrink-0"
-                        />
-                      )}
-                      {link.label}
-                    </span>
-                  </Link>
-                </li>
+                <NavItem
+                  key={link.href}
+                  href={link.href}
+                  label={link.label}
+                  isActive={isActive}
+                />
               );
             })}
           </ul>
 
-          {/* Right side — desktop */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* ── RIGHT SIDE ──────────────────────────────── */}
+          <div className="hidden md:flex items-center gap-2 ml-1 pl-3 border-l-4 border-black dark:border-white">
             <ThemeToggle />
 
             <motion.div
               whileHover={{ y: -2 }}
-              whileTap={{ x: 3, y: 3 }}
+              whileTap={{ x: 2, y: 2 }}
               transition={{ type: "spring", stiffness: 500, damping: 25 }}
             >
               <Link
                 href="/tentang"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black text-sm font-black uppercase tracking-tight hover:bg-yellow-300 hover:text-black hover:border-black dark:hover:bg-yellow-300 dark:hover:text-black transition-colors duration-200 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.7)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl",
+                  "border-2 border-black dark:border-white",
+                  "bg-black dark:bg-white text-white dark:text-black",
+                  "text-xs font-black uppercase tracking-wide",
+                  "hover:bg-yellow-300 hover:text-black hover:border-black",
+                  "dark:hover:bg-yellow-300 dark:hover:text-black",
+                  "transition-colors duration-150",
+                  "shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.7)]",
+                  "active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                )}
               >
-                Tentang Skripsi
+                Tentang
                 <motion.span
-                  animate={{ x: [0, 4, 0] }}
+                  animate={{ x: [0, 3, 0] }}
                   transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                   className="inline-block"
                 >
@@ -139,125 +140,221 @@ export default function Navbar() {
             </motion.div>
           </div>
 
-          {/* Mobile controls */}
-          <div className="md:hidden flex items-center gap-3">
+          {/* ── MOBILE CONTROLS ─────────────────────────── */}
+          <div className="md:hidden flex items-center gap-2 ml-auto">
             <ThemeToggle />
 
             <motion.button
               onClick={() => setMenuOpen((prev) => !prev)}
               whileTap={{ scale: 0.88 }}
-              className="border-2 border-black dark:border-white p-2 rounded-xl bg-white dark:bg-gray-900 text-black dark:text-white hover:bg-yellow-300 hover:border-black transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+              className={cn(
+                "border-2 border-black dark:border-white p-1.5 rounded-xl",
+                "bg-white dark:bg-gray-900 text-black dark:text-white",
+                "hover:bg-yellow-300 hover:border-black transition-colors",
+                "shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.7)]",
+                "active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+              )}
               aria-label="Toggle menu"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {menuOpen ? (
                   <motion.div
-                    key="x-icon"
+                    key="x"
                     initial={{ rotate: -90, opacity: 0 }}
                     animate={{ rotate: 0,   opacity: 1 }}
                     exit={{   rotate:  90,  opacity: 0 }}
-                    transition={{ duration: 0.18 }}
+                    transition={{ duration: 0.15 }}
                   >
-                    <X size={20} />
+                    <X size={18} />
                   </motion.div>
                 ) : (
                   <motion.div
-                    key="menu-icon"
+                    key="menu"
                     initial={{ rotate:  90, opacity: 0 }}
                     animate={{ rotate:  0,  opacity: 1 }}
                     exit={{   rotate: -90,  opacity: 0 }}
-                    transition={{ duration: 0.18 }}
+                    transition={{ duration: 0.15 }}
                   >
-                    <Menu size={20} />
+                    <Menu size={18} />
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.button>
           </div>
-        </nav>
+        </div>
+      </motion.div>
 
-        {/* ── MOBILE DROPDOWN ─────────────────────────────── */}
-        <AnimatePresence>
-          {menuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                key="backdrop"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="md:hidden fixed inset-0 top-16 bg-black/40 backdrop-blur-sm"
-                onClick={() => setMenuOpen(false)}
-              />
+      {/* ── MOBILE DROPDOWN ───────────────────────────────── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              onClick={() => setMenuOpen(false)}
+            />
 
-              {/* Menu panel */}
-              <motion.div
-                key="mobile-menu"
-                initial={{ opacity: 0, y: -16, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0,   scale: 1    }}
-                exit={{   opacity: 0, y: -16,  scale: 0.96 }}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                className="md:hidden absolute top-[calc(4rem+4px)] left-3 right-3 rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 px-4 py-4 flex flex-col gap-0.5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)]"
-              >
-                {navLinks.map((link, index) => {
-                  const isActive = pathname === link.href;
-                  return (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0   }}
-                      transition={{
-                        delay:    index * 0.055,
-                        duration: 0.22,
-                        ease:     "easeOut",
-                      }}
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={() => setMenuOpen(false)}
-                        className={cn(
-                          "flex items-center gap-2 text-sm font-bold transition-colors py-3 px-3 rounded-xl",
-                          isActive
-                            ? "text-black bg-yellow-300 border-l-4 border-black"
-                            : "text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5"
-                        )}
-                      >
-                        {isActive && (
-                          <motion.span
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="w-1.5 h-1.5 rounded-full bg-black flex-shrink-0"
-                          />
-                        )}
-                        {link.label}
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-
-                {/* CTA — staggered last */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0  }}
-                  transition={{ delay: navLinks.length * 0.055 + 0.05, duration: 0.22 }}
-                >
-                  <Link
-                    href="/tentang"
-                    onClick={() => setMenuOpen(false)}
-                    className="mt-2 flex items-center justify-center gap-2 w-full px-4 py-3 rounded-full border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black text-sm font-black uppercase tracking-tight hover:bg-yellow-300 hover:text-black hover:border-black transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.8)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+            {/* Panel */}
+            <motion.div
+              key="mobile-menu"
+              initial={{ opacity: 0, y: -12, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0,   scale: 1    }}
+              exit={{   opacity: 0, y: -12,  scale: 0.97 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className={cn(
+                "md:hidden fixed top-[4.5rem] left-3 right-3 z-50",
+                "rounded-2xl border-4 border-black dark:border-white",
+                "bg-violet-100 dark:bg-gray-900",
+                "px-3 py-3 flex flex-col gap-1",
+                "shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)]"
+              )}
+            >
+              {navLinks.map((link, index) => {
+                const isActive = pathname === link.href;
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0   }}
+                    transition={{ delay: index * 0.05, duration: 0.2, ease: "easeOut" }}
                   >
-                    Tentang Skripsi →
-                  </Link>
-                </motion.div>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={cn(
+                        "relative flex items-center gap-2 py-2.5 px-4 rounded-xl",
+                        "text-sm font-black transition-colors overflow-hidden",
+                        isActive
+                          ? "text-black dark:text-white"
+                          : "text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
+                      )}
+                    >
+                      {/* Mobile: simpler liquid glass — no layoutId (dropdown is remounted) */}
+                      {isActive && (
+                        <span
+                          className={cn(
+                            "absolute inset-0 rounded-xl",
+                            /* ─ Liquid Glass Core ─ */
+                            "bg-white/25 dark:bg-white/10",
+                            "backdrop-blur-md",
+                            "border border-white/40 dark:border-white/20",
+                            /* Convex highlight */
+                            "shadow-[inset_0_3px_6px_rgba(255,255,255,0.45),inset_0_-2px_4px_rgba(0,0,0,0.08)]"
+                          )}
+                        />
+                      )}
+                      {isActive && (
+                        <span className="relative w-1.5 h-1.5 rounded-full bg-violet-600 dark:bg-violet-400 flex-shrink-0 z-10" />
+                      )}
+                      <span className="relative z-10">{link.label}</span>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.05 + 0.04, duration: 0.2 }}
+              >
+                <Link
+                  href="/tentang"
+                  onClick={() => setMenuOpen(false)}
+                  className={cn(
+                    "mt-1 flex items-center justify-center gap-2 w-full",
+                    "px-4 py-2.5 rounded-xl",
+                    "border-2 border-black dark:border-white",
+                    "bg-black dark:bg-white text-white dark:text-black",
+                    "text-sm font-black uppercase tracking-wide",
+                    "hover:bg-yellow-300 hover:text-black hover:border-black",
+                    "transition-colors",
+                    "shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.8)]",
+                    "active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+                  )}
+                >
+                  Tentang Skripsi →
+                </Link>
               </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </motion.header>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
+
+/* ── DESKTOP NAV ITEM ───────────────────────────────────────── */
+
+interface NavItemProps {
+  href: string;
+  label: string;
+  isActive: boolean;
+}
+
+function NavItem({ href, label, isActive }: NavItemProps) {
+  return (
+    <li>
+      <Link
+        href={href}
+        className={cn(
+          "relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-sm font-black transition-colors duration-150 z-0 select-none",
+          isActive
+            ? "text-black dark:text-white"
+            : "text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white"
+        )}
+      >
+        {/* ── LIQUID GLASS INDICATOR ─────────────────────
+            layoutId makes it morph + slide between nav items
+            like a liquid bubble. Spring physics = organic feel.
+        ─────────────────────────────────────────────────── */}
+        {isActive && (
+          <motion.span
+            layoutId="liquid-glass"
+            className={cn(
+              "absolute inset-0 -z-10 rounded-xl overflow-hidden",
+              /* 1. Base translucent fill */
+              "bg-white/20 dark:bg-white/10",
+              /* 2. Glassmorphism blur */
+              "backdrop-blur-md",
+              /* 3. Subtle border — mimics glass edge refraction */
+              "border border-white/40 dark:border-white/20",
+              /* 4. Inner highlight top → convex 3-D glass illusion */
+              "shadow-[inset_0_4px_8px_rgba(255,255,255,0.5),inset_0_-2px_4px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.08)]"
+            )}
+            /* Specular sheen pseudo-element via box-shadow above */
+            transition={{
+              type:      "spring",
+              stiffness: 380,
+              damping:   32,
+              mass:      0.9,
+            }}
+          />
+        )}
+
+        {/* Dot indicator */}
+        {isActive && (
+          <motion.span
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{   scale: 0, opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="relative z-10 w-1.5 h-1.5 rounded-full bg-violet-600 dark:bg-violet-400 flex-shrink-0"
+          />
+        )}
+
+        <span className="relative z-10">{label}</span>
+      </Link>
+    </li>
+  );
+}
+
+/* ── UTILITY ────────────────────────────────────────────────── */
 
 function cn(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");

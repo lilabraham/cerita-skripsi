@@ -4,47 +4,99 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
+import { cn } from "@/lib/utils";
 
+// ── Stat data with explicit light/dark token pairs ──
 const stats = [
   {
     value: 526,
     suffix: "K+",
     label: "ODHIV di Indonesia",
     desc: "Per 2023, Indonesia masuk 10 besar negara dengan kasus HIV tertinggi di Asia.",
-    color: "text-indigo-600 dark:text-indigo-400",
-    accent: "bg-indigo-50 dark:bg-indigo-500/10 border-indigo-100 dark:border-indigo-500/20",
-    bar: "bg-indigo-500",
-    glow: "rgba(99,102,241,0.10)",
+    // Light
+    cardBg: "bg-[#FFF000]",
+    numColor: "text-black",
+    labelColor: "text-black",
+    descColor: "text-black/70",
+    shadow: "shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+    bar: "bg-black",
+    accentBg: "bg-black",
+    accentText: "text-[#FFF000]",
+    // Dark
+    dCardBg: "dark:bg-yellow-400/20",
+    dNumColor: "dark:text-yellow-300",
+    dLabelColor: "dark:text-white",
+    dDescColor: "dark:text-white/60",
+    dShadow: "dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)]",
+    dBar: "dark:bg-yellow-400",
+    dAccentBg: "dark:bg-yellow-400/30",
+    dAccentText: "dark:text-yellow-300",
   },
   {
     value: 35,
     suffix: "%",
     label: "Kasus baru adalah remaja",
     desc: "1 dari 3 infeksi HIV baru di Indonesia terjadi pada kelompok usia 15–24 tahun.",
-    color: "text-orange-500 dark:text-orange-400",
-    accent: "bg-orange-50 dark:bg-orange-500/10 border-orange-100 dark:border-orange-500/20",
-    bar: "bg-orange-500",
-    glow: "rgba(249,115,22,0.10)",
+    cardBg: "bg-black",
+    numColor: "text-white",
+    labelColor: "text-white",
+    descColor: "text-white/60",
+    shadow: "shadow-[8px_8px_0px_0px_#FF2D78]",
+    bar: "bg-[#FF2D78]",
+    accentBg: "bg-[#FF2D78]",
+    accentText: "text-white",
+    dCardBg: "dark:bg-slate-800",
+    dNumColor: "dark:text-white",
+    dLabelColor: "dark:text-white",
+    dDescColor: "dark:text-white/50",
+    dShadow: "dark:shadow-[8px_8px_0px_0px_rgba(255,45,120,0.8)]",
+    dBar: "dark:bg-pink-500",
+    dAccentBg: "dark:bg-pink-600",
+    dAccentText: "dark:text-white",
   },
   {
     value: 76,
     suffix: "%",
     label: "Tidak sadar terinfeksi",
     desc: "Mayoritas remaja yang terinfeksi HIV tidak mengetahui status mereka sendiri.",
-    color: "text-rose-600 dark:text-rose-400",
-    accent: "bg-rose-50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20",
-    bar: "bg-rose-500",
-    glow: "rgba(244,63,94,0.10)",
+    cardBg: "bg-[#FF2D78]",
+    numColor: "text-black",
+    labelColor: "text-black",
+    descColor: "text-black/70",
+    shadow: "shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+    bar: "bg-black",
+    accentBg: "bg-black",
+    accentText: "text-white",
+    dCardBg: "dark:bg-pink-700",
+    dNumColor: "dark:text-white",
+    dLabelColor: "dark:text-white",
+    dDescColor: "dark:text-white/70",
+    dShadow: "dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)]",
+    dBar: "dark:bg-white",
+    dAccentBg: "dark:bg-white/20",
+    dAccentText: "dark:text-white",
   },
   {
     value: 95,
     suffix: "%",
     label: "Kasus bisa dicegah",
     desc: "Dengan pengetahuan yang benar, hampir semua kasus penularan HIV bisa dihindari.",
-    color: "text-teal-600 dark:text-teal-400",
-    accent: "bg-teal-50 dark:bg-teal-500/10 border-teal-100 dark:border-teal-500/20",
-    bar: "bg-teal-500",
-    glow: "rgba(20,184,166,0.10)",
+    cardBg: "bg-white",
+    numColor: "text-[#FF2D78]",
+    labelColor: "text-black",
+    descColor: "text-black/60",
+    shadow: "shadow-[8px_8px_0px_0px_#FF2D78]",
+    bar: "bg-[#FF2D78]",
+    accentBg: "bg-[#FF2D78]",
+    accentText: "text-white",
+    dCardBg: "dark:bg-slate-700",
+    dNumColor: "dark:text-pink-400",
+    dLabelColor: "dark:text-white",
+    dDescColor: "dark:text-white/60",
+    dShadow: "dark:shadow-[8px_8px_0px_0px_rgba(255,45,120,0.8)]",
+    dBar: "dark:bg-pink-500",
+    dAccentBg: "dark:bg-pink-600",
+    dAccentText: "dark:text-white",
   },
 ];
 
@@ -53,15 +105,15 @@ function useCounter(target: number, duration = 2000, startCounting: boolean) {
 
   useEffect(() => {
     if (!startCounting) return;
-    let start = 0;
+    let current = 0;
     const step = target / (duration / 16);
     const timer = setInterval(() => {
-      start += step;
-      if (start >= target) {
+      current += step;
+      if (current >= target) {
         setCount(target);
         clearInterval(timer);
       } else {
-        setCount(Math.floor(start));
+        setCount(Math.floor(current));
       }
     }, 16);
     return () => clearInterval(timer);
@@ -75,10 +127,8 @@ function StatCard({
   suffix,
   label,
   desc,
-  color,
-  accent,
-  bar,
-  glow,
+  cardBg, numColor, labelColor, descColor, shadow, bar, accentBg, accentText,
+  dCardBg, dNumColor, dLabelColor, dDescColor, dShadow, dBar, dAccentBg, dAccentText,
   index,
   startCounting,
 }: (typeof stats)[0] & { index: number; startCounting: boolean }) {
@@ -90,42 +140,46 @@ function StatCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, delay: index * 0.1, ease: "easeOut" }}
-      whileHover={{ y: -5, scale: 1.015 }}
-      className="group relative flex flex-col gap-4 p-7 rounded-3xl border border-gray-100/80 dark:border-[var(--border-subtle)] bg-white/80 dark:bg-[var(--bg-surface)] backdrop-blur-sm transition-all duration-300 overflow-hidden"
-      style={{
-        boxShadow: startCounting
-          ? `0 4px 24px ${glow}, 0 1px 3px rgba(0,0,0,0.04)`
-          : "0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)",
-      }}
+      whileHover={{ y: -6, scale: 1.015 }}
+      className={cn(
+        "group relative flex flex-col gap-4 p-7",
+        "border-2 border-black dark:border-white/20",
+        cardBg, dCardBg,
+        shadow, dShadow,
+        "transition-all duration-200 overflow-hidden",
+      )}
     >
-      {/* Top accent stripe */}
-      <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${bar} opacity-60 group-hover:opacity-90 transition-opacity`} />
-
-      {/* Background glow */}
-      <div
-        className="absolute -top-10 -right-10 w-36 h-36 rounded-full blur-3xl opacity-30 dark:opacity-20 pointer-events-none transition-opacity"
-        style={{ background: glow.replace("0.10", "1") }}
-      />
+      {/* Top accent bar */}
+      <div className={cn("absolute top-0 left-0 right-0 h-[5px]", bar, dBar)} />
 
       {/* Accent pill */}
-      <div className={`inline-flex self-start px-3 py-1.5 rounded-xl border text-xs font-semibold tracking-wide ${accent} ${color} transition-colors`}>
+      <div
+        className={cn(
+          "inline-flex self-start px-3 py-1.5",
+          "border-2 border-black dark:border-white/30",
+          "text-xs font-black tracking-widest uppercase",
+          accentBg, dAccentBg, accentText, dAccentText,
+        )}
+      >
         {suffix === "%" ? "Persentase" : "Jumlah"}
       </div>
 
       {/* Number */}
       <div>
-        <p className={`text-5xl md:text-6xl font-black tracking-tight leading-none transition-colors ${color}`}>
+        <p className={cn("text-6xl md:text-7xl font-black tracking-tighter leading-none", numColor, dNumColor)}>
           {count}
-          <span className="text-3xl md:text-4xl">{suffix}</span>
+          <span className="text-4xl md:text-5xl">{suffix}</span>
         </p>
-        <p className="text-gray-900 dark:text-white font-semibold text-sm mt-2.5 transition-colors leading-snug">
+        <p className={cn("font-black text-sm mt-3 uppercase tracking-widest leading-snug", labelColor, dLabelColor)}>
           {label}
         </p>
       </div>
 
-      <div className="h-px bg-gray-100 dark:bg-white/5" />
+      {/* Divider */}
+      <div className="h-[2px] bg-black/20 dark:bg-white/20" />
 
-      <p className="text-gray-500 dark:text-[var(--text-secondary)] text-sm leading-relaxed transition-colors">
+      {/* Description */}
+      <p className={cn("text-sm leading-relaxed font-semibold", descColor, dDescColor)}>
         {desc}
       </p>
     </motion.div>
@@ -142,23 +196,47 @@ export default function StatsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative section-padding bg-white/50 dark:bg-[var(--bg-base)] overflow-hidden transition-colors duration-300">
+    <section
+      className={cn(
+        "relative overflow-hidden py-20 px-6",
+        // Gradient flow: continues from Hero's cyan-50/indigo-900
+        "bg-gradient-to-b from-cyan-50 via-sky-50 to-violet-50",
+        "dark:from-indigo-900 dark:via-indigo-950 dark:to-slate-900",
+      )}
+    >
+      {/* Grid lines overlay — adapts per mode */}
+      <div
+        className={cn(
+          "absolute inset-0 pointer-events-none",
+          "[background-image:repeating-linear-gradient(90deg,transparent,transparent_59px,rgba(0,0,0,0.04)_59px,rgba(0,0,0,0.04)_60px),repeating-linear-gradient(0deg,transparent,transparent_59px,rgba(0,0,0,0.04)_59px,rgba(0,0,0,0.04)_60px)]",
+          "dark:[background-image:repeating-linear-gradient(90deg,transparent,transparent_59px,rgba(255,255,255,0.04)_59px,rgba(255,255,255,0.04)_60px),repeating-linear-gradient(0deg,transparent,transparent_59px,rgba(255,255,255,0.04)_59px,rgba(255,255,255,0.04)_60px)]",
+        )}
+      />
 
-      {/* Top bridge — blends seamlessly from HeroSection */}
-      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-white dark:from-[var(--bg-base)] to-transparent pointer-events-none z-0" />
+      {/* Top bridge continuation */}
+      <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-cyan-50 dark:from-indigo-900 to-transparent pointer-events-none z-0" />
 
-      {/* Ambient blobs — echo Hero's palette */}
-      <div className="absolute top-1/3 -right-24 w-[400px] h-[400px] rounded-full bg-orange-200/15 dark:bg-orange-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-16 w-[320px] h-[320px] rounded-full bg-indigo-200/15 dark:bg-indigo-500/5 blur-3xl pointer-events-none" />
+      {/* Decorative diagonal stripes */}
+      <div
+        className="absolute -top-10 -left-10 w-48 h-48 pointer-events-none opacity-10 dark:opacity-5"
+        style={{
+          background:
+            "repeating-linear-gradient(45deg, #FFF000 0px, #FFF000 10px, transparent 10px, transparent 24px)",
+        }}
+      />
+      <div
+        className="absolute -bottom-10 -right-10 w-48 h-48 pointer-events-none opacity-10 dark:opacity-5"
+        style={{
+          background:
+            "repeating-linear-gradient(45deg, #FF2D78 0px, #FF2D78 10px, transparent 10px, transparent 24px)",
+        }}
+      />
 
-      {/* Bottom bridge — blends into FeaturesSection */}
-      <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white dark:from-[var(--bg-surface)] to-transparent pointer-events-none z-0" />
+      <div className="max-w-6xl mx-auto relative z-10">
 
-      <div className="container-cerita relative z-10">
-
-        {/* Header */}
+        {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-14"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -168,46 +246,70 @@ export default function StatsSection() {
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-block px-4 py-1.5 rounded-full bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-500/20 text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-widest mb-5 transition-colors"
+            className={cn(
+              "inline-block px-4 py-1.5 mb-5",
+              "border-2 border-black dark:border-white",
+              "bg-[#FFF000] dark:bg-yellow-400/20",
+              "text-black dark:text-yellow-300",
+              "text-xs font-black uppercase tracking-widest",
+              "shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.7)]",
+            )}
           >
             Fakta yang Harus Kamu Tahu
           </motion.span>
+
           <motion.h2
             initial={{ opacity: 0, y: -16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-4xl font-black tracking-tight text-gray-900 dark:text-white mb-4 transition-colors"
+            className="text-3xl md:text-5xl font-black tracking-tighter text-black dark:text-white mb-4 uppercase leading-[0.95]"
           >
             HIV/AIDS di Indonesia{" "}
-            <span className="text-gradient-warm">Lebih Dekat</span>{" "}
+            <span className="relative inline-block">
+              <span className="relative z-10 bg-[#FF2D78] dark:bg-pink-600 text-white px-2">
+                Lebih Dekat
+              </span>
+            </span>{" "}
             dari yang Kamu Kira
           </motion.h2>
+
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-gray-500 dark:text-[var(--text-secondary)] max-w-xl mx-auto text-base leading-relaxed transition-colors"
+            className={cn(
+              "max-w-[36rem] mx-auto text-base leading-relaxed font-semibold text-left",
+              "border-l-4 border-black dark:border-white/50 pl-4",
+              "text-black/60 dark:text-white/60",
+            )}
           >
             Data resmi Kementerian Kesehatan RI yang jarang dibahas di sekolah —
             tapi sangat penting untuk kamu ketahui.
           </motion.p>
         </motion.div>
 
-        {/* Stats grid */}
+        {/* Stats Grid — outer neo-brutalist frame */}
         <div
-          ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          className={cn(
+            "border-2 border-black dark:border-white/30",
+            "shadow-[10px_10px_0px_0px_#FF2D78] dark:shadow-[10px_10px_0px_0px_rgba(255,45,120,0.7)]",
+          )}
         >
-          {stats.map((stat, i) => (
-            <StatCard
-              key={stat.label}
-              {...stat}
-              index={i}
-              startCounting={isInView}
-            />
-          ))}
+          <div
+            ref={ref}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-black dark:divide-white/20"
+          >
+            {stats.map((stat, i) => (
+              <StatCard
+                key={stat.label}
+                {...stat}
+                index={i}
+                startCounting={isInView}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Source note */}
@@ -216,12 +318,14 @@ export default function StatsSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
-          className="text-center text-xs text-gray-400 dark:text-[var(--text-disabled)] mt-10 transition-colors"
+          className="text-center text-xs text-black/40 dark:text-white/30 mt-8 font-bold uppercase tracking-widest"
         >
           Sumber: Kementerian Kesehatan RI, UNAIDS 2023
         </motion.p>
-
       </div>
+
+      {/* Bottom bridge */}
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-violet-50 dark:from-slate-900 to-transparent pointer-events-none" />
     </section>
   );
 }

@@ -237,6 +237,14 @@
   }
 }
 
+.animate-marquee-rtl {
+    animation: marquee-rtl 150s linear infinite;
+  }
+
+  .animate-marquee-ltr {
+    animation: marquee-ltr 150s linear infinite;
+  }
+
 /* ============================================================
    KEYFRAMES
    ============================================================ */
@@ -280,6 +288,16 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes marquee-rtl {
+  from { transform: translateX(0%); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marquee-ltr {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0%); }
 }
 
 /* Utility class untuk animasi float */
