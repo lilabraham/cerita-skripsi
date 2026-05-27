@@ -66,24 +66,26 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 mr-1 pr-3 border-r-4 border-black dark:border-white group"
+            /* mr-1 dihapus, pr-3 dikurangi jadi pr-2 agar garis pembatas hitam lebih merapat ke logo */
+            className="flex items-center pr-2 md:pr-3 border-r-4 border-black dark:border-white group"
           >
             <div
               className={cn(
-                "relative w-10 h-10 rounded-full overflow-hidden shrink-0",
-                "border-2 border-black dark:border-white",
-                "bg-white", /* Background selalu putih agar stiker terlihat jelas */
-                "shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.9)]",
-                "group-hover:-translate-y-0.5 group-hover:shadow-[2px_4px_0px_0px_rgba(0,0,0,1)] dark:group-hover:shadow-[2px_4px_0px_0px_rgba(255,255,255,0.9)]",
+                /* Lebar (w) dan tinggi (h) dikurangi agar lebih pas dan padat di dalam navbar */
+                "relative w-24 h-7 md:w-28 md:h-8 shrink-0",
+                "drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] dark:drop-shadow-[2px_2px_0px_rgba(255,255,255,0.9)]",
+                "group-hover:-translate-y-0.5 group-hover:drop-shadow-[2px_4px_0px_rgba(0,0,0,1)] dark:group-hover:drop-shadow-[2px_4px_0px_rgba(255,255,255,0.9)]",
                 "transition-all duration-150"
               )}
             >
               <Image
-  src="/images/logo-cerita.png" // <--- Pakai garis miring di awal
-  alt="Logo CERITA"
-  fill
-  className="object-contain p-0.5"
-/>
+                src="/images/logo-cerita-final.png"
+                alt="Logo CERITA"
+                fill
+                /* object-center memastikan gambar tetap di tengah wadah yang sudah dikecilkan */
+                className="object-contain object-center" 
+                priority
+              />
             </div>
           </Link>
 

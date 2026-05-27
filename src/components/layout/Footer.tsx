@@ -82,24 +82,25 @@ export default function Footer() {
           {/* Logo wordmark */}
           <Link
             href="/"
-            className="group inline-flex items-center w-fit"
+            className="group inline-flex items-center w-fit mb-1" 
+            /* Tambah mb-1 agar ada jarak sedikit dengan teks deskripsi di bawahnya */
           >
             <div
               className={cn(
-                "relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden shrink-0",
-                "border-2 border-black dark:border-white",
-                "bg-white",
-                "shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.9)]",
-                "group-hover:-translate-y-1 group-hover:shadow-[3px_5px_0px_0px_rgba(0,0,0,1)] dark:group-hover:shadow-[3px_5px_0px_0px_rgba(255,255,255,0.9)]",
+                /* Ukuran diketatkan (w-40/w-48) agar proporsional dengan gambar yang sudah di-crop rapat */
+                "relative w-36 h-10 md:w-44 md:h-12 shrink-0",
+                "drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] dark:drop-shadow-[3px_3px_0px_rgba(255,255,255,0.9)]",
+                "group-hover:-translate-y-1 group-hover:drop-shadow-[3px_5px_0px_rgba(0,0,0,1)] dark:group-hover:drop-shadow-[3px_5px_0px_rgba(255,255,255,0.9)]",
                 "transition-all duration-150"
               )}
             >
               <Image
-  src="/images/logo-cerita.png" // <--- Pakai garis miring di awal
-  alt="Logo CERITA"
-  fill
-  className="object-contain p-0.5"
-/>
+                src="/images/logo-cerita-final.png" /* 👈 Pastikan pakai nama file yang BARU lagi! */
+                alt="Logo CERITA"
+                fill
+                /* object-left penting agar logo rata kiri tegak lurus dengan teks di bawahnya */
+                className="object-contain object-left" 
+              />
             </div>
           </Link>
 
