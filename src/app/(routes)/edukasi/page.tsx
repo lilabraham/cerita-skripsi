@@ -1,4 +1,4 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\app\(routes\)\edukasi\page.tsx
+// src/app/(routes)/edukasi/page.tsx
 
 "use client";
 
@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useQuizStore } from "@/store/quizStore";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -26,11 +27,9 @@ interface ModuleData {
   imageSrc: string;
   cardBg: string;
   accentBg: string;
-  progress: number;
-  status: "unlocked" | "locked";
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Data (progress & status dihapus — sekarang dibaca live dari store) ───────
 
 const modules: ModuleData[] = [
   {
@@ -41,8 +40,6 @@ const modules: ModuleData[] = [
     imageSrc: "/images/virus-hiv.png",
     cardBg:   "#A8D8FF",
     accentBg: "#FFE566",
-    progress: 100,
-    status:   "unlocked",
   },
   {
     id:       "penularan",
@@ -52,8 +49,6 @@ const modules: ModuleData[] = [
     imageSrc: "/images/remaja-sehat.png",
     cardBg:   "#FFE566",
     accentBg: "#FF8DC7",
-    progress: 75,
-    status:   "unlocked",
   },
   {
     id:       "pencegahan",
@@ -63,8 +58,6 @@ const modules: ModuleData[] = [
     imageSrc: "/images/remaja-demam.png",
     cardBg:   "#B5F5A0",
     accentBg: "#A8D8FF",
-    progress: 40,
-    status:   "unlocked",
   },
   {
     id:       "pengobatan",
@@ -74,12 +67,13 @@ const modules: ModuleData[] = [
     imageSrc: "/images/botol-arv.png",
     cardBg:   "#D4D4D4",
     accentBg: "#9CA3AF",
-    progress: 0,
-    status:   "locked",
   },
 ];
 
-// ─── Stripe patterns — separate light/dark divs, never inline-only ───────────
+// Modul yang harus 100% untuk membuka "pengobatan"
+const UNLOCK_REQUIRED: string[] = ["pengenalan", "penularan", "pencegahan"];
+
+// ─── Stripe patterns ──────────────────────────────────────────────────────────
 
 const STRIPE_LIGHT =
   "repeating-linear-gradient(-45deg, rgba(0,0,0,0.07) 0px, rgba(0,0,0,0.07) 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px)";
@@ -103,7 +97,6 @@ function FloatingPill({ color, width, height, top, left, rotate, delay, duration
   return (
     <motion.div
       aria-hidden="true"
-      // border-black/10 visible in light mode; dark:border-white/20 in dark mode
       className="absolute rounded-full border-2 border-black/10 dark:border-white/20 pointer-events-none select-none"
       style={{ backgroundColor: color, width, height, top, left, rotate }}
       animate={{
@@ -177,7 +170,6 @@ function FloatingRing({ size, color, thickness, top, left, delay, duration }: Fl
   return (
     <motion.div
       aria-hidden="true"
-      // In light mode rings are subtler; dark: pump opacity via Tailwind override
       className="absolute rounded-full pointer-events-none select-none opacity-60 dark:opacity-100"
       style={{ width: size, height: size, border: `${thickness}px solid ${color}`, top, left }}
       animate={{
@@ -205,25 +197,21 @@ const cardVariants: Variants = {
 
 // ─── UnlockedCard ─────────────────────────────────────────────────────────────
 
-function UnlockedCard({ mod, index }: { mod: ModuleData; index: number }) {
+function UnlockedCard({ mod, index, progress }: { mod: ModuleData; index: number; progress: number }) {
   return (
     <div
       className={cn(
         "relative flex flex-col gap-4 p-5 rounded-2xl",
-        // Light: white card, dark border; Dark: deep navy card
         "bg-white dark:bg-[#0B0F19]",
-        // Border: dark in light mode, subtle white in dark mode
         "border-2 border-black/15 dark:border-white/15",
-        // Shadow: dark offset in light, white offset in dark
         "shadow-[6px_6px_0px_0px_rgba(0,0,0,0.12)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.08)]",
         "transition-all duration-150 ease-out",
-        // Hover: card lifts, border and shadow intensify
         "group-hover:-translate-x-0.5 group-hover:-translate-y-1",
         "group-hover:border-black/35 dark:group-hover:border-white/45",
         "group-hover:shadow-[8px_10px_0px_0px_rgba(0,0,0,0.18)] dark:group-hover:shadow-[8px_10px_0px_0px_rgba(255,255,255,0.15)]",
       )}
     >
-      {/* Accent glow strip — mod.cardBg as accent, works in both modes */}
+      {/* Accent glow strip */}
       <div
         className="absolute top-0 left-5 right-5 h-0.5 rounded-full opacity-80"
         style={{ backgroundColor: mod.cardBg }}
@@ -244,7 +232,7 @@ function UnlockedCard({ mod, index }: { mod: ModuleData; index: number }) {
           />
         </div>
 
-        {/* Status pill — accentBg is vivid, always dark text on it */}
+        {/* Status pill */}
         <div
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-black/20 shrink-0"
           style={{ backgroundColor: mod.accentBg }}
@@ -256,7 +244,7 @@ function UnlockedCard({ mod, index }: { mod: ModuleData; index: number }) {
         </div>
       </div>
 
-      {/* Chapter badge — cardBg accent, dark text always readable */}
+      {/* Chapter badge */}
       <span
         className="inline-block w-fit px-3 py-1 rounded-full border-2 border-black/20 text-[11px] font-black uppercase tracking-wider text-black"
         style={{ backgroundColor: mod.cardBg }}
@@ -274,17 +262,17 @@ function UnlockedCard({ mod, index }: { mod: ModuleData; index: number }) {
         </p>
       </div>
 
-      {/* Progress bar */}
+      {/* ── Progress bar (live dari store) ── */}
       <div>
         <div className="flex justify-between text-[11px] font-black text-black/60 dark:text-white/55 mb-1.5">
           <span>Progress</span>
-          <span>{mod.progress}%</span>
+          <span>{progress}%</span>
         </div>
         <div className="h-3 rounded-full bg-black/10 dark:bg-white/10 border border-black/15 dark:border-white/15 overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-1000"
             style={{
-              width: `${mod.progress}%`,
+              width: `${progress}%`,
               backgroundColor: mod.cardBg,
               boxShadow: `0 0 8px ${mod.cardBg}88`,
             }}
@@ -307,7 +295,7 @@ function UnlockedCard({ mod, index }: { mod: ModuleData; index: number }) {
             boxShadow: "3px 3px 0px 0px rgba(0,0,0,0.25)",
           }}
         >
-          Mulai Belajar
+          {progress === 100 ? "Ulangi Kuis" : "Mulai Belajar"}
           <ArrowRight
             size={14}
             className="transition-transform duration-150 group-hover:translate-x-1"
@@ -325,15 +313,14 @@ function LockedCard({ mod, index }: { mod: ModuleData; index: number }) {
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden cursor-not-allowed",
-        // Light: muted warm surface; Dark: near-black slate
         "bg-stone-100 dark:bg-slate-950",
         "border-2 border-black/12 dark:border-slate-700",
         "shadow-[6px_6px_0px_0px_rgba(0,0,0,0.08)] dark:shadow-[6px_6px_0px_0px_rgba(100,116,139,0.25)]",
       )}
     >
-      {/* Police tape top — light mode version */}
+      {/* Police tape top — light mode */}
       <div className="h-6 w-full shrink-0 dark:hidden" style={{ background: STRIPE_LIGHT }} />
-      {/* Police tape top — dark mode version */}
+      {/* Police tape top — dark mode */}
       <div className="hidden dark:block h-6 w-full shrink-0" style={{ background: STRIPE_DARK }} />
 
       <div className="flex flex-col gap-3 p-5">
@@ -436,22 +423,37 @@ function LockedCard({ mod, index }: { mod: ModuleData; index: number }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function EdukasiPage() {
+  // ✅ Baca progress live dari Zustand store (reaktif — auto-update saat kuis selesai)
+  const progressMap = useQuizStore((s) => s.progress);
+
+  // Hitung apakah Modul 4 terbuka: semua modul prerequisite harus 100
+  const isModul4Unlocked = UNLOCK_REQUIRED.every(
+    (id) => (progressMap[id]?.score ?? 0) === 100
+  );
+
+  // Hitung overall progress untuk hero bar
+  // Unlockednya 3 modul + modul 4 jika terbuka = max 4
+  const unlockedCount = modules.filter((m) => {
+    if (m.id === "pengobatan") return isModul4Unlocked;
+    return true; // modul 1-3 selalu tersedia
+  }).length;
+
+  // Progress bar hero: rata-rata score semua modul yang tersedia (bukan count)
+  const availableModuls = modules.filter((m) => m.id !== "pengobatan");
+  const avgProgress = availableModuls.reduce(
+    (acc, m) => acc + (progressMap[m.id]?.score ?? 0), 0
+  ) / availableModuls.length;
+  const heroProgress = Math.round(avgProgress);
+
   return (
     <main
       className={cn(
         "relative min-h-screen overflow-hidden",
         "pt-24 pb-16 px-6",
         "transition-colors duration-300",
-        // Light: pastel amber-krem; Dark: near-black deep slate
         "bg-amber-50 dark:bg-[#04060A]",
       )}
     >
-      {/*
-        ── DOT GRID OVERLAYS ─────────────────────────────────────────────
-        Two separate divs so each can have the correct dot color.
-        `backgroundImage` cannot use dark: prefix, so we split them.
-      */}
-
       {/* Light mode dot grid */}
       <div
         aria-hidden="true"
@@ -471,7 +473,7 @@ export default function EdukasiPage() {
         }}
       />
 
-      {/* ── DECORATIVE ELEMENTS (z-0) ─────────────────────────────────── */}
+      {/* ── DECORATIVE ELEMENTS ──────────────────────────────────────────── */}
 
       <FloatingPill color="#fde68a" width={80}  height={34} top="8%"  left="5%"  rotate={-20} delay={0}   duration={5.5} />
       <FloatingPill color="#a5f3fc" width={55}  height={24} top="14%" left="82%" rotate={15}  delay={1.2} duration={6.2} />
@@ -495,7 +497,7 @@ export default function EdukasiPage() {
       <FloatingRing size={200} color="rgba(196,181,253,0.20)" thickness={6} top="80%" left="70%" delay={2.5} duration={11}  />
       <FloatingRing size={50}  color="rgba(251,113,133,0.35)" thickness={3} top="10%" left="40%" delay={1.0} duration={8}   />
 
-      {/* ── MAIN CONTENT (z-10) ──────────────────────────────────────────── */}
+      {/* ── MAIN CONTENT ─────────────────────────────────────────────────── */}
       <div className="relative z-10 max-w-3xl mx-auto">
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -548,7 +550,7 @@ export default function EdukasiPage() {
             Selesaikan setiap chapter untuk membuka materi selanjutnya.
           </motion.p>
 
-          {/* Overall progress bar */}
+          {/* ── Overall progress bar (live dari store) ── */}
           <motion.div
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
@@ -557,7 +559,7 @@ export default function EdukasiPage() {
           >
             <div className="flex justify-between text-xs font-black text-black/60 dark:text-white/55 mb-2 uppercase tracking-wider">
               <span>Progress</span>
-              <span>3 / 4 tersedia</span>
+              <span>{unlockedCount} / {modules.length} tersedia</span>
             </div>
             <div
               className={cn(
@@ -570,7 +572,7 @@ export default function EdukasiPage() {
               <div
                 className="h-full rounded-full transition-all duration-1000"
                 style={{
-                  width: "75%",
+                  width: `${heroProgress}%`,
                   background: "linear-gradient(90deg, #FF8DC7 0%, #FFE566 50%, #A8D8FF 100%)",
                 }}
               />
@@ -586,7 +588,11 @@ export default function EdukasiPage() {
           animate="show"
         >
           {modules.map((mod, i) => {
-            const isLocked = mod.status === "locked";
+            // ✅ Baca score live dari store untuk setiap modul
+            const score = progressMap[mod.id]?.score ?? 0;
+
+            // ✅ Lock logic: modul "pengobatan" terkunci jika prerequisite belum 100%
+            const isLocked = mod.id === "pengobatan" && !isModul4Unlocked;
 
             return (
               <motion.div key={mod.id} variants={cardVariants}>
@@ -598,7 +604,7 @@ export default function EdukasiPage() {
                   {isLocked ? (
                     <LockedCard mod={mod} index={i} />
                   ) : (
-                    <UnlockedCard mod={mod} index={i} />
+                    <UnlockedCard mod={mod} index={i} progress={score} />
                   )}
                 </Link>
               </motion.div>

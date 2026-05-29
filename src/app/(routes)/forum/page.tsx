@@ -3,142 +3,360 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, Send, Heart, User } from "lucide-react";
-import { initialComments, type CommentItem } from "@/data/forum-data";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { CheckCircle, Send } from "lucide-react";
 
-export default function ForumPage() {
-  const [comments, setComments] = useState<CommentItem[]>(initialComments);
-  const [newComment, setNewComment] = useState<string>("");
-  const [newUsername, setNewUsername] = useState<string>("");
+interface SurveyFormData {
+  namaInisial: string;
+  rentangUsia: string;
+  tingkatPemahaman: string;
+  kritekSaran: string;
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.08,
+    },
+  },
+};
 
-    const commentToAdd: CommentItem = {
-      id: Date.now().toString(),
-      name: newUsername.trim() === "" ? "Anonim" : newUsername,
-      avatarColor: "bg-rose-500",
-      message: newComment,
-      date: "Baru saja",
-      likes: 0,
-    };
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 12,
+    },
+  },
+};
 
-    setComments([commentToAdd, ...comments]);
-    setNewComment("");
-    setNewUsername("");
+const buttonHoverVariants = {
+  rest: { scale: 1, boxShadow: "0 6px 0 #000" },
+  hover: { scale: 1.02, boxShadow: "0 3px 0 #000" },
+  tap: { scale: 0.98, boxShadow: "0 0px 0 #000" },
+};
+
+export default function SurveyPage() {
+  const [formData, setFormData] = useState<SurveyFormData>({
+    namaInisial: "",
+    rentangUsia: "",
+    tingkatPemahaman: "",
+    kritekSaran: "",
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string>("");
+
+  const handleNameChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, namaInisial: value }));
+    setError("");
   };
 
-  return (
-    <main className="min-h-screen bg-[var(--bg-base)] pt-28 pb-20 px-6 transition-colors duration-300">
-      <div className="max-w-4xl mx-auto">
+  const handleAgeSelect = (age: string) => {
+    setFormData((prev) => ({ ...prev, rentangUsia: age }));
+    setError("");
+  };
 
-        {/* Header Forum */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-3 rounded-2xl border-4 border-black dark:border-white bg-pink-400 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.8)] text-black mb-6">
-            <MessageSquare size={32} />
+  const handleLikertSelect = (level: string) => {
+    setFormData((prev) => ({ ...prev, tingkatPemahaman: level }));
+    setError("");
+  };
+
+  const handleFeedbackChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, kritekSaran: value }));
+    setError("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!formData.namaInisial || !formData.rentangUsia || !formData.tingkatPemahaman || !formData.kritekSaran) {
+      setError("Harap isi semua field sebelum mengirim!");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      // Send data to API
+      const response = await fetch("/api/submit-survey", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Gagal menyimpan data");
+      }
+
+      // Success - show success screen
+      setSubmitted(true);
+      console.log("Survey submitted successfully:", data);
+
+      // Reset form after 2.5 seconds
+      setTimeout(() => {
+        setFormData({
+          namaInisial: "",
+          rentangUsia: "",
+          tingkatPemahaman: "",
+          kritekSaran: "",
+        });
+        setSubmitted(false);
+      }, 2500);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan saat mengirim data";
+      setError(errorMessage);
+      console.error("Survey submission error:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Background Grid Pattern
+  const gridBackgroundStyle = {
+    backgroundImage: `
+      linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.06) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, 0.06) 75%, rgba(0, 0, 0, 0.06) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.06) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, 0.06) 75%, rgba(0, 0, 0, 0.06) 76%, transparent 77%, transparent)
+    `,
+    backgroundSize: "50px 50px",
+    backgroundColor: "rgb(250, 245, 230)",
+  };
+
+  const gridBackgroundStyleDark = {
+    backgroundImage: `
+      linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.08) 75%, rgba(255, 255, 255, 0.08) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.08) 75%, rgba(255, 255, 255, 0.08) 76%, transparent 77%, transparent)
+    `,
+    backgroundSize: "50px 50px",
+    backgroundColor: "#04060A",
+  };
+
+  if (submitted) {
+    return (
+      <motion.main
+        className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 flex items-center justify-center"
+        style={gridBackgroundStyle}
+      >
+        <div
+          className="hidden dark:block absolute inset-0 pointer-events-none"
+          style={gridBackgroundStyleDark}
+        />
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring" as const, stiffness: 80, damping: 15 }}
+          className="relative z-10 max-w-2xl mx-auto text-center"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.1, 1], rotate: [0, -5, 5, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="flex justify-center mb-8"
+          >
+            <div className="p-6 rounded-2xl border-4 border-black dark:border-white bg-lime-400 dark:bg-lime-500 shadow-[8px_8px_0px_rgba(0,0,0,0.8)] dark:shadow-[8px_8px_0px_rgba(255,255,255,0.3)]">
+              <CheckCircle size={64} className="text-black" strokeWidth={3} />
+            </div>
+          </motion.div>
+
+          <h2 className="text-4xl sm:text-5xl font-black uppercase text-black dark:text-white mb-4 tracking-tighter">
+            Terima Kasih!
+          </h2>
+          <p className="text-lg sm:text-xl font-bold text-black dark:text-white mb-2">
+            Survei kamu sudah kami terima.
+          </p>
+          <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 font-medium">
+            Feedback kamu sangat membantu kami untuk terus berkembang dan memberikan yang terbaik.
+          </p>
+        </motion.div>
+      </motion.main>
+    );
+  }
+
+  return (
+    <motion.main
+      className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 overflow-hidden"
+      style={gridBackgroundStyle}
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      {/* Dark mode grid overlay */}
+      <div
+        className="hidden dark:block absolute inset-0 pointer-events-none"
+        style={gridBackgroundStyleDark}
+      />
+
+      <div className="max-w-4xl mx-auto relative z-10">
+        {/* ── Header Halaman ── */}
+        <motion.div variants={itemVariants} className="text-center mb-16">
+          <div className="inline-flex items-center justify-center p-4 rounded-2xl border-4 border-black dark:border-white bg-cyan-300 dark:bg-cyan-500 shadow-[6px_6px_0px_rgba(0,0,0,0.8)] dark:shadow-[6px_6px_0px_rgba(255,255,255,0.3)] mb-6">
+            <Send size={40} className="text-black" strokeWidth={3} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-black dark:text-white uppercase tracking-tight leading-none mb-4">
-            Ruang{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-teal-500 dark:from-indigo-400 dark:to-teal-400">
-              Diskusi
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase text-black dark:text-white tracking-tighter leading-tight mb-4">
+            Survei Evaluasi
+            <br />
+            <span className="bg-gradient-to-r from-pink-400 to-yellow-300 dark:from-pink-500 dark:to-yellow-400 text-transparent bg-clip-text">
+              CERITA
             </span>
           </h1>
-          <p className="text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
-            Punya pertanyaan seputar HIV/AIDS? Atau ingin berbagi pandangan?
-            Tulis di sini! Ruang ini aman, bebas stigma, dan kamu bisa bertanya
-            secara anonim.
+          <p className="text-base sm:text-lg font-bold text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+            Bantu kami menjadi lebih baik dengan mengisi survei singkat ini. Feedback Anda sangat berharga! 💪
           </p>
-        </div>
+        </motion.div>
 
-        {/* Kotak Input Komentar */}
-        <div className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 p-6 md:p-8 mb-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)]">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full border-2 border-black dark:border-white bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-black dark:text-gray-300 shrink-0">
-                <User size={24} />
-              </div>
+        {/* ── Form Container ── */}
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* ── Field 1: Nama/Inisial ── */}
+          <motion.div variants={itemVariants}>
+            <label className="block text-sm font-black uppercase tracking-wider text-black dark:text-white mb-3">
+              Nama / Inisial Kamu
+            </label>
+            <div className="relative">
               <input
                 type="text"
-                placeholder="Nama kamu (Kosongkan jika ingin Anonim)"
-                value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
-                className="w-full bg-transparent border-b-2 border-black dark:border-white px-2 py-2 text-black dark:text-white font-medium focus:outline-none placeholder:text-black/40 dark:placeholder:text-white/40 transition-colors"
+                value={formData.namaInisial}
+                onChange={(e) => handleNameChange(e.target.value)}
+                placeholder="Ketik nama atau inisial..."
+                className="w-full px-6 py-4 bg-white dark:bg-[#0B0F19] border-4 border-black dark:border-white rounded-xl font-bold text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 transition-all duration-200 shadow-[4px_4px_0px_rgba(0,0,0,0.6)] focus:shadow-[0px_0px_0px_rgba(0,0,0,0.6)]"
               />
             </div>
-            <textarea
-              placeholder="Tuliskan pertanyaan atau diskusimu di sini..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              rows={3}
-              className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-black dark:border-white rounded-xl p-4 text-black dark:text-white font-medium focus:outline-none transition-colors resize-none mt-2 placeholder:text-black/40 dark:placeholder:text-white/40"
-            />
-            <div className="flex justify-end mt-2">
-              <button
-                type="submit"
-                disabled={!newComment.trim()}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-black uppercase tracking-tight transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.8)] hover:bg-yellow-300 hover:text-black hover:border-black dark:hover:bg-yellow-400 dark:hover:text-black active:translate-x-[4px] active:translate-y-[4px] active:shadow-none disabled:opacity-40 disabled:cursor-not-allowed disabled:active:translate-x-0 disabled:active:translate-y-0 disabled:active:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Kirim <Send size={16} />
-              </button>
+          </motion.div>
+
+          {/* ── Field 2: Rentang Usia (Multiple Choice Buttons) ── */}
+          <motion.div variants={itemVariants}>
+            <label className="block text-sm font-black uppercase tracking-wider text-black dark:text-white mb-4">
+              Rentang Usia Kamu
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {["15-16", "17-18", ">18"].map((age) => (
+                <motion.button
+                  key={age}
+                  type="button"
+                  onClick={() => handleAgeSelect(age)}
+                  variants={buttonHoverVariants}
+                  initial="rest"
+                  whileHover="hover"
+                  whileTap="tap"
+                  className={`py-4 px-6 rounded-xl border-4 font-black uppercase tracking-wider text-base transition-all duration-200 ${
+                    formData.rentangUsia === age
+                      ? "bg-pink-400 dark:bg-pink-500 border-black dark:border-white text-black dark:text-white shadow-none"
+                      : "bg-white dark:bg-[#0B0F19] border-black dark:border-white text-black dark:text-white shadow-[4px_4px_0px_rgba(0,0,0,0.6)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.6)]"
+                  }`}
+                >
+                  {age} Tahun
+                </motion.button>
+              ))}
             </div>
-          </form>
-        </div>
+          </motion.div>
 
-        {/* Daftar Komentar */}
-        <div className="space-y-6">
-          <h3 className="text-2xl font-black text-black dark:text-white uppercase tracking-tight mb-6">
-            Komentar Terbaru
-          </h3>
+          {/* ── Field 3: Likert Scale (1-5) ── */}
+          <motion.div variants={itemVariants}>
+            <label className="block text-sm font-black uppercase tracking-wider text-black dark:text-white mb-4">
+              Tingkat Pemahaman Konten (1 = Sangat Tidak Paham, 5 = Sangat Paham)
+            </label>
+            <div className="flex gap-3 flex-wrap sm:flex-nowrap">
+              {["1", "2", "3", "4", "5"].map((level) => (
+                <motion.button
+                  key={level}
+                  type="button"
+                  onClick={() => handleLikertSelect(level)}
+                  variants={buttonHoverVariants}
+                  initial="rest"
+                  whileHover="hover"
+                  whileTap="tap"
+                  className={`flex-1 py-4 rounded-lg border-4 font-black text-xl transition-all duration-200 ${
+                    formData.tingkatPemahaman === level
+                      ? level === "1"
+                        ? "bg-red-400 dark:bg-red-500 border-black dark:border-white text-black dark:text-white shadow-none"
+                        : level === "2"
+                          ? "bg-orange-400 dark:bg-orange-500 border-black dark:border-white text-black dark:text-white shadow-none"
+                          : level === "3"
+                            ? "bg-yellow-400 dark:bg-yellow-500 border-black dark:border-white text-black dark:text-white shadow-none"
+                            : level === "4"
+                              ? "bg-lime-400 dark:bg-lime-500 border-black dark:border-white text-black dark:text-white shadow-none"
+                              : "bg-cyan-400 dark:bg-cyan-500 border-black dark:border-white text-black dark:text-white shadow-none"
+                      : "bg-white dark:bg-[#0B0F19] border-black dark:border-white text-black dark:text-white shadow-[4px_4px_0px_rgba(0,0,0,0.6)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.6)]"
+                  }`}
+                >
+                  {level}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
 
-          <AnimatePresence>
-            {comments.map((comment) => (
-              <motion.div
-                key={comment.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="rounded-2xl border-2 border-black dark:border-white bg-white dark:bg-gray-900 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.8)]"
-              >
-                <div className="flex gap-4">
-                  {/* Avatar */}
-                  <div
-                    className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-black text-white border-2 border-black dark:border-white",
-                      comment.avatarColor
-                    )}
-                  >
-                    {comment.name.charAt(0).toUpperCase()}
-                  </div>
+          {/* ── Field 4: Kritik & Saran (Textarea) ── */}
+          <motion.div variants={itemVariants}>
+            <label className="block text-sm font-black uppercase tracking-wider text-black dark:text-white mb-3">
+              Kritik & Saran
+            </label>
+            <textarea
+              value={formData.kritekSaran}
+              onChange={(e) => handleFeedbackChange(e.target.value)}
+              placeholder="Tuliskan kritik, saran, atau feedback Anda di sini..."
+              rows={5}
+              className="w-full px-6 py-4 bg-white dark:bg-[#0B0F19] border-4 border-black dark:border-white rounded-xl font-medium text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-lime-500 dark:focus:border-lime-400 transition-all duration-200 resize-none shadow-[4px_4px_0px_rgba(0,0,0,0.6)] focus:shadow-[0px_0px_0px_rgba(0,0,0,0.6)]"
+            />
+          </motion.div>
 
-                  {/* Isi Komentar */}
-                  <div className="flex-1">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-2">
-                      <span className="font-black text-black dark:text-white uppercase tracking-tight text-sm">
-                        {comment.name}
-                      </span>
-                      <span className="text-xs font-medium text-gray-500 dark:text-gray-500">
-                        {comment.date}
-                      </span>
-                    </div>
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 font-medium">
-                      {comment.message}
-                    </p>
+          {/* ── Error Message ── */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 rounded-xl border-3 border-red-500 bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400 font-bold text-sm"
+            >
+              ⚠️ {error}
+            </motion.div>
+          )}
 
-                    {/* Tombol Like */}
-                    <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-black dark:border-white bg-white dark:bg-gray-900 text-xs font-black text-black dark:text-white uppercase tracking-tight hover:bg-pink-400 hover:text-black hover:border-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none group">
-                      <Heart size={14} className="group-hover:fill-current" />
-                      {comment.likes} Suka
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+          {/* ── Submit Button (Raksasa) ── */}
+          <motion.div
+            variants={itemVariants}
+            className="pt-4"
+          >
+            <motion.button
+              type="submit"
+              disabled={isSubmitting}
+              variants={buttonHoverVariants}
+              initial="rest"
+              whileHover={isSubmitting ? "rest" : "hover"}
+              whileTap={isSubmitting ? "rest" : "tap"}
+              className={`w-full py-6 px-8 rounded-2xl border-4 border-black dark:border-white font-black text-xl uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-3 ${
+                isSubmitting
+                  ? "bg-gray-400 dark:bg-gray-600 text-gray-700 dark:text-gray-300 cursor-not-allowed shadow-[2px_2px_0px_rgba(0,0,0,0.4)]"
+                  : "bg-gradient-to-r from-lime-400 via-cyan-300 to-pink-400 dark:from-lime-500 dark:via-cyan-400 dark:to-pink-500 text-black dark:text-black shadow-[6px_6px_0px_rgba(0,0,0,0.8)] dark:shadow-[6px_6px_0px_rgba(255,255,255,0.3)] hover:shadow-[3px_3px_0px_rgba(0,0,0,0.8)]"
+              }`}
+            >
+              <span>{isSubmitting ? "Mengirim..." : "Kirim Jawaban"}</span>
+              <Send size={24} strokeWidth={3} />
+            </motion.button>
+          </motion.div>
+        </form>
+
+        {/* ── Footer Info ── */}
+        <motion.div variants={itemVariants} className="text-center mt-16 pt-8 border-t-4 border-black dark:border-white">
+          <p className="text-sm font-bold uppercase tracking-wide text-gray-700 dark:text-gray-300 mb-2">
+            Data kamu diproses secara aman dan tidak akan dibagikan ke pihak ketiga.
+          </p>
+          <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
+            Terima kasih telah membantu kami! 🙏
+          </p>
+        </motion.div>
       </div>
-    </main>
+    </motion.main>
   );
 }

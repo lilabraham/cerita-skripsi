@@ -36,45 +36,54 @@ interface SessionState {
   score:          number;
   wrongIndices:   number[];
   phase:          "quiz" | "result";
+  finalPercentage: number; // ← disimpan di state agar konsisten
+  isAnswering:    boolean; // ← NEW: lock untuk mencegah spam-click
 }
 
 type SessionAction =
   | { type: "ANSWER"; answer: string; isCorrect: boolean; questionIndex: number }
-  | { type: "NEXT";   isLast: boolean }
-  | { type: "FINISH" }
+  | { type: "NEXT";   isLast: boolean; totalQuestions: number }
+  | { type: "FINISH"; finalPercentage: number }
   | { type: "RESTART" };
 
 const initialState = (): SessionState => ({
-  currentIndex:   0,
-  selectedAnswer: null,
-  isCorrect:      null,
-  score:          0,
-  wrongIndices:   [],
-  phase:          "quiz",
+  currentIndex:    0,
+  selectedAnswer:  null,
+  isCorrect:       null,
+  score:           0,
+  wrongIndices:    [],
+  phase:           "quiz",
+  finalPercentage: 0,
+  isAnswering:     false,
 });
 
 function sessionReducer(state: SessionState, action: SessionAction): SessionState {
   switch (action.type) {
     case "ANSWER":
+      // ✅ Extra safety: ignore if already answering
+      if (state.isAnswering) return state;
       return {
         ...state,
         selectedAnswer: action.answer,
         isCorrect:      action.isCorrect,
+        isAnswering:    true, // ← lock aktif setelah jawab
         score:          action.isCorrect ? state.score + 1 : state.score,
         wrongIndices:   action.isCorrect
           ? state.wrongIndices
           : [...state.wrongIndices, action.questionIndex],
       };
-    case "NEXT":
+    case "NEXT": {
       if (action.isLast) return state;
       return {
         ...state,
         currentIndex:   state.currentIndex + 1,
         selectedAnswer: null,
         isCorrect:      null,
+        isAnswering:    false, // ← unlock untuk soal berikutnya
       };
+    }
     case "FINISH":
-      return { ...state, phase: "result" };
+      return { ...state, phase: "result", finalPercentage: action.finalPercentage };
     case "RESTART":
       return initialState();
     default:
@@ -94,6 +103,7 @@ function toQuizQuestion(item: QuizItem): QuizQuestion {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
+  // Ambil updateProgress dari Zustand store
   const updateProgress = useQuizStore((s) => s.updateProgress);
 
   const [session, dispatch] = useReducer(sessionReducer, undefined, initialState);
@@ -101,30 +111,55 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
   const totalQuestions = questions.length;
   const currentQ       = questions[session.currentIndex];
 
-  const finalPercentage = Math.round((session.score / totalQuestions) * 100);
-  const result          = getResult(finalPercentage);
+  // Gunakan finalPercentage dari state (sudah dikalkulasi saat FINISH)
+  // Fallback ke kalkulasi langsung untuk tampilan progress bar saat di phase "quiz"
+  const displayPercentage = session.phase === "result"
+    ? session.finalPercentage
+    : Math.round((session.score / totalQuestions) * 100);
+
+  const result = getResult(displayPercentage);
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
   const handleAnswer = useCallback(
     (answer: string) => {
-      if (session.selectedAnswer !== null) return;
+      // ✅ Double guard: selectedAnswer AND isAnswering lock
+      if (session.selectedAnswer !== null || session.isAnswering) return;
       const isCorrect = answer === currentQ.correctAnswer;
       dispatch({ type: "ANSWER", answer, isCorrect, questionIndex: session.currentIndex });
     },
-    [session.selectedAnswer, session.currentIndex, currentQ.correctAnswer]
+    [session.selectedAnswer, session.isAnswering, session.currentIndex, currentQ.correctAnswer]
   );
 
   const handleNext = useCallback(() => {
     const isLast = session.currentIndex + 1 >= totalQuestions;
+
     if (isLast) {
-      const finalScore = Math.round((session.score / totalQuestions) * 100);
-      updateProgress(modulId, finalScore);
-      dispatch({ type: "FINISH" });
+      // ✅ Safety net: clamp score ke [0, totalQuestions]
+      const clampedScore = Math.min(
+        Math.max(session.score + (session.isCorrect ? 1 : 0), 0),
+        totalQuestions
+      );
+      const finalPct = Math.min(
+        Math.round((clampedScore / totalQuestions) * 100),
+        100
+      );
+
+      // ✅ Simpan ke Zustand store dengan nilai yang aman
+      updateProgress(modulId, finalPct);
+
+      dispatch({ type: "FINISH", finalPercentage: finalPct });
     } else {
-      dispatch({ type: "NEXT", isLast });
+      dispatch({ type: "NEXT", isLast, totalQuestions });
     }
-  }, [session.currentIndex, session.score, totalQuestions, modulId, updateProgress]);
+  }, [
+    session.currentIndex,
+    session.score,
+    session.isCorrect,
+    totalQuestions,
+    modulId,
+    updateProgress,
+  ]);
 
   const handleRestart = useCallback(() => {
     dispatch({ type: "RESTART" });
@@ -172,14 +207,15 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
               className="text-8xl font-black leading-none tabular-nums text-black dark:text-[#C4F135]"
               style={{ textShadow: `0 0 40px ${result.neon}40` }}
             >
-              {finalPercentage}
+              {displayPercentage}
               <span className="text-4xl text-black/30 dark:text-white/30">%</span>
             </p>
             <p className="text-xs font-black uppercase tracking-[0.25em] mt-2 text-black dark:text-[#C4F135]">
               {result.label}
             </p>
             <p className="text-black/50 dark:text-white/50 text-sm font-bold mt-1">
-              {session.score} dari {totalQuestions} soal benar
+              {/* Tampilkan skor final yang sudah tersimpan */}
+              {Math.round((displayPercentage / 100) * totalQuestions)} dari {totalQuestions} soal benar
             </p>
           </div>
 
@@ -188,7 +224,7 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
             <div className="h-5 bg-black/5 dark:bg-white/5 border-2 border-black dark:border-white/20 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: "0%" }}
-                animate={{ width: `${finalPercentage}%` }}
+                animate={{ width: `${displayPercentage}%` }}
                 transition={{ duration: 1.4, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="h-full rounded-full bg-[#C4F135]"
               />
@@ -206,11 +242,15 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
               <p className="text-[10px] font-black text-red-600 dark:text-[#FF2D78] uppercase tracking-[0.2em]">
                 ⚠ Perlu dipelajari ulang
               </p>
-              {session.wrongIndices.map((idx: number) => (
-                <p key={idx} className="text-xs font-medium text-black/60 dark:text-white/60 leading-relaxed">
-                  · {questions[idx].question}
-                </p>
-              ))}
+              {session.wrongIndices.map((idx: number) => {
+                // ✅ Safety check: idx harus valid dan < totalQuestions
+                if (idx < 0 || idx >= totalQuestions) return null;
+                return (
+                  <p key={idx} className="text-xs font-medium text-black/60 dark:text-white/60 leading-relaxed">
+                    · {questions[idx].question}
+                  </p>
+                );
+              })}
             </motion.div>
           )}
 
@@ -244,8 +284,6 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
   // ── QUESTION SCREEN ───────────────────────────────────────────────────────────
 
   return (
-    // ✅ KUNCI: Tidak ada min-h-screen, tidak ada bg-*, tidak ada warna latar apapun.
-    // Lebar penuh, flex column, gap antar elemen. Biarkan page.tsx yang mengatur background.
     <div className="w-full flex flex-col gap-5">
 
       {/* ── Header ────────────────────────────────────────────────────────── */}
