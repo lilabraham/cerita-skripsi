@@ -10,7 +10,10 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   // Hindari hydration mismatch
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    const id = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(id);
+  }, []);
   if (!mounted) return <div className="w-9 h-9" />;
 
   const isDark = theme === "dark";

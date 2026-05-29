@@ -27,7 +27,10 @@ export default function Navbar() {
   const { scrollYProgress }         = useScroll();
   const navRef                      = useRef<HTMLUListElement>(null);
 
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => {
+    const id = setTimeout(() => setMenuOpen(false), 0);
+    return () => clearTimeout(id);
+  }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);

@@ -1,3 +1,5 @@
+// C:\Users\LENOVO\Documents\cerita-app\src\components\layout\Footer.tsx
+
 import Link from "next/link";
 import { ShieldAlert, Heart } from "lucide-react";
 import Image from "next/image";

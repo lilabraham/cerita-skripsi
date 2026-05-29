@@ -17,10 +17,10 @@ interface QuizEngineProps {
 }
 
 function getResult(pct: number) {
-  if (pct === 100) return { label: "Sempurna!",         color: "text-black",   variant: "success"   as const };
-  if (pct >= 80)   return { label: "Hampir Sempurna!",  color: "text-black",   variant: "secondary" as const };
-  if (pct >= 60)   return { label: "Cukup Baik",        color: "text-black",   variant: "primary"   as const };
-  return            { label: "Perlu Belajar Lagi",      color: "text-black",   variant: "accent"    as const };
+  if (pct === 100) return { label: "Sempurna!",         variant: "success"   as const };
+  if (pct >= 80)   return { label: "Hampir Sempurna!",  variant: "secondary" as const };
+  if (pct >= 60)   return { label: "Cukup Baik",        variant: "primary"   as const };
+  return            { label: "Perlu Belajar Lagi",      variant: "accent"    as const };
 }
 
 export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
@@ -31,11 +31,19 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
   const [wrongAnswers,   setWrongAnswers]   = useState<number[]>([]);
   const [showResult,     setShowResult]     = useState(false);
 
-  const currentQ   = questions[currentIndex];
-  const percentage = Math.round((score / questions.length) * 100);
-  const result     = getResult(percentage);
+  const currentQ = questions[currentIndex];
 
-  // ── Handlers ──────────────────────────────────────────
+  // ── PROGRESS CALCULATION (FIXED) ─────────────────────────────────────
+  // answeredCount naik HANYA ketika selectedAnswer tidak null
+  // Ini memastikan progress bar hanya bergerak setelah user menjawab
+  const answeredCount  = currentIndex + (selectedAnswer !== null ? 1 : 0);
+  const progressPercent = Math.round((answeredCount / questions.length) * 100);
+
+  // percentage untuk layar hasil dihitung dari score final
+  const finalPercentage = Math.round((score / questions.length) * 100);
+  const result          = getResult(finalPercentage);
+
+  // ── Handlers ──────────────────────────────────────────────────────────
 
   function handleAnswer(answer: string) {
     if (selectedAnswer !== null) return;
@@ -68,7 +76,7 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
     setShowResult(false);
   }
 
-  // ── Option style ───────────────────────────────────────
+  // ── Option style ───────────────────────────────────────────────────────
 
   function getOptionStyle(option: string) {
     if (selectedAnswer === null) {
@@ -83,7 +91,7 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
     return "border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 opacity-40 cursor-not-allowed text-gray-500 dark:text-gray-500";
   }
 
-  // ── RESULT SCREEN ──────────────────────────────────────
+  // ── RESULT SCREEN ──────────────────────────────────────────────────────
 
   if (showResult) {
     return (
@@ -105,8 +113,8 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
         {/* Score */}
         <div className="space-y-2">
           <Badge variant={result.variant}>{result.label}</Badge>
-          <p className={`text-7xl font-black text-black dark:text-white`}>
-            {percentage}
+          <p className="text-7xl font-black text-black dark:text-white">
+            {finalPercentage}
             <span className="text-3xl text-gray-500 dark:text-gray-400">%</span>
           </p>
           <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
@@ -114,12 +122,12 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
           </p>
         </div>
 
-        {/* Score bar */}
+        {/* Score bar — full 100% animasi dari 0 ke finalPercentage */}
         <div className="max-w-xs mx-auto space-y-2">
           <div className="h-6 bg-gray-100 dark:bg-gray-800 border-2 border-black dark:border-white overflow-hidden">
             <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${percentage}%` }}
+              initial={{ width: "0%" }}
+              animate={{ width: `${finalPercentage}%` }}
               transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
               className="h-full bg-yellow-300"
             />
@@ -160,33 +168,61 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
     );
   }
 
-  // ── QUESTION SCREEN ────────────────────────────────────
+  // ── QUESTION SCREEN ────────────────────────────────────────────────────
 
   return (
     <div className="space-y-5">
 
-      {/* Progress */}
+      {/* ── Progress ─────────────────────────────────────────────────────── */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-sm">
+          {/* Label modul */}
           <span className="text-black dark:text-white font-black uppercase tracking-wider text-xs border-2 border-black dark:border-white px-3 py-0.5 bg-cyan-300 dark:bg-cyan-400 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.7)]">
             {modulId}
           </span>
-          <Badge variant="primary" size="sm">
-            {currentIndex + 1} / {questions.length}
-          </Badge>
+
+          {/* Counter soal + persen */}
+          <div className="flex items-center gap-2">
+            <Badge variant="primary" size="sm">
+              {currentIndex + 1} / {questions.length}
+            </Badge>
+            {/* 
+              Tampilkan persen secara live agar user tahu progress naik.
+              Nilai ini SAMA persis dengan lebar bar di bawah.
+            */}
+            <span className="font-black text-xs text-black dark:text-white tabular-nums min-w-[3ch] text-right">
+              {progressPercent}%
+            </span>
+          </div>
         </div>
-        {/* Progress bar — chunky neo-brutalist */}
+
+        {/*
+          ─── PROGRESS BAR (FIXED) ───────────────────────────────────────
+          
+          Sebelumnya:
+            initial={{ width: `${(currentIndex / total) * 100}%` }}
+            animate={{ width: `${((currentIndex + 1) / total) * 100}%` }}
+          
+          Masalah: `initial` hanya dibaca SEKALI saat mount, bukan reaktif.
+          Framer Motion tidak re-mount saat `currentIndex` berubah, sehingga
+          `initial` selalu mengacu ke nilai pertama (saat komponen pertama render).
+          Akibatnya bar terlihat tidak bergerak karena `animate` selalu
+          menghitung dari baseline yang sudah kadaluarsa.
+          
+          Solusi: Hapus `initial`. Gunakan SATU nilai `animate` yang reaktif
+          terhadap `answeredCount`. Bar akan smooth-animate setiap kali
+          `answeredCount` berubah (yaitu saat user memilih jawaban).
+        */}
         <div className="h-5 bg-gray-100 dark:bg-gray-800 border-2 border-black dark:border-white overflow-hidden">
           <motion.div
             className="h-full bg-yellow-300"
-            initial={{ width: `${(currentIndex / questions.length) * 100}%` }}
-            animate={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            animate={{ width: `${progressPercent}%` }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
           />
         </div>
       </div>
 
-      {/* Question card */}
+      {/* ── Question card ─────────────────────────────────────────────────── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentQ.id}
@@ -218,7 +254,7 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
               >
                 <span>{option}</span>
 
-                {/* Feedback icon */}
+                {/* Feedback icon — benar */}
                 {selectedAnswer !== null && option === currentQ.correctAnswer && (
                   <motion.span
                     initial={{ scale: 0 }}
@@ -228,6 +264,8 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
                     <CheckCircle2 size={18} className="text-black shrink-0" />
                   </motion.span>
                 )}
+
+                {/* Feedback icon — salah */}
                 {selectedAnswer !== null &&
                   option === selectedAnswer &&
                   option !== currentQ.correctAnswer && (
@@ -270,7 +308,7 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
         </motion.div>
       </AnimatePresence>
 
-      {/* Next button */}
+      {/* ── Next button ───────────────────────────────────────────────────── */}
       <AnimatePresence>
         {selectedAnswer !== null && (
           <motion.div

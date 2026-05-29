@@ -1,3 +1,5 @@
+// C:\Users\LENOVO\Documents\cerita-app\src\data\quiz-data.ts
+
 export interface QuizItem {
   id: number;
   question: string;
