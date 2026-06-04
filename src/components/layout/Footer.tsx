@@ -45,7 +45,7 @@ const navLinks = [
   { label: "Kuis",     href: "/kuis"    },
   { label: "Diskusi",  href: "/forum"   },
   { label: "Privasi",  href: "/privacy" },
-  { label: "Kontak",   href: "/tentang#kontak" },
+  { label: "Tentang",   href: "/tentang#kontak" },
 ];
 
 const socialLinks = [
