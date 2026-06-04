@@ -29,40 +29,40 @@ interface ModuleData {
   accentBg: string;
 }
 
-// ─── Data (progress & status dihapus — sekarang dibaca live dari store) ───────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const modules: ModuleData[] = [
   {
     id:       "pengenalan",
-    title:    "Apa itu HIV/AIDS?",
-    desc:     "Pahami perbedaan mendasar antara HIV dan AIDS secara medis.",
+    title:    "Apa Itu HIV dan AIDS?",
+    desc:     "Mengenal virus yang menyerang sistem kekebalan tubuh dan perbedaannya dengan AIDS.",
     icon:     Activity,
     imageSrc: "/images/virus-hiv.png",
     cardBg:   "#A8D8FF",
     accentBg: "#FFE566",
   },
   {
-    id:       "penularan",
-    title:    "Mitos vs Fakta Penularan",
-    desc:     "Ketahui cara penularan yang sebenarnya dan hapus stigma negatif.",
+    id:       "cara_kerja",
+    title:    "Bagaimana HIV Menyerang Tubuh?",
+    desc:     "Pahami proses bertahap bagaimana virus HIV menginfeksi dan menghancurkan sel CD4.",
     icon:     AlertTriangle,
     imageSrc: "/images/remaja-sehat.png",
     cardBg:   "#FFE566",
     accentBg: "#FF8DC7",
   },
   {
-    id:       "pencegahan",
-    title:    "Benteng Pertahanan",
-    desc:     "Langkah-langkah efektif untuk melindungi diri dan masa depanmu.",
+    id:       "gejala",
+    title:    "Gejala HIV Per Fase",
+    desc:     "Ketahui ciri-ciri dan gejala yang muncul pada fase akut, laten, hingga AIDS.",
     icon:     ShieldAlert,
     imageSrc: "/images/remaja-demam.png",
     cardBg:   "#B5F5A0",
     accentBg: "#A8D8FF",
   },
   {
-    id:       "pengobatan",
-    title:    "Harapan & Pengobatan",
-    desc:     "Mengenal ARV dan bagaimana ODHIV bisa hidup sehat.",
+    id:       "penularan",
+    title:    "Cara Penularan HIV",
+    desc:     "Fakta medis tentang bagaimana HIV dapat dan tidak dapat ditularkan.",
     icon:     HeartPulse,
     imageSrc: "/images/botol-arv.png",
     cardBg:   "#D4D4D4",
@@ -70,8 +70,8 @@ const modules: ModuleData[] = [
   },
 ];
 
-// Modul yang harus 100% untuk membuka "pengobatan"
-const UNLOCK_REQUIRED: string[] = ["pengenalan", "penularan", "pencegahan"];
+// Modul yang harus 100% untuk membuka chapter 4 ("penularan")
+const UNLOCK_REQUIRED: string[] = ["pengenalan", "cara_kerja", "gejala"];
 
 // ─── Stripe patterns ──────────────────────────────────────────────────────────
 
@@ -426,20 +426,19 @@ export default function EdukasiPage() {
   // ✅ Baca progress live dari Zustand store (reaktif — auto-update saat kuis selesai)
   const progressMap = useQuizStore((s) => s.progress);
 
-  // Hitung apakah Modul 4 terbuka: semua modul prerequisite harus 100
-  const isModul4Unlocked = UNLOCK_REQUIRED.every(
+  // Hitung apakah Chapter 4 terbuka: semua modul prerequisite harus 100
+  const isChapter4Unlocked = UNLOCK_REQUIRED.every(
     (id) => (progressMap[id]?.score ?? 0) === 100
   );
 
   // Hitung overall progress untuk hero bar
-  // Unlockednya 3 modul + modul 4 jika terbuka = max 4
   const unlockedCount = modules.filter((m) => {
-    if (m.id === "pengobatan") return isModul4Unlocked;
-    return true; // modul 1-3 selalu tersedia
+    if (m.id === "penularan") return isChapter4Unlocked;
+    return true;
   }).length;
 
-  // Progress bar hero: rata-rata score semua modul yang tersedia (bukan count)
-  const availableModuls = modules.filter((m) => m.id !== "pengobatan");
+  // Progress bar hero: rata-rata score chapter 1–3
+  const availableModuls = modules.filter((m) => m.id !== "penularan");
   const avgProgress = availableModuls.reduce(
     (acc, m) => acc + (progressMap[m.id]?.score ?? 0), 0
   ) / availableModuls.length;
@@ -588,11 +587,10 @@ export default function EdukasiPage() {
           animate="show"
         >
           {modules.map((mod, i) => {
-            // ✅ Baca score live dari store untuk setiap modul
             const score = progressMap[mod.id]?.score ?? 0;
 
-            // ✅ Lock logic: modul "pengobatan" terkunci jika prerequisite belum 100%
-            const isLocked = mod.id === "pengobatan" && !isModul4Unlocked;
+            // Chapter 4 ("penularan") terkunci jika chapter 1–3 belum 100%
+            const isLocked = mod.id === "penularan" && !isChapter4Unlocked;
 
             return (
               <motion.div key={mod.id} variants={cardVariants}>

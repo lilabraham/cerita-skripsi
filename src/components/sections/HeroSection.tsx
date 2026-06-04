@@ -11,8 +11,8 @@ import Image from "next/image";
 const floatingCards = [
   {
     icon: Shield,
-    label: "Proteksi Diri",
-    value: "100%",
+    label: "Berbasis Ilmu",
+    value: "FAKTA",
     lightBg: "bg-[#FFF000]",
     darkBg: "dark:bg-yellow-400/20",
     lightText: "text-black",
@@ -22,8 +22,8 @@ const floatingCards = [
   },
   {
     icon: Users,
-    label: "Remaja Teredukasi",
-    value: "10K+",
+    label: "Tanpa Stigma",
+    value: "EMPATI",
     lightBg: "bg-black",
     darkBg: "dark:bg-slate-700",
     lightText: "text-white",
@@ -33,8 +33,8 @@ const floatingCards = [
   },
   {
     icon: BookOpen,
-    label: "Materi Tersedia",
-    value: "50+",
+    label: "Nyata & Relevan",
+    value: "AKSI",
     lightBg: "bg-[#FF2D78]",
     darkBg: "dark:bg-pink-600",
     lightText: "text-black",
@@ -123,7 +123,7 @@ export default function HeroSection() {
               )}
             >
               <span className="w-2 h-2 rounded-full bg-[#FF2D78] animate-pulse" />
-              Platform Edukasi #1 untuk Remaja Indonesia
+              Platform Edukasi untuk Remaja Indonesia
             </span>
           </motion.div>
 

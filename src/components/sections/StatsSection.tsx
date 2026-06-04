@@ -9,11 +9,10 @@ import { cn } from "@/lib/utils";
 // ── Stat data with explicit light/dark token pairs ──
 const stats = [
   {
-    value: 526,
-    suffix: "K+",
-    label: "ODHIV di Indonesia",
-    desc: "Per 2023, Indonesia masuk 10 besar negara dengan kasus HIV tertinggi di Asia.",
-    // Light
+    value: 40,
+    suffix: ",8 Juta",
+    label: "ODHA Global (2024)",
+    desc: "Berdasarkan laporan WHO (2025), angka Orang Dengan HIV/AIDS secara global diproyeksikan mencapai 40,8 juta jiwa.",
     cardBg: "bg-[#FFF000]",
     numColor: "text-black",
     labelColor: "text-black",
@@ -22,7 +21,6 @@ const stats = [
     bar: "bg-black",
     accentBg: "bg-black",
     accentText: "text-[#FFF000]",
-    // Dark
     dCardBg: "dark:bg-yellow-400/20",
     dNumColor: "dark:text-yellow-300",
     dLabelColor: "dark:text-white",
@@ -33,10 +31,10 @@ const stats = [
     dAccentText: "dark:text-yellow-300",
   },
   {
-    value: 35,
-    suffix: "%",
-    label: "Kasus baru adalah remaja",
-    desc: "1 dari 3 infeksi HIV baru di Indonesia terjadi pada kelompok usia 15–24 tahun.",
+    value: 63707,
+    suffix: "",
+    label: "Kasus Baru Indonesia",
+    desc: "Data Kemenkes mencatat sebanyak 63.707 kasus baru HIV di Indonesia sepanjang tahun 2024.",
     cardBg: "bg-black",
     numColor: "text-white",
     labelColor: "text-white",
@@ -55,10 +53,10 @@ const stats = [
     dAccentText: "dark:text-white",
   },
   {
-    value: 76,
-    suffix: "%",
-    label: "Tidak sadar terinfeksi",
-    desc: "Mayoritas remaja yang terinfeksi HIV tidak mengetahui status mereka sendiri.",
+    value: 6191,
+    suffix: "",
+    label: "Kasus Baru Jawa Tengah",
+    desc: "Jawa Tengah menempati peringkat ke-3 tertinggi secara nasional dengan penambahan 6.191 kasus baru pada 2024.",
     cardBg: "bg-[#FF2D78]",
     numColor: "text-black",
     labelColor: "text-black",
@@ -77,10 +75,10 @@ const stats = [
     dAccentText: "dark:text-white",
   },
   {
-    value: 95,
-    suffix: "%",
-    label: "Kasus bisa dicegah",
-    desc: "Dengan pengetahuan yang benar, hampir semua kasus penularan HIV bisa dihindari.",
+    value: 45,
+    suffix: "",
+    label: "Kasus Remaja di Semarang",
+    desc: "Terdapat 45 kasus infeksi baru secara spesifik pada kelompok usia remaja (15–19 tahun) di Semarang (2023).",
     cardBg: "bg-white",
     numColor: "text-[#FF2D78]",
     labelColor: "text-black",
@@ -199,7 +197,6 @@ export default function StatsSection() {
     <section
       className={cn(
         "relative overflow-hidden py-20 px-6",
-        // Gradient flow: continues from Hero's cyan-50/indigo-900
         "bg-gradient-to-b from-cyan-50 via-sky-50 to-violet-50",
         "dark:from-indigo-900 dark:via-indigo-950 dark:to-slate-900",
       )}
@@ -320,7 +317,7 @@ export default function StatsSection() {
           transition={{ delay: 0.5 }}
           className="text-center text-xs text-black/40 dark:text-white/30 mt-8 font-bold uppercase tracking-widest"
         >
-          Sumber: Kementerian Kesehatan RI, UNAIDS 2023
+          Sumber: WHO (2025), Kementerian Kesehatan RI (2024), Dinkes Jawa Tengah
         </motion.p>
       </div>
 
