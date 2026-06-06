@@ -11,6 +11,9 @@ import {
   Lock,
   ArrowRight,
   Star,
+  ShieldCheck,
+  Pill,
+  Heart,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,45 +36,77 @@ interface ModuleData {
 
 const modules: ModuleData[] = [
   {
-    id:       "pengenalan",
-    title:    "Apa Itu HIV dan AIDS?",
-    desc:     "Mengenal virus yang menyerang sistem kekebalan tubuh dan perbedaannya dengan AIDS.",
-    icon:     Activity,
+    id: "pengenalan",
+    title: "Apa Itu HIV dan AIDS?",
+    desc: "Mengenal virus yang menyerang sistem kekebalan tubuh dan perbedaannya dengan AIDS.",
+    icon: Activity,
     imageSrc: "/images/virus-hiv.png",
-    cardBg:   "#A8D8FF",
+    cardBg: "#A8D8FF",
     accentBg: "#FFE566",
   },
   {
-    id:       "cara_kerja",
-    title:    "Bagaimana HIV Menyerang Tubuh?",
-    desc:     "Pahami proses bertahap bagaimana virus HIV menginfeksi dan menghancurkan sel CD4.",
-    icon:     AlertTriangle,
+    id: "cara_kerja",
+    title: "Bagaimana HIV Menyerang Tubuh?",
+    desc: "Pahami proses bertahap bagaimana virus HIV menginfeksi dan menghancurkan sel CD4.",
+    icon: AlertTriangle,
     imageSrc: "/images/remaja-sehat.png",
-    cardBg:   "#FFE566",
+    cardBg: "#FFE566",
     accentBg: "#FF8DC7",
   },
   {
-    id:       "gejala",
-    title:    "Gejala HIV Per Fase",
-    desc:     "Ketahui ciri-ciri dan gejala yang muncul pada fase akut, laten, hingga AIDS.",
-    icon:     ShieldAlert,
+    id: "gejala",
+    title: "Gejala HIV Per Fase",
+    desc: "Ketahui ciri-ciri dan gejala yang muncul pada fase akut, laten, hingga AIDS.",
+    icon: ShieldAlert,
     imageSrc: "/images/remaja-demam.png",
-    cardBg:   "#B5F5A0",
+    cardBg: "#B5F5A0",
     accentBg: "#A8D8FF",
   },
   {
-    id:       "penularan",
-    title:    "Cara Penularan HIV",
-    desc:     "Fakta medis tentang bagaimana HIV dapat dan tidak dapat ditularkan.",
-    icon:     HeartPulse,
+    id: "penularan",
+    title: "Cara Penularan HIV",
+    desc: "Fakta medis tentang bagaimana HIV dapat dan tidak dapat ditularkan.",
+    icon: HeartPulse,
     imageSrc: "/images/botol-arv.png",
-    cardBg:   "#D4D4D4",
+    cardBg: "#D4D4D4",
     accentBg: "#9CA3AF",
   },
+  {
+    id: "pencegahan",
+    title: "Cara Mencegah HIV",
+    desc: "Terapkan prinsip ABCDE untuk melindungi diri dari risiko penularan HIV.",
+    icon: ShieldCheck,
+    imageSrc: "/images/pencegahan-hiv.png",
+    cardBg: "#FF8DC7",
+    accentBg: "#FFF000",
+  },
+  {
+    id: "pengobatan",
+    title: "Pengobatan HIV",
+    desc: "Kenali terapi ARV dan bagaimana ODHA bisa hidup sehat dan produktif.",
+    icon: Pill,
+    imageSrc: "/images/pengobatan-arv.png",
+    cardBg: "#C4F135",
+    accentBg: "#A8D8FF",
+  },
+  {
+  id:       "stigma",
+  title:    "Stop Stigma terhadap ODHA",
+  desc:     "Pahami hak ODHA dan peran kita dalam menghapus diskriminasi di masyarakat.",
+  icon:     Heart,
+  imageSrc: "/images/stop-stigma.png",
+  cardBg:   "#FDBA74",
+  accentBg: "#C4F135",
+},
 ];
 
 // Modul yang harus 100% untuk membuka chapter 4 ("penularan")
-const UNLOCK_REQUIRED: string[] = ["pengenalan", "cara_kerja", "gejala"];
+const LOCK_RULES: Record<string, string[]> = {
+  penularan:  ["pengenalan", "cara_kerja", "gejala"],
+  pencegahan: ["pengenalan", "cara_kerja", "gejala", "penularan"],
+  pengobatan: ["pengenalan", "cara_kerja", "gejala", "penularan", "pencegahan"],
+  stigma:     ["pengenalan", "cara_kerja", "gejala", "penularan", "pencegahan", "pengobatan"],
+};
 
 // ─── Stripe patterns ──────────────────────────────────────────────────────────
 
@@ -100,8 +135,8 @@ function FloatingPill({ color, width, height, top, left, rotate, delay, duration
       className="absolute rounded-full border-2 border-black/10 dark:border-white/20 pointer-events-none select-none"
       style={{ backgroundColor: color, width, height, top, left, rotate }}
       animate={{
-        y:       [0, -18, 0, 14, 0],
-        rotate:  [rotate, rotate + 12, rotate - 8, rotate + 4, rotate],
+        y: [0, -18, 0, 14, 0],
+        rotate: [rotate, rotate + 12, rotate - 8, rotate + 4, rotate],
         opacity: [0.55, 0.80, 0.55],
       }}
       transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
@@ -122,8 +157,8 @@ interface SparkleStarProps {
 
 function SparkleStar({ size, color, top, left, delay, duration }: SparkleStarProps) {
   const half = size / 2;
-  const tip  = size * 0.42;
-  const mid  = size * 0.12;
+  const tip = size * 0.42;
+  const mid = size * 0.12;
   const d = [
     `M ${half} 0`,
     `L ${half + mid} ${half - tip} L ${half} ${half}`,
@@ -145,8 +180,8 @@ function SparkleStar({ size, color, top, left, delay, duration }: SparkleStarPro
       className="absolute pointer-events-none select-none"
       style={{ top, left }}
       animate={{
-        rotate:  [0, 90, 180, 270, 360],
-        scale:   [1, 1.15, 1, 0.9, 1],
+        rotate: [0, 90, 180, 270, 360],
+        scale: [1, 1.15, 1, 0.9, 1],
         opacity: [0.45, 0.85, 0.45],
       }}
       transition={{ duration, delay, repeat: Infinity, ease: "linear" }}
@@ -173,9 +208,9 @@ function FloatingRing({ size, color, thickness, top, left, delay, duration }: Fl
       className="absolute rounded-full pointer-events-none select-none opacity-60 dark:opacity-100"
       style={{ width: size, height: size, border: `${thickness}px solid ${color}`, top, left }}
       animate={{
-        y:       [0, -20, 0],
-        x:       [0, 10, 0],
-        scale:   [1, 1.08, 1],
+        y: [0, -20, 0],
+        x: [0, 10, 0],
+        scale: [1, 1.08, 1],
         opacity: [0.35, 0.65, 0.35],
       }}
       transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
@@ -187,12 +222,12 @@ function FloatingRing({ size, color, thickness, top, left, delay, duration }: Fl
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
-  show:   { opacity: 1, transition: { staggerChildren: 0.12 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.12 } },
 };
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
 };
 
 // ─── UnlockedCard ─────────────────────────────────────────────────────────────
@@ -423,26 +458,21 @@ function LockedCard({ mod, index }: { mod: ModuleData; index: number }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function EdukasiPage() {
-  // ✅ Baca progress live dari Zustand store (reaktif — auto-update saat kuis selesai)
   const progressMap = useQuizStore((s) => s.progress);
 
-  // Hitung apakah Chapter 4 terbuka: semua modul prerequisite harus 100
-  const isChapter4Unlocked = UNLOCK_REQUIRED.every(
-    (id) => (progressMap[id]?.score ?? 0) === 100
+  // Helper: cek apakah modul terkunci berdasarkan LOCK_RULES
+  const isModuleLocked = (id: string): boolean =>
+    id in LOCK_RULES &&
+    !LOCK_RULES[id].every((req) => (progressMap[req]?.score ?? 0) === 100);
+
+  // Jumlah modul yang sudah terbuka (untuk hero bar label)
+  const unlockedCount = modules.filter((m) => !isModuleLocked(m.id)).length;
+
+  // Rata-rata progress semua chapter → hero progress bar
+  const heroProgress = Math.round(
+    modules.reduce((acc, m) => acc + (progressMap[m.id]?.score ?? 0), 0) /
+    modules.length
   );
-
-  // Hitung overall progress untuk hero bar
-  const unlockedCount = modules.filter((m) => {
-    if (m.id === "penularan") return isChapter4Unlocked;
-    return true;
-  }).length;
-
-  // Progress bar hero: rata-rata score chapter 1–3
-  const availableModuls = modules.filter((m) => m.id !== "penularan");
-  const avgProgress = availableModuls.reduce(
-    (acc, m) => acc + (progressMap[m.id]?.score ?? 0), 0
-  ) / availableModuls.length;
-  const heroProgress = Math.round(avgProgress);
 
   return (
     <main
@@ -474,27 +504,27 @@ export default function EdukasiPage() {
 
       {/* ── DECORATIVE ELEMENTS ──────────────────────────────────────────── */}
 
-      <FloatingPill color="#fde68a" width={80}  height={34} top="8%"  left="5%"  rotate={-20} delay={0}   duration={5.5} />
-      <FloatingPill color="#a5f3fc" width={55}  height={24} top="14%" left="82%" rotate={15}  delay={1.2} duration={6.2} />
+      <FloatingPill color="#fde68a" width={80} height={34} top="8%" left="5%" rotate={-20} delay={0} duration={5.5} />
+      <FloatingPill color="#a5f3fc" width={55} height={24} top="14%" left="82%" rotate={15} delay={1.2} duration={6.2} />
       <FloatingPill color="#bbf7d0" width={100} height={40} top="72%" left="88%" rotate={-35} delay={0.5} duration={7.0} />
-      <FloatingPill color="#fca5a5" width={64}  height={28} top="85%" left="3%"  rotate={25}  delay={2.0} duration={5.8} />
-      <FloatingPill color="#e9d5ff" width={48}  height={22} top="52%" left="92%" rotate={-10} delay={0.8} duration={6.8} />
-      <FloatingPill color="#fde68a" width={36}  height={18} top="40%" left="1%"  rotate={40}  delay={1.8} duration={4.9} />
-      <FloatingPill color="#a5f3fc" width={72}  height={30} top="92%" left="55%" rotate={-8}  delay={3.0} duration={7.5} />
+      <FloatingPill color="#fca5a5" width={64} height={28} top="85%" left="3%" rotate={25} delay={2.0} duration={5.8} />
+      <FloatingPill color="#e9d5ff" width={48} height={22} top="52%" left="92%" rotate={-10} delay={0.8} duration={6.8} />
+      <FloatingPill color="#fde68a" width={36} height={18} top="40%" left="1%" rotate={40} delay={1.8} duration={4.9} />
+      <FloatingPill color="#a5f3fc" width={72} height={30} top="92%" left="55%" rotate={-8} delay={3.0} duration={7.5} />
 
-      <SparkleStar size={28} color="#facc15" top="6%"  left="72%" delay={0}   duration={8}   />
-      <SparkleStar size={20} color="#22d3ee" top="22%" left="10%" delay={1.5} duration={10}  />
-      <SparkleStar size={36} color="#a3e635" top="62%" left="5%"  delay={0.7} duration={9}   />
-      <SparkleStar size={24} color="#f472b6" top="78%" left="75%" delay={2.2} duration={7}   />
-      <SparkleStar size={18} color="#facc15" top="88%" left="42%" delay={1.0} duration={11}  />
+      <SparkleStar size={28} color="#facc15" top="6%" left="72%" delay={0} duration={8} />
+      <SparkleStar size={20} color="#22d3ee" top="22%" left="10%" delay={1.5} duration={10} />
+      <SparkleStar size={36} color="#a3e635" top="62%" left="5%" delay={0.7} duration={9} />
+      <SparkleStar size={24} color="#f472b6" top="78%" left="75%" delay={2.2} duration={7} />
+      <SparkleStar size={18} color="#facc15" top="88%" left="42%" delay={1.0} duration={11} />
       <SparkleStar size={32} color="#c4b5fd" top="32%" left="88%" delay={3.5} duration={8.5} />
       <SparkleStar size={16} color="#22d3ee" top="48%" left="50%" delay={2.8} duration={9.5} />
 
-      <FloatingRing size={90}  color="rgba(250,204,21,0.35)"  thickness={4} top="18%" left="75%" delay={0}   duration={7}   />
-      <FloatingRing size={140} color="rgba(34,211,238,0.25)"  thickness={5} top="60%" left="2%"  delay={1.5} duration={9}   />
-      <FloatingRing size={60}  color="rgba(163,230,53,0.40)"  thickness={3} top="40%" left="60%" delay={0.8} duration={6.5} />
-      <FloatingRing size={200} color="rgba(196,181,253,0.20)" thickness={6} top="80%" left="70%" delay={2.5} duration={11}  />
-      <FloatingRing size={50}  color="rgba(251,113,133,0.35)" thickness={3} top="10%" left="40%" delay={1.0} duration={8}   />
+      <FloatingRing size={90} color="rgba(250,204,21,0.35)" thickness={4} top="18%" left="75%" delay={0} duration={7} />
+      <FloatingRing size={140} color="rgba(34,211,238,0.25)" thickness={5} top="60%" left="2%" delay={1.5} duration={9} />
+      <FloatingRing size={60} color="rgba(163,230,53,0.40)" thickness={3} top="40%" left="60%" delay={0.8} duration={6.5} />
+      <FloatingRing size={200} color="rgba(196,181,253,0.20)" thickness={6} top="80%" left="70%" delay={2.5} duration={11} />
+      <FloatingRing size={50} color="rgba(251,113,133,0.35)" thickness={3} top="10%" left="40%" delay={1.0} duration={8} />
 
       {/* ── MAIN CONTENT ─────────────────────────────────────────────────── */}
       <div className="relative z-10 max-w-3xl mx-auto">
@@ -588,9 +618,7 @@ export default function EdukasiPage() {
         >
           {modules.map((mod, i) => {
             const score = progressMap[mod.id]?.score ?? 0;
-
-            // Chapter 4 ("penularan") terkunci jika chapter 1–3 belum 100%
-            const isLocked = mod.id === "penularan" && !isChapter4Unlocked;
+            const isLocked = isModuleLocked(mod.id); // ← satu baris ini menggantikan semua logika lama
 
             return (
               <motion.div key={mod.id} variants={cardVariants}>

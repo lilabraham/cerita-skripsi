@@ -179,4 +179,94 @@ export const quizData: Record<string, QuizItem[]> = {
         "Penularan dari ibu ke bayi (mother-to-child transmission) dapat terjadi saat persalinan atau melalui ASI. Kabar baiknya, dengan pengobatan ARV yang tepat selama kehamilan, risiko penularan ini dapat dikurangi hingga kurang dari 1%. Ibu dengan HIV tetap bisa melahirkan bayi yang sehat.",
     },
   ],
+  pencegahan: [
+  {
+    id: 1,
+    question: "Huruf 'D' dalam prinsip ABCDE pencegahan HIV singkatan dari...",
+    options: [
+      "Diet ketat dan hidup sehat",
+      "No Drugs (Hindari narkoba suntik)",
+      "Deteksi dini melalui tes HIV",
+      "Diskusi rutin dengan dokter",
+    ],
+    correctAnswer: "No Drugs (Hindari narkoba suntik)",
+    explanation:
+      "D dalam ABCDE adalah No Drugs — hindari penggunaan narkoba suntik dan jangan pernah berbagi jarum suntik. Berbagi jarum adalah jalur penularan HIV yang sangat berisiko karena darah yang terinfeksi masuk langsung ke aliran darah.",
+  },
+  {
+    id: 2,
+    question:
+      "Berdasarkan prinsip ABCDE, cara yang dinyatakan paling efektif untuk mencegah penularan HIV secara seksual adalah...",
+    options: [
+      "C - Condom (penggunaan kondom secara konsisten)",
+      "B - Be Faithful (setia pada satu pasangan)",
+      "A - Abstinence (menghindari hubungan seksual berisiko)",
+      "E - Education (mencari informasi yang benar)",
+    ],
+    correctAnswer: "A - Abstinence (menghindari hubungan seksual berisiko)",
+    explanation:
+      "Abstinence atau menghindari hubungan seksual berisiko adalah cara paling efektif menurut prinsip ABCDE. Meskipun demikian, setiap huruf dalam ABCDE tetap penting dan relevan sesuai kondisi individu masing-masing.",
+  },
+],
+
+pengobatan: [
+  {
+    id: 1,
+    question: "Terapi ARV bekerja dengan cara...",
+    options: [
+      "Membunuh semua virus HIV secara permanen dalam 30 hari",
+      "Menekan jumlah virus HIV agar sistem kekebalan tubuh tetap terjaga",
+      "Menyembuhkan AIDS secara total dalam 3 bulan pengobatan",
+      "Mengganti sel CD4 yang rusak dengan sel imun baru",
+    ],
+    correctAnswer:
+      "Menekan jumlah virus HIV agar sistem kekebalan tubuh tetap terjaga",
+    explanation:
+      "ARV tidak menyembuhkan HIV secara total, tetapi menekan viral load (jumlah virus dalam darah) hingga tidak terdeteksi. Hasilnya, sistem kekebalan tubuh tetap berfungsi optimal dan penderita dapat hidup sehat serta produktif.",
+  },
+  {
+    id: 2,
+    question: "Pernyataan yang BENAR mengenai HIV dan pengobatan saat ini adalah...",
+    options: [
+      "HIV sudah bisa disembuhkan total dengan obat terbaru",
+      "Penderita HIV tidak perlu minum obat jika masih merasa sehat",
+      "HIV belum bisa disembuhkan, tetapi bisa dikendalikan dengan terapi ARV",
+      "ARV hanya efektif di stadium awal dan tidak berguna di stadium lanjut",
+    ],
+    correctAnswer:
+      "HIV belum bisa disembuhkan, tetapi bisa dikendalikan dengan terapi ARV",
+    explanation:
+      "Hingga saat ini belum ada obat yang bisa menyembuhkan HIV secara total. Namun dengan terapi ARV yang konsisten, penderita dapat menekan perkembangan virus, menjaga imunitas, dan menjalani hidup sehat — bahkan dengan harapan hidup yang hampir setara orang tanpa HIV.",
+  },
+],
+
+stigma: [
+  {
+    id: 1,
+    question: "Apa kepanjangan dari ODHA?",
+    options: [
+      "Orang Dengan Harapan Abadi",
+      "Orang Dengan HIV/AIDS",
+      "Organisasi Dukungan HIV dan AIDS",
+      "Orang Dengan Hambatan Aktivitas",
+    ],
+    correctAnswer: "Orang Dengan HIV/AIDS",
+    explanation:
+      "ODHA adalah singkatan dari Orang Dengan HIV/AIDS. Mereka adalah individu yang terinfeksi HIV dan tetap memiliki hak yang sama dengan orang lain untuk belajar, bekerja, bergaul, dan hidup di masyarakat.",
+  },
+  {
+    id: 2,
+    question: "Apa dampak stigma dan diskriminasi terhadap ODHA?",
+    options: [
+      "Mendorong ODHA lebih rajin memeriksakan diri ke dokter",
+      "Mempercepat proses penyembuhan karena tekanan sosial",
+      "Membuat ODHA enggan berobat sehingga kondisi kesehatan makin memburuk",
+      "Tidak berpengaruh apapun terhadap kesehatan ODHA",
+    ],
+    correctAnswer:
+      "Membuat ODHA enggan berobat sehingga kondisi kesehatan makin memburuk",
+    explanation:
+      "Stigma dan diskriminasi membuat ODHA takut terbuka dan enggan memeriksakan diri atau mengakses pengobatan. Akibatnya, virus semakin berkembang tanpa terkontrol dan kondisi kesehatan terus memburuk. Dukungan sosial yang positif justru mendorong ODHA untuk tetap konsisten menjalani terapi.",
+  },
+],
 };

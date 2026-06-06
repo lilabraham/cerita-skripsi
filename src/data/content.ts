@@ -86,6 +86,60 @@ Tinggal serumah
 Gigitan nyamuk
 
 Karena itu, ODHA tidak perlu dijauhi atau didiskriminasi.`,
-    nextModule: null,
+    nextModule: "pencegahan",
   },
+  pencegahan: {
+  title: "Cara Mencegah HIV",
+  subtitle: "Prinsip ABCDE untuk Perlindungan Diri",
+  content: `Pencegahan HIV dapat dilakukan dengan menerapkan prinsip ABCDE.
+
+A - Abstinence
+Menghindari hubungan seksual yang berisiko merupakan cara paling efektif untuk mencegah penularan HIV.
+
+B - Be Faithful
+Setia pada satu pasangan dan menghindari berganti-ganti pasangan dapat mengurangi risiko penularan.
+
+C - Condom
+Penggunaan kondom yang benar dan konsisten dapat membantu mengurangi risiko penularan HIV melalui hubungan seksual.
+
+D - No Drugs
+Hindari penggunaan narkoba suntik dan jangan pernah menggunakan jarum suntik secara bergantian.
+
+E - Education
+Mencari informasi yang benar mengenai HIV membantu seseorang mengambil keputusan yang sehat dan aman.`,
+  nextModule: "pengobatan",
+},
+
+pengobatan: {
+  title: "Pengobatan HIV",
+  subtitle: "Mengendalikan HIV dengan Terapi ARV",
+  content: `Saat ini HIV belum dapat disembuhkan sepenuhnya. Namun, HIV dapat dikendalikan melalui terapi Antiretroviral (ARV).
+
+ARV bekerja dengan cara menekan jumlah virus dalam tubuh sehingga sistem kekebalan tubuh tetap terjaga.
+
+Manfaat terapi ARV:
+- Menekan perkembangan virus
+- Menjaga daya tahan tubuh
+- Mengurangi risiko infeksi
+- Membantu ODHA hidup sehat dan produktif
+
+Semakin cepat HIV terdeteksi dan diobati, semakin baik kualitas hidup penderitanya.`,
+  nextModule: "stigma",
+},
+stigma: {
+  title: "Stop Stigma terhadap ODHA",
+  subtitle: "Kenali Penyakitnya, Bukan Menghakimi Orangnya",
+  content: `ODHA adalah Orang Dengan HIV/AIDS. Mereka adalah individu yang tetap memiliki hak yang sama untuk belajar, bekerja, bergaul, dan hidup di masyarakat.
+
+Stigma dan diskriminasi dapat membuat ODHA enggan memeriksakan diri atau mencari pengobatan sehingga justru memperburuk kondisi kesehatan.
+
+Yang dapat kita lakukan:
+- Menghargai dan menghormati ODHA.
+- Tidak mengucilkan atau membully.
+- Memberikan dukungan sosial.
+- Menyebarkan informasi yang benar tentang HIV.
+
+Kenali penyakitnya, bukan menghakimi orangnya.`,
+  nextModule: null,
+},
 };

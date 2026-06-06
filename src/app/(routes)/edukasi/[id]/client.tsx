@@ -1,3 +1,5 @@
+// D:\Project coding\cerita-app\src\app\(routes)\edukasi\[id]\client.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -475,6 +477,356 @@ function PenularanLayout() {
   );
 }
 
+// ─── MODULE 5: Pencegahan — ABCDE Cards ──────────────────────────────────────
+
+const abcdeData = [
+  {
+    letter: "A",
+    label:  "Abstinence",
+    desc:   "Menghindari hubungan seksual berisiko — cara paling efektif mencegah HIV.",
+    color:  "bg-violet-300 dark:bg-violet-800",
+    accent: "bg-violet-600",
+  },
+  {
+    letter: "B",
+    label:  "Be Faithful",
+    desc:   "Setia pada satu pasangan, hindari berganti-ganti pasangan.",
+    color:  "bg-cyan-300 dark:bg-cyan-800",
+    accent: "bg-cyan-600",
+  },
+  {
+    letter: "C",
+    label:  "Condom",
+    desc:   "Penggunaan kondom yang benar & konsisten mengurangi risiko penularan.",
+    color:  "bg-yellow-300 dark:bg-yellow-700",
+    accent: "bg-yellow-500",
+  },
+  {
+    letter: "D",
+    label:  "No Drugs",
+    desc:   "Hindari narkoba suntik. Jangan pernah berbagi jarum suntik.",
+    color:  "bg-rose-300 dark:bg-rose-800",
+    accent: "bg-rose-600",
+  },
+  {
+    letter: "E",
+    label:  "Education",
+    desc:   "Informasi yang benar tentang HIV = keputusan yang sehat & aman.",
+    color:  "bg-lime-300 dark:bg-lime-700",
+    accent: "bg-lime-600",
+  },
+] as const;
+
+function PencegahanLayout() {
+  return (
+    <motion.div variants={cardVariants} className="mb-10">
+      <div className={`${neo} ${neoShadowLg} rounded-xl overflow-hidden bg-white dark:bg-[#0B0F19]`}>
+        {/* Header bar */}
+        <div className="bg-black dark:bg-white px-6 py-3 flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-400 border border-black" />
+          <div className="w-3 h-3 rounded-full bg-yellow-300 border border-black" />
+          <div className="w-3 h-3 rounded-full bg-lime-400 border border-black" />
+          <span className="ml-3 font-black text-xs uppercase tracking-widest text-white dark:text-black">
+            Prinsip ABCDE — 5 Cara Mencegah HIV
+          </span>
+        </div>
+
+        {/* Intro strip */}
+        <div className="bg-violet-200 dark:bg-violet-900 border-b-4 border-black dark:border-white px-6 py-3">
+          <p className="font-black text-sm uppercase tracking-wide text-black dark:text-white">
+            🛡️ Pencegahan HIV dimulai dari diri sendiri. Terapkan prinsip ABCDE berikut.
+          </p>
+        </div>
+
+        {/* ABCDE Cards */}
+        <div className="p-6 grid grid-cols-1 sm:grid-cols-5 gap-4">
+          {abcdeData.map((item, i) => (
+            <motion.div
+              key={item.letter}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.09, type: "spring", stiffness: 280, damping: 18 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -4, boxShadow: "8px 8px 0px 0px rgba(0,0,0,1)" }}
+              className={`${neo} ${item.color} rounded-xl p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-all duration-100 flex flex-col gap-3 cursor-default`}
+            >
+              <span
+                className={`w-12 h-12 ${item.accent} border-4 border-black rounded-xl flex items-center justify-center font-black text-2xl text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`}
+              >
+                {item.letter}
+              </span>
+              <div>
+                <p className="font-black text-sm uppercase tracking-tight text-black">{item.label}</p>
+                <p className="text-xs font-medium text-black/75 leading-snug mt-1">{item.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Image placeholder */}
+        <div className="px-6 pb-6">
+          <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827]`}>
+            <div className="bg-violet-600 border-b-4 border-black dark:border-white px-4 py-2">
+              <span className="font-black text-xs uppercase tracking-widest text-white">
+                🖼️ Infografis ABCDE
+              </span>
+            </div>
+            <div className="relative w-full aspect-[16/7]">
+              <Image
+                src="/images/infografis-abcde.png"
+                alt="Infografis prinsip ABCDE pencegahan HIV"
+                fill
+                className="object-contain p-4"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom strip */}
+        <div className="border-t-4 border-black dark:border-white bg-lime-200 dark:bg-lime-900 px-6 py-4">
+          <p className="font-black text-sm text-black dark:text-white uppercase tracking-wide">
+            💡 Pencegahan lebih baik dari pengobatan — lindungi diri & orang yang kamu cintai.
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── MODULE 6: Pengobatan — ARV Two-Panel ────────────────────────────────────
+
+const arvBenefits = [
+  { label: "Menekan perkembangan virus HIV",         color: "bg-cyan-200 dark:bg-cyan-900"   },
+  { label: "Menjaga daya tahan tubuh tetap optimal", color: "bg-yellow-200 dark:bg-yellow-900" },
+  { label: "Mengurangi risiko infeksi oportunistik", color: "bg-lime-200 dark:bg-lime-900"   },
+  { label: "Membantu ODHA hidup sehat & produktif",  color: "bg-pink-200 dark:bg-pink-900"   },
+];
+
+function PengobatanLayout() {
+  return (
+    <motion.div variants={cardVariants} className="mb-10">
+      <div className={`${neo} ${neoShadowLg} rounded-xl overflow-hidden bg-white dark:bg-[#0B0F19]`}>
+        {/* Header bar */}
+        <div className="bg-black dark:bg-white px-6 py-3 flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-400 border border-black" />
+          <div className="w-3 h-3 rounded-full bg-yellow-300 border border-black" />
+          <div className="w-3 h-3 rounded-full bg-lime-400 border border-black" />
+          <span className="ml-3 font-black text-xs uppercase tracking-widest text-white dark:text-black">
+            Pengobatan HIV — Terapi Antiretroviral (ARV)
+          </span>
+        </div>
+
+        {/* Two-panel */}
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          {/* Left: ARV Explanation */}
+          <div className="bg-indigo-100 dark:bg-indigo-950 border-b-4 sm:border-b-0 sm:border-r-4 border-black dark:border-white p-6 flex flex-col gap-4">
+            <span
+              className={`${neo} bg-indigo-500 text-white font-black text-2xl uppercase tracking-widest px-5 py-2 rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-fit`}
+            >
+              ARV
+            </span>
+            <p className="font-bold text-xs uppercase tracking-widest text-indigo-700 dark:text-indigo-300">
+              Antiretroviral Therapy
+            </p>
+            <p className="font-semibold text-sm text-black dark:text-white leading-relaxed">
+              Saat ini HIV <strong>belum bisa disembuhkan total</strong>. Namun, terapi ARV mampu
+              menekan jumlah virus sehingga sistem kekebalan tubuh tetap terjaga.
+            </p>
+
+            {/* Mechanism box */}
+            <div className={`${neo} bg-white dark:bg-indigo-900 rounded-xl p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`}>
+              <p className="font-black text-xs uppercase tracking-widest text-black dark:text-white mb-2">
+                ⚙️ Cara Kerja ARV
+              </p>
+              <p className="text-xs font-medium text-black/80 dark:text-white/80 leading-snug">
+                ARV menghambat replikasi HIV sehingga <em>viral load</em> (jumlah virus dalam darah)
+                dapat ditekan hingga tidak terdeteksi.
+              </p>
+            </div>
+
+            {/* Image placeholder */}
+            <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827] flex-1`}>
+              <div className="relative w-full aspect-[4/3]">
+                <Image
+                  src="/images/pengobatan-arv.png"
+                  alt="Ilustrasi terapi ARV"
+                  fill
+                  className="object-contain p-4"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Benefits */}
+          <div className="bg-white dark:bg-[#0B0F19] p-6 flex flex-col gap-4">
+            <div
+              className={`${neo} bg-yellow-300 dark:bg-yellow-700 px-4 py-2 rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] w-fit`}
+            >
+              <p className="font-black text-xs uppercase tracking-widest text-black">
+                ✅ Manfaat Terapi ARV
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {arvBenefits.map((b, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.09, type: "spring", stiffness: 300, damping: 20 }}
+                  viewport={{ once: true }}
+                  whileHover={{ x: 4, boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)" }}
+                  className={`${neo} ${b.color} rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3 transition-all duration-100 cursor-default`}
+                >
+                  <span className="w-8 h-8 bg-black dark:bg-white rounded-lg border-2 border-black flex items-center justify-center text-white dark:text-black font-black text-sm flex-shrink-0">
+                    {i + 1}
+                  </span>
+                  <p className="font-black text-xs uppercase tracking-tight text-black dark:text-white leading-snug">
+                    {b.label}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Key fact */}
+            <div className={`${neo} bg-black dark:bg-white rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] mt-auto`}>
+              <p className="font-black text-sm text-white dark:text-black uppercase tracking-wide leading-snug">
+                ⏱️ Semakin cepat terdeteksi & diobati → semakin baik kualitas hidup penderita.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── MODULE 7: Stigma — Two-Column Action Layout ──────────────────────────────
+
+const stigmaImpacts = [
+  "ODHA enggan memeriksakan diri",
+  "Penundaan pengobatan ARV",
+  "Isolasi sosial & depresi",
+  "Penyebaran virus makin sulit dikontrol",
+];
+
+const antiStigmaActions = [
+  { label: "Menghargai & menghormati ODHA",           color: "bg-lime-300 dark:bg-lime-800"   },
+  { label: "Tidak mengucilkan atau membully",          color: "bg-cyan-300 dark:bg-cyan-800"   },
+  { label: "Memberikan dukungan sosial nyata",         color: "bg-yellow-300 dark:bg-yellow-700" },
+  { label: "Menyebarkan informasi HIV yang benar",     color: "bg-pink-300 dark:bg-pink-800"   },
+];
+
+function StigmaLayout() {
+  return (
+    <motion.div variants={cardVariants} className="mb-10">
+      <div className={`${neo} ${neoShadowLg} rounded-xl overflow-hidden bg-white dark:bg-[#0B0F19]`}>
+        {/* Header bar */}
+        <div className="bg-black dark:bg-white px-6 py-3 flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-400 border border-black" />
+          <div className="w-3 h-3 rounded-full bg-yellow-300 border border-black" />
+          <div className="w-3 h-3 rounded-full bg-lime-400 border border-black" />
+          <span className="ml-3 font-black text-xs uppercase tracking-widest text-white dark:text-black">
+            Stop Stigma — ODHA Punya Hak yang Sama
+          </span>
+        </div>
+
+        {/* Definition strip */}
+        <div className="bg-orange-200 dark:bg-orange-900 border-b-4 border-black dark:border-white px-6 py-4">
+          <p className="font-black text-sm uppercase tracking-wide text-black dark:text-white mb-1">
+            👤 Apa itu ODHA?
+          </p>
+          <p className="font-semibold text-sm text-black/80 dark:text-white/80 leading-relaxed">
+            <strong>Orang Dengan HIV/AIDS</strong> — individu yang tetap memiliki hak yang sama
+            untuk belajar, bekerja, bergaul, dan hidup di masyarakat.
+          </p>
+        </div>
+
+        {/* Two columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          {/* Left: Dampak Stigma */}
+          <div className="bg-rose-100 dark:bg-rose-950 border-b-4 sm:border-b-0 sm:border-r-4 border-black dark:border-white p-6 flex flex-col gap-4">
+            <div className={`${neo} bg-rose-500 px-4 py-2 rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] w-fit`}>
+              <p className="font-black text-xs uppercase tracking-widest text-white">
+                ⚠️ Dampak Stigma & Diskriminasi
+              </p>
+            </div>
+
+            <ul className="flex flex-col gap-3">
+              {stigmaImpacts.map((item, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08, type: "spring", stiffness: 300, damping: 20 }}
+                  viewport={{ once: true }}
+                  className={`${neo} bg-white dark:bg-rose-900 rounded-xl p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3`}
+                >
+                  <span className="w-8 h-8 flex-shrink-0 bg-rose-500 border-2 border-black rounded-lg flex items-center justify-center font-black text-white text-sm">
+                    ✗
+                  </span>
+                  <p className="font-black text-xs uppercase tracking-tight text-black dark:text-white leading-snug">
+                    {item}
+                  </p>
+                </motion.li>
+              ))}
+            </ul>
+
+            {/* Image placeholder */}
+            <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827] mt-auto`}>
+              <div className="relative w-full aspect-[4/3]">
+                <Image
+                  src="/images/stop-stigma.png"
+                  alt="Ilustrasi stop stigma ODHA"
+                  fill
+                  className="object-contain p-4"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Anti-Stigma Actions */}
+          <div className="bg-white dark:bg-[#0B0F19] p-6 flex flex-col gap-4">
+            <div className={`${neo} bg-lime-400 dark:bg-lime-700 px-4 py-2 rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] w-fit`}>
+              <p className="font-black text-xs uppercase tracking-widest text-black">
+                ✅ Yang Bisa Kita Lakukan
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {antiStigmaActions.map((action, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.09, type: "spring", stiffness: 300, damping: 20 }}
+                  viewport={{ once: true }}
+                  whileHover={{ x: 4, boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)" }}
+                  className={`${neo} ${action.color} rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3 transition-all duration-100 cursor-default`}
+                >
+                  <span className="w-8 h-8 flex-shrink-0 bg-black dark:bg-white rounded-lg border-2 border-black flex items-center justify-center text-white dark:text-black font-black text-sm">
+                    ✓
+                  </span>
+                  <p className="font-black text-xs uppercase tracking-tight text-black dark:text-white leading-snug">
+                    {action.label}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Key message */}
+            <div className={`${neo} bg-black dark:bg-white rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] mt-auto`}>
+              <p className="font-black text-sm text-white dark:text-black uppercase tracking-wide leading-snug">
+                💬 Kenali penyakitnya, bukan menghakimi orangnya.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── Fallback: Plain Paragraphs ───────────────────────────────────────────────
 
 function FallbackLayout({ paragraphs }: { paragraphs: string[] }) {
@@ -524,11 +876,14 @@ function FallbackLayout({ paragraphs }: { paragraphs: string[] }) {
 
 function ModuleContent({ id, paragraphs }: { id: string; paragraphs: string[] }) {
   switch (id) {
-    case "pengenalan": return <PengenalanLayout />;
-    case "cara_kerja": return <CaraKerjaLayout />;
-    case "gejala":     return <GejalaLayout />;
-    case "penularan":  return <PenularanLayout />;
-    default:           return <FallbackLayout paragraphs={paragraphs} />;
+    case "pengenalan":  return <PengenalanLayout />;
+    case "cara_kerja":  return <CaraKerjaLayout />;
+    case "gejala":      return <GejalaLayout />;
+    case "penularan":   return <PenularanLayout />;
+    case "pencegahan":  return <PencegahanLayout />;  
+    case "pengobatan":  return <PengobatanLayout />;   
+    case "stigma":      return <StigmaLayout />;       
+    default:            return <FallbackLayout paragraphs={paragraphs} />;
   }
 }
 
@@ -612,6 +967,44 @@ export default function DetailEdukasiClient({
               <p className="text-sm sm:text-base font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mt-3">
                 — {materi.subtitle}
               </p>
+
+              {/* ── Pengantar Definisi (khusus modul pengenalan) ── */}
+{id === "pengenalan" && (
+  <motion.div
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.45, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+    className="mt-8 flex flex-col gap-5"
+  >
+    {/* HIV */}
+    <div className="border-l-4 border-black dark:border-white pl-5">
+      <p className="text-base sm:text-lg font-medium text-black dark:text-white leading-relaxed">
+        <span className="inline-block font-black text-black dark:text-white bg-cyan-300 dark:bg-cyan-700 px-1.5 py-0.5 mr-1 border-2 border-black dark:border-white rounded-md text-sm align-middle">
+          HIV
+        </span>
+        Human Immunodeficiency Virus (HIV) adalah virus yang menyerang sistem kekebalan tubuh,
+        terutama sel CD4 yang berperan melindungi tubuh dari berbagai penyakit. Ketika jumlah
+        sel CD4 terus berkurang, tubuh akan semakin sulit melawan infeksi.
+      </p>
+      <p className="mt-2 text-base sm:text-lg font-medium text-black/75 dark:text-white/65 leading-relaxed">
+        Seseorang yang terinfeksi HIV tidak selalu terlihat sakit. Banyak orang dapat hidup
+        bertahun-tahun tanpa gejala, sehingga pemeriksaan kesehatan menjadi sangat penting.
+      </p>
+    </div>
+
+    {/* AIDS */}
+    <div className="border-l-4 border-black dark:border-white pl-5">
+      <p className="text-base sm:text-lg font-medium text-black dark:text-white leading-relaxed">
+        <span className="inline-block font-black text-black dark:text-white bg-rose-300 dark:bg-rose-700 px-1.5 py-0.5 mr-1 border-2 border-black dark:border-white rounded-md text-sm align-middle">
+          AIDS
+        </span>
+        Acquired Immune Deficiency Syndrome (AIDS) adalah tahap lanjut dari infeksi HIV. Pada
+        kondisi ini, sistem kekebalan tubuh sudah sangat lemah sehingga tubuh mudah terserang
+        berbagai infeksi dan penyakit serius.
+      </p>
+    </div>
+  </motion.div>
+)}
             </div>
 
             {/* Thumbnail */}
