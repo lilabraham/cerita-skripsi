@@ -43,6 +43,7 @@ function validateStep(step: number, state: FormState): string | null {
     switch (step) {
         case 1: {
             if (!state.dataDiri.nama.trim()) return "Nama / inisial wajib diisi.";
+            if (!state.dataDiri.umur) return "Umur wajib diisi.";
             if (!state.dataDiri.jenisKelamin) return "Pilih jenis kelamin.";
             if (!state.dataDiri.kelas) return "Pilih kelas / jurusan.";
             if (!state.dataDiri.sumberInformasi) return "Pilih sumber informasi HIV/AIDS kamu.";

@@ -21,7 +21,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden:  { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 220, damping: 22 } },
 };
 
@@ -91,8 +91,8 @@ function ToggleGrid<T extends string>({
 // ─── Option configs ────────────────────────────────────────────────────────
 
 const JENIS_KELAMIN_OPTIONS: ToggleOption<JenisKelamin>[] = [
-  { value: "L", label: "Laki-laki",  accent: "bg-cyan-400 dark:bg-cyan-500" },
-  { value: "P", label: "Perempuan",  accent: "bg-pink-400 dark:bg-pink-500" },
+  { value: "L", label: "Laki-laki", accent: "bg-cyan-400 dark:bg-cyan-500" },
+  { value: "P", label: "Perempuan", accent: "bg-pink-400 dark:bg-pink-500" },
 ];
 
 const KELAS_OPTIONS: ToggleOption<Kelas>[] = [
@@ -145,6 +145,29 @@ export default function StepDataDiri({ data, onChange }: StepDataDiriProps) {
             placeholder="Contoh: RDS atau Rangga"
             maxLength={60}
             autoComplete="off"
+            className={[
+              "w-full py-4 px-5 rounded-xl border-4 border-black dark:border-white",
+              "bg-white dark:bg-[#0B0F19] text-black dark:text-white",
+              "font-bold text-base placeholder:text-gray-400 dark:placeholder:text-gray-600",
+              "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]",
+              "focus:outline-none focus:ring-0",
+              "focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[3px] focus:translate-y-[3px]",
+              "transition-all duration-150",
+            ].join(" ")}
+          />
+        </motion.div>
+        
+        {/* Umur */}
+        <motion.div variants={itemVariants}>
+          <FieldLabel>Umur</FieldLabel>
+          <input
+            id={`${uid}-umur`}
+            type="number"
+            min={10}
+            max={25}
+            value={data.umur}
+            onChange={(e) => onChange({ umur: e.target.value })}
+            placeholder="Contoh: 17"
             className={[
               "w-full py-4 px-5 rounded-xl border-4 border-black dark:border-white",
               "bg-white dark:bg-[#0B0F19] text-black dark:text-white",
