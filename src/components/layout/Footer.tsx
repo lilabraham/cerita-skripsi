@@ -99,6 +99,7 @@ export default function Footer() {
               <Image
                 src="/images/logo-cerita-final.png" /* 👈 Pastikan pakai nama file yang BARU lagi! */
                 alt="Logo CERITA"
+                sizes="(max-width: 640px) 40px, 120px"
                 fill
                 /* object-left penting agar logo rata kiri tegak lurus dengan teks di bawahnya */
                 className="object-contain object-left" 

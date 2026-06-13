@@ -84,6 +84,7 @@ export default function Navbar() {
               <Image
                 src="/images/logo-cerita-final.png"
                 alt="Logo CERITA"
+                sizes="(max-width: 640px) 40px, 120px"
                 fill
                 /* object-center memastikan gambar tetap di tengah wadah yang sudah dikecilkan */
                 className="object-contain object-center" 
