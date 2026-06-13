@@ -11,7 +11,7 @@ import type { DataDiri } from "@/types/questionnaire";
 const DEFAULT_STATE: FormState = {
     currentStep: 0,
     direction: 1,
-    dataDiri: { nama: "", jenisKelamin: "", kelas: "", sumberInformasi: "" },
+    dataDiri: { nama: "", umur: "", jenisKelamin: "", kelas: "", sumberInformasi: "" },
     pengetahuan: {},
     sikap: {},
 };

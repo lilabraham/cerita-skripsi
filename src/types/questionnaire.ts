@@ -11,6 +11,7 @@ export type JawabanSikap = "SS" | "S" | "TS" | "STS";
 
 export interface DataDiri {
   nama: string;
+  umur: string;
   jenisKelamin: JenisKelamin | "";
   kelas: Kelas | "";
   sumberInformasi: SumberInfo | "";
