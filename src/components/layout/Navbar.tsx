@@ -15,9 +15,8 @@ import {
 const navLinks = [
   { label: "Home",          href: "/"        },
   { label: "Edukasi",       href: "/edukasi" },
-  { label: "Kuis",          href: "/kuis"    },
-  { label: "Forum",         href: "/forum"   },
   { label: "Video",         href: "/video"   },
+  { label: "Forum",         href: "/forum"   },
 ];
 
 export default function Navbar() {

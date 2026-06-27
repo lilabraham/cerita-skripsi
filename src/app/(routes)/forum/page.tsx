@@ -3,12 +3,18 @@
 
 import { useReducer, useEffect, useCallback, useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { CheckCircle, Lock } from "lucide-react";
 import type { FormState, FormAction, DataDiri, JawabanBS, JawabanSikap } from "@/types/questionnaire";
 import { STEP_META, TOTAL_STEPS, SLICES } from "@/data/questionnaire-data";
 import StepWelcome from "@/components/kuesioner/StepWelcome";
 import StepDataDiri from "@/components/kuesioner/StepDataDiri";
 import StepPengetahuan from "@/components/kuesioner/StepPengetahuan";
 import StepSikap from "@/components/kuesioner/StepSikap";
+import ScrollIndicator from "@/components/ui/ScrollIndicator";
+
+// ─── Di LUAR komponen ──────────────────────────────────────────────
+const LECTURER_MODE = process.env.NEXT_PUBLIC_LECTURER_MODE === "true";
 
 // ─── Constants ────────────────────────────────────────────────────────────
 
@@ -258,8 +264,10 @@ export default function KuesionerPage() {
     const [mounted, setMounted] = useState(false);
     const [validationError, setError] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState(false);
+    const [isAlreadyDone, setIsAlreadyDone] = useState(false);
+    const [isLockedByTime, setIsLockedByTime] = useState(false);
+    const [unlockDateText, setUnlockDateText] = useState("");
 
-    // Hydrate from sessionStorage
     useEffect(() => {
         try {
             const saved = sessionStorage.getItem(STORAGE_KEY);
@@ -271,12 +279,36 @@ export default function KuesionerPage() {
         setMounted(true);
     }, []);
 
-    // Persist to sessionStorage (skip step 0 and post-submit)
     useEffect(() => {
-        if (!mounted || state.currentStep === 0) return;
-        try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-        catch { /* silent */ }
+        if (!mounted) return;
+        try {
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch { /* silent */ }
     }, [state, mounted]);
+
+    useEffect(() => {
+        if (localStorage.getItem("hasCompletedPostTest") === "true") {
+            setIsAlreadyDone(true);
+        }
+        if (!LECTURER_MODE) {
+            const raw = localStorage.getItem("_crt_init_ts");
+            if (raw) {
+                try {
+                    const firstVisit = Number(atob(raw));
+                    const unlockTime = firstVisit + 3 * 24 * 60 * 60 * 1000;
+                    if (Date.now() < unlockTime) {
+                        setIsLockedByTime(true);
+                        setUnlockDateText(
+                            new Date(unlockTime).toLocaleString("id-ID", {
+                                day: "numeric", month: "long", year: "numeric",
+                                hour: "2-digit", minute: "2-digit",
+                            })
+                        );
+                    }
+                } catch { /* silent */ }
+            }
+        }
+    }, []);
 
     // ─── Handlers ─────────────────────────────────────────────────────────
 
@@ -302,10 +334,18 @@ export default function KuesionerPage() {
         // TODO: replace with actual API call
         console.log("Submitting:", { dataDiri: state.dataDiri, pengetahuan: state.pengetahuan, sikap: state.sikap });
         try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* silent */ }
+
+        // Tandai permanen bahwa user sudah menyelesaikan kuesioner ini
+        try { localStorage.setItem("hasCompletedPostTest", "true"); } catch { /* silent */ }
+
         setSubmitted(true);
     }, [state]);
 
     // ─── Step content — memoised, re-evaluates only when step/answers change
+
+    const dataDiriKey = JSON.stringify(state.dataDiri);
+    const pengetahuanKey = JSON.stringify(state.pengetahuan);
+    const sikapKey = JSON.stringify(state.sikap);
 
     const stepContent = useMemo(() => {
         switch (state.currentStep) {
@@ -363,7 +403,98 @@ export default function KuesionerPage() {
             default: return null;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.currentStep, state.dataDiri, state.pengetahuan, state.sikap]);
+    }, [state.currentStep, dataDiriKey, pengetahuanKey, sikapKey]);
+
+    if (!mounted) return null; // gate — cegah flicker sebelum localStorage dibaca
+
+    // ─── Already-completed screen (cek lintas-sesi via localStorage) ──────
+
+    if (isAlreadyDone && !submitted) {
+        return (
+            <main className="min-h-screen flex items-center justify-center px-4 bg-amber-50 dark:bg-[#04060A]">
+                <div className="w-full max-w-md border-4 border-black bg-cyan-300 dark:bg-lime-300 rounded-2xl shadow-[8px_8px_0px_0px_#000] p-8 text-center">
+                    <div className="flex justify-center mb-5">
+                        <CheckCircle size={88} strokeWidth={2.5} className="text-black" />
+                    </div>
+
+                    <h1 className="font-black text-4xl uppercase text-black tracking-tight mb-3">
+                        TERIMA KASIH!
+                    </h1>
+
+                    <p className="font-semibold text-sm text-black/80 leading-relaxed mb-7">
+                        Anda sudah menyelesaikan kuesioner ini. Data hanya dapat diisi satu kali.
+                    </p>
+
+                    <Link
+                        href="/"
+                        className="
+                            inline-flex items-center justify-center gap-2
+                            px-6 py-3 rounded-xl
+                            border-4 border-black bg-black text-yellow-300
+                            font-black text-sm uppercase tracking-widest
+                            shadow-[4px_4px_0px_0px_#000]
+                            hover:translate-x-[-2px] hover:translate-y-[-2px]
+                            hover:shadow-[6px_6px_0px_0px_#000]
+                            active:translate-x-0 active:translate-y-0
+                            active:shadow-[2px_2px_0px_0px_#000]
+                            transition-all duration-100
+                        "
+                    >
+                        Kembali ke Beranda
+                    </Link>
+                </div>
+            </main>
+        );
+    }
+
+    if (!LECTURER_MODE && isLockedByTime) {
+        return (
+            <main className="min-h-screen flex items-center justify-center px-4 bg-lime-300">
+                <div className="w-full max-w-md border-4 border-black bg-rose-300 rounded-2xl shadow-[8px_8px_0px_0px_#000] p-8 text-center">
+                    <div className="flex justify-center mb-5">
+                        <motion.div
+                            animate={{ y: [0, -14, 0] }}
+                            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <Lock size={88} strokeWidth={2.5} className="text-black" />
+                        </motion.div>
+                    </div>
+
+                    <h1 className="font-black text-4xl uppercase text-black tracking-tight mb-3">
+                        KUESIONER DIKUNCI
+                    </h1>
+                    <p className="font-semibold text-sm text-black/80 leading-relaxed mb-6">
+                        Sesuai prosedur penelitian, Post-Test baru dapat diakses{" "}
+                        <span className="font-black">3 hari</span> setelah Anda mulai belajar.
+                    </p>
+
+                    <div className="border-4 border-black bg-white rounded-xl p-4 shadow-[4px_4px_0px_0px_#000] mb-7">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1">
+                            Dapat diakses mulai
+                        </p>
+                        <p className="font-black text-xl text-black">{unlockDateText}</p>
+                    </div>
+
+                    <Link
+                        href="/"
+                        className="
+                        inline-flex items-center justify-center gap-2
+                        px-6 py-3 rounded-xl
+                        border-4 border-black bg-black text-rose-300
+                        font-black text-sm uppercase tracking-widest
+                        shadow-[4px_4px_0px_0px_#000]
+                        hover:translate-x-[-2px] hover:translate-y-[-2px]
+                        hover:shadow-[6px_6px_0px_0px_#000]
+                        active:translate-x-0 active:translate-y-0
+                        transition-all duration-100
+                    "
+                    >
+                        ← Kembali ke Beranda
+                    </Link>
+                </div>
+            </main>
+        );
+    }
 
     // ─── Post-submit screen ───────────────────────────────────────────────
 
@@ -476,6 +607,7 @@ export default function KuesionerPage() {
                 )}
 
             </div>
+            <ScrollIndicator text="Scroll ke bawah untuk isi kuesioner 👇" />
         </motion.main>
     );
 }
