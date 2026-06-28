@@ -257,6 +257,69 @@ function StepKonfirmasi({ state, onBack, onSubmit }: {
     );
 }
 
+
+// ─── Decorative: Floating Virus ───────────────────────────────────────────────
+
+interface FloatingVirusProps {
+    size: number;
+    color: string;
+    top?: string;
+    left?: string;
+    right?: string;
+    bottom?: string;
+    floatDuration?: number;
+    rotateDuration?: number;
+    initialY?: number;
+}
+
+function FloatingVirus({
+    size,
+    color,
+    top,
+    left,
+    right,
+    bottom,
+    floatDuration = 4,
+    rotateDuration = 12,
+    initialY = 0,
+}: FloatingVirusProps) {
+    const spikes = 10;
+    const cx = size / 2;
+    const cy = size / 2;
+    const outerR = size / 2 - 1;
+    const innerR = outerR * 0.62;
+
+    // Build star/spiky path
+    const points: string[] = [];
+    for (let i = 0; i < spikes * 2; i++) {
+        const angle = (Math.PI / spikes) * i - Math.PI / 2;
+        const r = i % 2 === 0 ? outerR : innerR;
+        points.push(`${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`);
+    }
+    const pathD = `M${points.join("L")}Z`;
+
+    return (
+        <motion.div
+            className="absolute pointer-events-none select-none"
+            style={{ top, left, right, bottom, width: size, height: size }}
+            initial={{ y: initialY }}
+            animate={{ y: [initialY, initialY - 18, initialY] }}
+            transition={{ duration: floatDuration, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <motion.svg
+                width={size}
+                height={size}
+                viewBox={`0 0 ${size} ${size}`}
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: rotateDuration, repeat: Infinity, ease: "linear" }}
+            >
+                <path d={pathD} fill={color} opacity={0.22} />
+                <circle cx={cx} cy={cy} r={innerR * 0.55} fill={color} opacity={0.3} />
+            </motion.svg>
+        </motion.div>
+    );
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────
 
 export default function KuesionerPage() {
@@ -449,48 +512,114 @@ export default function KuesionerPage() {
 
     if (!LECTURER_MODE && isLockedByTime) {
         return (
-            <main className="min-h-screen flex items-center justify-center px-4 bg-lime-300">
-                <div className="w-full max-w-md border-4 border-black bg-rose-300 rounded-2xl shadow-[8px_8px_0px_0px_#000] p-8 text-center">
-                    <div className="flex justify-center mb-5">
+            <main
+                className="relative min-h-screen overflow-hidden flex items-center justify-center p-6"
+                style={{
+                    backgroundColor: "#FEF9EE",
+                    backgroundImage:
+                        "radial-gradient(circle, rgba(0,0,0,0.10) 1.5px, transparent 1.5px)",
+                    backgroundSize: "28px 28px",
+                }}
+            >
+                {/* ── Decorative viruses ── */}
+                <FloatingVirus size={120} color="#F43F5E" top="4%" left="3%" floatDuration={5} rotateDuration={14} initialY={0} />
+                <FloatingVirus size={72} color="#EAB308" top="12%" right="6%" floatDuration={3.5} rotateDuration={9} initialY={-8} />
+                <FloatingVirus size={96} color="#F43F5E" bottom="8%" left="8%" floatDuration={4.5} rotateDuration={18} initialY={4} />
+                <FloatingVirus size={56} color="#000000" bottom="15%" right="4%" floatDuration={3.8} rotateDuration={11} initialY={0} />
+                <FloatingVirus size={84} color="#EAB308" top="42%" left="-2%" floatDuration={6} rotateDuration={22} initialY={-4} />
+                <FloatingVirus size={64} color="#F43F5E" top="30%" right="2%" floatDuration={4.2} rotateDuration={16} initialY={6} />
+
+                {/* ── Card ── */}
+                <div className="border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-2xl overflow-hidden max-w-lg w-full relative z-10">
+
+                    {/* Top header bar */}
+                    <div className="bg-black px-5 py-3 flex items-center gap-2 border-b-4 border-black">
+                        <div className="w-3 h-3 rounded-full bg-rose-500 border border-black/40 flex-shrink-0" />
+                        <div className="w-3 h-3 rounded-full bg-yellow-400 border border-black/40 flex-shrink-0" />
+                        <div className="w-3 h-3 rounded-full bg-lime-400  border border-black/40 flex-shrink-0" />
+                        <span className="ml-3 font-black text-xs uppercase tracking-widest text-white">
+                            ⚠️ Akses Dibatasi — Post-Test
+                        </span>
+                    </div>
+
+                    {/* Body */}
+                    <div className="bg-rose-200 px-6 pt-8 pb-8 flex flex-col items-center gap-6">
+
+                        {/* Lock icon box */}
                         <motion.div
-                            animate={{ y: [0, -14, 0] }}
-                            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                            className="w-24 h-24 bg-white border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center"
+                            animate={{ y: [0, -10, 0] }}
+                            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                         >
-                            <Lock size={88} strokeWidth={2.5} className="text-black" />
+                            <Lock size={52} strokeWidth={2.5} className="text-black" />
                         </motion.div>
+
+                        {/* Title */}
+                        <div className="text-center">
+                            <h1 className="font-black text-3xl sm:text-4xl uppercase tracking-tighter text-black leading-none mb-2">
+                                KUESIONER<br />DIKUNCI
+                            </h1>
+                            <p className="font-semibold text-sm text-black/70 leading-relaxed max-w-xs mx-auto">
+                                Sesuai prosedur penelitian, Post-Test baru dapat diakses{" "}
+                                <span className="font-black text-black">3 hari</span> setelah
+                                Anda mulai belajar di platform ini.
+                            </p>
+                        </div>
+
+                        {/* Unlock date box */}
+                        <div className="w-full border-4 border-black rounded-2xl bg-white shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+                            {/* Sticker tape accent */}
+                            <div className="bg-yellow-400 border-b-4 border-black px-4 py-1.5 flex items-center gap-2">
+                                <span className="font-black text-[10px] uppercase tracking-widest text-black">
+                                    📅 Dapat Diakses Mulai
+                                </span>
+                            </div>
+                            <div className="px-5 py-4">
+                                <p className="font-black text-xl sm:text-2xl text-black tracking-tight leading-snug text-center">
+                                    {unlockDateText}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Instruction chips */}
+                        <div className="flex flex-wrap justify-center gap-2 w-full">
+                            {[
+                                "✅ Selesaikan semua modul",
+                                "⏳ Tunggu 3 hari",
+                                "📋 Isi Post-Test",
+                            ].map((chip) => (
+                                <span
+                                    key={chip}
+                                    className="border-2 border-black bg-white rounded-full px-3 py-1 font-bold text-xs uppercase tracking-widest text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                                >
+                                    {chip}
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* CTA Button */}
+                        <motion.div
+                            className="w-full"
+                            animate={{ boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)" }}
+                            whileHover={{ y: -3, boxShadow: "9px 9px 0px 0px rgba(0,0,0,1)" }}
+                            whileTap={{ y: 4, x: 4, boxShadow: "0px 0px 0px 0px rgba(0,0,0,1)" }}
+                            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                            style={{ borderRadius: "0.75rem" }}
+                        >
+                            <Link
+                                href="/"
+                                className="
+                w-full flex items-center justify-center gap-2
+                px-6 py-4 rounded-xl
+                border-4 border-black bg-black text-rose-300
+                font-black text-sm uppercase tracking-widest
+              "
+                            >
+                                ← Kembali ke Beranda
+                            </Link>
+                        </motion.div>
+
                     </div>
-
-                    <h1 className="font-black text-4xl uppercase text-black tracking-tight mb-3">
-                        KUESIONER DIKUNCI
-                    </h1>
-                    <p className="font-semibold text-sm text-black/80 leading-relaxed mb-6">
-                        Sesuai prosedur penelitian, Post-Test baru dapat diakses{" "}
-                        <span className="font-black">3 hari</span> setelah Anda mulai belajar.
-                    </p>
-
-                    <div className="border-4 border-black bg-white rounded-xl p-4 shadow-[4px_4px_0px_0px_#000] mb-7">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1">
-                            Dapat diakses mulai
-                        </p>
-                        <p className="font-black text-xl text-black">{unlockDateText}</p>
-                    </div>
-
-                    <Link
-                        href="/"
-                        className="
-                        inline-flex items-center justify-center gap-2
-                        px-6 py-3 rounded-xl
-                        border-4 border-black bg-black text-rose-300
-                        font-black text-sm uppercase tracking-widest
-                        shadow-[4px_4px_0px_0px_#000]
-                        hover:translate-x-[-2px] hover:translate-y-[-2px]
-                        hover:shadow-[6px_6px_0px_0px_#000]
-                        active:translate-x-0 active:translate-y-0
-                        transition-all duration-100
-                    "
-                    >
-                        ← Kembali ke Beranda
-                    </Link>
                 </div>
             </main>
         );

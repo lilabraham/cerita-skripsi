@@ -232,14 +232,17 @@ function CaraKerjaLayout() {
 
           {/* Infographic Image */}
           <div className={`${neo} rounded-xl overflow-hidden ${neoShadow} bg-slate-50 dark:bg-[#111827]`}>
-            <div className="relative w-full aspect-[16/7]">
+            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
               <Image
                 src="/images/cara-menyerang-placeholder.png"
                 alt="Ilustrasi alur HIV menyerang tubuh"
                 fill
-                className="object-contain p-4"
+                className="object-contain"
               />
             </div>
+            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
+              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
+            </p>
           </div>
         </div>
       </div>
@@ -572,14 +575,17 @@ function PencegahanLayout() {
                 🖼️ Infografis ABCDE
               </span>
             </div>
-            <div className="relative w-full aspect-[16/7]">
+            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
               <Image
                 src="/images/infografis-abcde.png"
                 alt="Infografis prinsip ABCDE pencegahan HIV"
                 fill
-                className="object-contain p-4"
+                className="object-contain"
               />
             </div>
+            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
+              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
+            </p>
           </div>
         </div>
 
@@ -641,9 +647,12 @@ function PengobatanLayout() {
 
           {/* Image — full width, below text */}
           <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827]`}>
-            <div className="relative w-full aspect-[16/9]">
-              <Image src="/images/pengobatan-arv.png" alt="Ilustrasi terapi ARV" fill className="object-contain p-4" />
+            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
+              <Image src="/images/pengobatan-arv.png" alt="Ilustrasi terapi ARV" fill className="object-contain" />
             </div>
+            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
+              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
+            </p>
           </div>
 
           {/* Benefits */}
@@ -744,9 +753,12 @@ function StigmaLayout() {
 
           {/* Image — full width, below */}
           <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827]`}>
-            <div className="relative w-full aspect-[16/9]">
-              <Image src="/images/stop-stigma.png" alt="Ilustrasi stop stigma ODHA" fill className="object-contain p-4" />
+            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
+              <Image src="/images/stop-stigma.png" alt="Ilustrasi stop stigma ODHA" fill className="object-contain" />
             </div>
+            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
+              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
+            </p>
           </div>
 
           <div className={`${neo} bg-lime-400 dark:bg-lime-700 px-4 py-2 rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] w-fit`}>
