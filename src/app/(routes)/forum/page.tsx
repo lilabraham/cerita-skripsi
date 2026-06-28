@@ -262,7 +262,7 @@ function StepKonfirmasi({ state, onBack, onSubmit }: {
 
 interface FloatingVirusProps {
     size: number;
-    color: string;
+    fillClass: string; // Tailwind fill utility incl. dark: variant
     top?: string;
     left?: string;
     right?: string;
@@ -273,15 +273,8 @@ interface FloatingVirusProps {
 }
 
 function FloatingVirus({
-    size,
-    color,
-    top,
-    left,
-    right,
-    bottom,
-    floatDuration = 4,
-    rotateDuration = 12,
-    initialY = 0,
+    size, fillClass, top, left, right, bottom,
+    floatDuration = 4, rotateDuration = 12, initialY = 0,
 }: FloatingVirusProps) {
     const spikes = 10;
     const cx = size / 2;
@@ -289,7 +282,6 @@ function FloatingVirus({
     const outerR = size / 2 - 1;
     const innerR = outerR * 0.62;
 
-    // Build star/spiky path
     const points: string[] = [];
     for (let i = 0; i < spikes * 2; i++) {
         const angle = (Math.PI / spikes) * i - Math.PI / 2;
@@ -307,14 +299,13 @@ function FloatingVirus({
             transition={{ duration: floatDuration, repeat: Infinity, ease: "easeInOut" }}
         >
             <motion.svg
-                width={size}
-                height={size}
-                viewBox={`0 0 ${size} ${size}`}
+                width={size} height={size} viewBox={`0 0 ${size} ${size}`}
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: rotateDuration, repeat: Infinity, ease: "linear" }}
             >
-                <path d={pathD} fill={color} opacity={0.22} />
-                <circle cx={cx} cy={cy} r={innerR * 0.55} fill={color} opacity={0.3} />
+                {/* No fill attribute — driven entirely by Tailwind CSS class */}
+                <path d={pathD} className={fillClass} />
+                <circle cx={cx} cy={cy} r={innerR * 0.55} className={fillClass} />
             </motion.svg>
         </motion.div>
     );
@@ -512,70 +503,93 @@ export default function KuesionerPage() {
 
     if (!LECTURER_MODE && isLockedByTime) {
         return (
-            <main
-                className="relative min-h-screen overflow-hidden flex items-center justify-center p-6"
-                style={{
-                    backgroundColor: "#FEF9EE",
-                    backgroundImage:
-                        "radial-gradient(circle, rgba(0,0,0,0.10) 1.5px, transparent 1.5px)",
-                    backgroundSize: "28px 28px",
-                }}
-            >
-                {/* ── Decorative viruses ── */}
-                <FloatingVirus size={120} color="#F43F5E" top="4%" left="3%" floatDuration={5} rotateDuration={14} initialY={0} />
-                <FloatingVirus size={72} color="#EAB308" top="12%" right="6%" floatDuration={3.5} rotateDuration={9} initialY={-8} />
-                <FloatingVirus size={96} color="#F43F5E" bottom="8%" left="8%" floatDuration={4.5} rotateDuration={18} initialY={4} />
-                <FloatingVirus size={56} color="#000000" bottom="15%" right="4%" floatDuration={3.8} rotateDuration={11} initialY={0} />
-                <FloatingVirus size={84} color="#EAB308" top="42%" left="-2%" floatDuration={6} rotateDuration={22} initialY={-4} />
-                <FloatingVirus size={64} color="#F43F5E" top="30%" right="2%" floatDuration={4.2} rotateDuration={16} initialY={6} />
+            <main className="relative min-h-screen overflow-hidden flex items-center justify-center p-6 bg-amber-50 dark:bg-[#04060A]">
+
+                {/* Dot grid — light */}
+                <div
+                    className="absolute inset-0 pointer-events-none dark:hidden"
+                    style={{
+                        backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.10) 1.5px, transparent 1.5px)",
+                        backgroundSize: "28px 28px",
+                    }}
+                />
+                {/* Dot grid — dark */}
+                <div
+                    className="absolute inset-0 pointer-events-none hidden dark:block"
+                    style={{
+                        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.06) 1.5px, transparent 1.5px)",
+                        backgroundSize: "28px 28px",
+                    }}
+                />
+
+                {/* ── Floating Viruses — fillClass includes dark: variant ── */}
+                <FloatingVirus size={120} fillClass="fill-rose-500/20   dark:fill-rose-400/30" top="4%" left="3%" floatDuration={5} rotateDuration={14} initialY={0} />
+                <FloatingVirus size={72} fillClass="fill-yellow-500/25 dark:fill-yellow-400/35" top="12%" right="6%" floatDuration={3.5} rotateDuration={9} initialY={-8} />
+                <FloatingVirus size={96} fillClass="fill-rose-500/20   dark:fill-rose-500/35" bottom="8%" left="8%" floatDuration={4.5} rotateDuration={18} initialY={4} />
+                <FloatingVirus size={56} fillClass="fill-black/10      dark:fill-white/15" bottom="15%" right="4%" floatDuration={3.8} rotateDuration={11} initialY={0} />
+                <FloatingVirus size={84} fillClass="fill-yellow-500/20 dark:fill-yellow-300/25" top="42%" left="-2%" floatDuration={6} rotateDuration={22} initialY={-4} />
+                <FloatingVirus size={64} fillClass="fill-rose-400/20   dark:fill-rose-300/30" top="30%" right="2%" floatDuration={4.2} rotateDuration={16} initialY={6} />
 
                 {/* ── Card ── */}
-                <div className="border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-2xl overflow-hidden max-w-lg w-full relative z-10">
+                <div className="
+        border-4 border-black dark:border-white
+        shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.2)]
+        rounded-2xl overflow-hidden max-w-lg w-full relative z-10
+      ">
 
                     {/* Top header bar */}
-                    <div className="bg-black px-5 py-3 flex items-center gap-2 border-b-4 border-black">
-                        <div className="w-3 h-3 rounded-full bg-rose-500 border border-black/40 flex-shrink-0" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-400 border border-black/40 flex-shrink-0" />
-                        <div className="w-3 h-3 rounded-full bg-lime-400  border border-black/40 flex-shrink-0" />
-                        <span className="ml-3 font-black text-xs uppercase tracking-widest text-white">
+                    <div className="bg-black dark:bg-white px-5 py-3 flex items-center gap-2 border-b-4 border-black dark:border-white">
+                        <div className="w-3 h-3 rounded-full bg-rose-500  border border-white/30 dark:border-black/30 flex-shrink-0" />
+                        <div className="w-3 h-3 rounded-full bg-yellow-400 border border-white/30 dark:border-black/30 flex-shrink-0" />
+                        <div className="w-3 h-3 rounded-full bg-lime-400   border border-white/30 dark:border-black/30 flex-shrink-0" />
+                        <span className="ml-3 font-black text-xs uppercase tracking-widest text-white dark:text-black">
                             ⚠️ Akses Dibatasi — Post-Test
                         </span>
                     </div>
 
                     {/* Body */}
-                    <div className="bg-rose-200 px-6 pt-8 pb-8 flex flex-col items-center gap-6">
+                    <div className="bg-rose-200 dark:bg-rose-950 px-6 pt-8 pb-8 flex flex-col items-center gap-6">
 
                         {/* Lock icon box */}
                         <motion.div
-                            className="w-24 h-24 bg-white border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center"
+                            className="
+              w-24 h-24 rounded-2xl flex items-center justify-center
+              bg-white dark:bg-slate-800
+              border-4 border-black dark:border-white
+              shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)]
+            "
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                         >
-                            <Lock size={52} strokeWidth={2.5} className="text-black" />
+                            <Lock size={52} strokeWidth={2.5} className="text-black dark:text-white" />
                         </motion.div>
 
-                        {/* Title */}
+                        {/* Title + subtitle */}
                         <div className="text-center">
-                            <h1 className="font-black text-3xl sm:text-4xl uppercase tracking-tighter text-black leading-none mb-2">
+                            <h1 className="font-black text-3xl sm:text-4xl uppercase tracking-tighter text-black dark:text-white leading-none mb-2">
                                 KUESIONER<br />DIKUNCI
                             </h1>
-                            <p className="font-semibold text-sm text-black/70 leading-relaxed max-w-xs mx-auto">
+                            <p className="font-semibold text-sm text-black/70 dark:text-white/70 leading-relaxed max-w-xs mx-auto">
                                 Sesuai prosedur penelitian, Post-Test baru dapat diakses{" "}
-                                <span className="font-black text-black">3 hari</span> setelah
+                                <span className="font-black text-black dark:text-white">3 hari</span> setelah
                                 Anda mulai belajar di platform ini.
                             </p>
                         </div>
 
                         {/* Unlock date box */}
-                        <div className="w-full border-4 border-black rounded-2xl bg-white shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-                            {/* Sticker tape accent */}
-                            <div className="bg-yellow-400 border-b-4 border-black px-4 py-1.5 flex items-center gap-2">
+                        <div className="
+            w-full rounded-2xl overflow-hidden
+            border-4 border-black dark:border-white
+            shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.15)]
+          ">
+                            {/* Sticker tape */}
+                            <div className="bg-yellow-400 dark:bg-yellow-500 border-b-4 border-black dark:border-white px-4 py-1.5">
                                 <span className="font-black text-[10px] uppercase tracking-widest text-black">
                                     📅 Dapat Diakses Mulai
                                 </span>
                             </div>
-                            <div className="px-5 py-4">
-                                <p className="font-black text-xl sm:text-2xl text-black tracking-tight leading-snug text-center">
+                            <div className="px-5 py-4 bg-white dark:bg-slate-800">
+                                <p className="font-black text-xl sm:text-2xl text-black dark:text-white tracking-tight leading-snug text-center">
                                     {unlockDateText}
                                 </p>
                             </div>
@@ -583,35 +597,41 @@ export default function KuesionerPage() {
 
                         {/* Instruction chips */}
                         <div className="flex flex-wrap justify-center gap-2 w-full">
-                            {[
-                                "✅ Selesaikan semua modul",
-                                "⏳ Tunggu 3 hari",
-                                "📋 Isi Post-Test",
-                            ].map((chip) => (
+                            {["✅ Selesaikan semua modul", "⏳ Tunggu 3 hari", "📋 Isi Post-Test"].map((chip) => (
                                 <span
                                     key={chip}
-                                    className="border-2 border-black bg-white rounded-full px-3 py-1 font-bold text-xs uppercase tracking-widest text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                                    className="
+                  border-2 border-black dark:border-white rounded-full
+                  bg-white dark:bg-slate-800
+                  px-3 py-1 font-bold text-xs uppercase tracking-widest
+                  text-black dark:text-white
+                  shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)]
+                "
                                 >
                                     {chip}
                                 </span>
                             ))}
                         </div>
 
-                        {/* CTA Button */}
+                        {/* CTA Button — shadow via Tailwind so dark: variant works */}
                         <motion.div
-                            className="w-full"
-                            animate={{ boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)" }}
-                            whileHover={{ y: -3, boxShadow: "9px 9px 0px 0px rgba(0,0,0,1)" }}
-                            whileTap={{ y: 4, x: 4, boxShadow: "0px 0px 0px 0px rgba(0,0,0,1)" }}
+                            className="
+              w-full rounded-xl
+              shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]       dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.25)]
+              hover:shadow-[9px_9px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[9px_9px_0px_0px_rgba(255,255,255,0.35)]
+              transition-shadow duration-100
+            "
+                            whileHover={{ y: -3 }}
+                            whileTap={{ y: 4, x: 4 }}
                             transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                            style={{ borderRadius: "0.75rem" }}
                         >
                             <Link
                                 href="/"
                                 className="
-                w-full flex items-center justify-center gap-2
-                px-6 py-4 rounded-xl
-                border-4 border-black bg-black text-rose-300
+                w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl
+                border-4 border-black dark:border-white
+                bg-black dark:bg-white
+                text-rose-300 dark:text-rose-600
                 font-black text-sm uppercase tracking-widest
               "
                             >
@@ -624,7 +644,6 @@ export default function KuesionerPage() {
             </main>
         );
     }
-
     // ─── Post-submit screen ───────────────────────────────────────────────
 
     if (submitted) {
