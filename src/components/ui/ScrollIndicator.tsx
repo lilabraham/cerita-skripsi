@@ -19,14 +19,16 @@ export default function ScrollIndicator({
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 200;
 
-      // Sembunyikan juga jika belum mulai scroll sama sekali tapi halaman pendek
       const pageScrollable =
         document.body.offsetHeight > window.innerHeight + 50;
 
-      setIsVisible(pageScrollable && !nearBottom);
+      // Sembunyikan setelah user scroll melewati ~80% tinggi viewport pertama (keluar dari Hero)
+      const pastHero = window.scrollY > window.innerHeight * 0.8;
+
+      setIsVisible(pageScrollable && !nearBottom && !pastHero);
     };
 
-    handleScroll(); // cek kondisi awal
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
 

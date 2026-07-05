@@ -5,12 +5,12 @@ import { motion, useInView, useMotionValue, useSpring, useTransform } from "fram
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 const VIDEO = {
-  embedUrl: "https://www.youtube.com/embed/J3cFcLTHmac?si=aBHBYvjW_LBeWn8T",
+  embedUrl: "https://www.youtube.com/embed/zyrk89I6s-E",
   title: "KENALI, CEGAH, LAWAN: Fakta HIV/AIDS yang Wajib Kamu Tahu",
   description:
     "Video ini membahas fakta-fakta penting seputar HIV/AIDS yang sering disalahpahami oleh remaja. Mulai dari cara penularan yang benar, mitos-mitos berbahaya, pentingnya deteksi dini, hingga bagaimana kita bisa hidup bebas stigma bersama. Karena pengetahuan adalah pertahanan terkuat kita.",
   tags: ["#EdukasiRemaja", "#BebasStigma", "#KesehatanSeksual", "#CegahHIV", "#CERITA2026"],
-  duration: "03:31",
+  duration: "04:39",
   category: "Kesehatan & Reproduksi",
 };
 

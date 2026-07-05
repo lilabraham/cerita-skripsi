@@ -47,51 +47,42 @@ Fase ini biasanya terjadi dalam beberapa minggu setelah seseorang terinfeksi HIV
 Gejala tersebut sering menyerupai flu sehingga banyak orang tidak menyadari bahwa dirinya telah terinfeksi HIV.
 
 Fase Laten
-Pada fase ini penderita biasanya tidak merasakan gejala apa pun. Meskipun terlihat sehat, virus tetap berada di dalam tubuh dan masih dapat ditularkan kepada orang lain. Fase ini dapat berlangsung selama bertahun-tahun.
+Pada fase ini penderita biasanya tidak merasakan gejala apa pun. Meskipun terlihat sehat, virus tetap berada di dalam tubuh dan masih dapat ditularkan kepada orang lain. Fase ini dapat berlangsung selama 3-10 tahun.
 
 Fase AIDS
 Jika HIV tidak diobati, sistem kekebalan tubuh akan semakin melemah dan muncul berbagai gejala berat seperti:
-- Berat badan turun drastis
-- Demam berkepanjangan
-- Diare kronis
-- Batuk yang tidak kunjung sembuh
-- Infeksi berulang
-- Tuberkulosis (TBC)
-- Infeksi jamur dan penyakit lainnya`,
+- Demam
+- Batuk lebih dari sebulan
+- Menurunnya berat badan lebih dari 10%
+- Diare
+- Herpes`,
     nextModule: "penularan",
   },
   penularan: {
     title: "Cara Penularan HIV",
     subtitle: "Fakta yang Perlu Kamu Ketahui",
-    content: `HIV dapat menular melalui cairan tubuh tertentu yang mengandung virus dalam jumlah cukup untuk menyebabkan infeksi.
+    content: `Penularan HIV/AIDS dapat terjadi melalui:
+- Hubungan seksual berisiko, terutama berganti-ganti pasangan dan tidak menggunakan kondom.
+- Penggunaan bersama alat yang terkontaminasi, seperti jarum suntik, alat tindik, dan alat tato.
+- Penularan dari ibu ke anak, yang dapat terjadi selama kehamilan, persalinan, dan menyusui.
+- Transfusi darah yang terkontaminasi virus HIV.
 
-HIV dapat menular melalui:
-Hubungan seksual berisiko tanpa pengaman.
-Penggunaan jarum suntik secara bergantian.
-Transfusi darah yang terkontaminasi HIV.
-Penularan dari ibu ke bayi saat kehamilan, persalinan, atau menyusui.
-
-Penting untuk diketahui bahwa HIV tidak menular dengan mudah seperti flu atau batuk.
-
-HIV Tidak Menular Melalui
-Banyak orang masih memiliki pemahaman yang salah mengenai HIV. Padahal, HIV tidak dapat menular melalui aktivitas sehari-hari.
-
-HIV tidak menular melalui:
-Bersalaman
-Berpelukan
-Makan bersama
-Belajar bersama
-Berenang bersama
-Tinggal serumah
-Gigitan nyamuk
-
-Karena itu, ODHA tidak perlu dijauhi atau didiskriminasi.`,
+HIV/AIDS tidak menular melalui:
+1. Bertukar pakaian
+2. Penggunaan toilet bersama
+3. Berenang di kolam yang sama
+4. Berbagi makanan atau minuman
+5. Gigitan nyamuk
+6. Berkeringat
+7. Tinggal serumah dengan penderita yang terinfeksi
+8. Bersalaman atau berjabat tangan
+9. Berciuman atau mencium orang lain`,
     nextModule: "pencegahan",
   },
   pencegahan: {
-  title: "Cara Mencegah HIV",
-  subtitle: "Prinsip ABCDE untuk Perlindungan Diri",
-  content: `Pencegahan HIV dapat dilakukan dengan menerapkan prinsip ABCDE.
+    title: "Cara Mencegah HIV",
+    subtitle: "Prinsip ABCDE untuk Perlindungan Diri",
+    content: `Pencegahan HIV dapat dilakukan dengan menerapkan prinsip ABCDE.
 
 A - Abstinence
 Menghindari hubungan seksual yang berisiko merupakan cara paling efektif untuk mencegah penularan HIV.
@@ -107,13 +98,13 @@ Hindari penggunaan narkoba suntik dan jangan pernah menggunakan jarum suntik sec
 
 E - Education
 Mencari informasi yang benar mengenai HIV membantu seseorang mengambil keputusan yang sehat dan aman.`,
-  nextModule: "pengobatan",
-},
+    nextModule: "pengobatan",
+  },
 
-pengobatan: {
-  title: "Pengobatan HIV",
-  subtitle: "Mengendalikan HIV dengan Terapi ARV",
-  content: `Saat ini HIV belum dapat disembuhkan sepenuhnya. Namun, HIV dapat dikendalikan melalui terapi Antiretroviral (ARV).
+  pengobatan: {
+    title: "Pengobatan HIV",
+    subtitle: "Mengendalikan HIV dengan Terapi ARV",
+    content: `Saat ini HIV belum dapat disembuhkan sepenuhnya. Namun, HIV dapat dikendalikan melalui terapi Antiretroviral (ARV).
 
 ARV bekerja dengan cara menekan jumlah virus dalam tubuh sehingga sistem kekebalan tubuh tetap terjaga.
 
@@ -124,12 +115,12 @@ Manfaat terapi ARV:
 - Membantu ODHA hidup sehat dan produktif
 
 Semakin cepat HIV terdeteksi dan diobati, semakin baik kualitas hidup penderitanya.`,
-  nextModule: "stigma",
-},
-stigma: {
-  title: "Stop Stigma terhadap ODHA",
-  subtitle: "Kenali Penyakitnya, Bukan Menghakimi Orangnya",
-  content: `ODHA adalah Orang Dengan HIV/AIDS. Mereka adalah individu yang tetap memiliki hak yang sama untuk belajar, bekerja, bergaul, dan hidup di masyarakat.
+    nextModule: "stigma",
+  },
+  stigma: {
+    title: "Stop Stigma terhadap ODHA",
+    subtitle: "Kenali Penyakitnya, Bukan Menghakimi Orangnya",
+    content: `ODHA adalah Orang Dengan HIV/AIDS. Mereka adalah individu yang tetap memiliki hak yang sama untuk belajar, bekerja, bergaul, dan hidup di masyarakat.
 
 Stigma dan diskriminasi dapat membuat ODHA enggan memeriksakan diri atau mencari pengobatan sehingga justru memperburuk kondisi kesehatan.
 
@@ -140,6 +131,6 @@ Yang dapat kita lakukan:
 - Menyebarkan informasi yang benar tentang HIV.
 
 Kenali penyakitnya, bukan menghakimi orangnya.`,
-  nextModule: null,
-},
+    nextModule: null,
+  },
 };

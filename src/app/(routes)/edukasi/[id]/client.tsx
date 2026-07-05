@@ -8,8 +8,8 @@ import {
   ArrowLeft, CheckCircle, BookOpen, Zap,
   Thermometer, Activity, AlertTriangle, Droplets,
   Heart, Wind, Bug, Syringe, Baby, Users,
-  HeartHandshake, Handshake, Coffee, Shirt,
-  Toilet, Utensils, ChevronRight,
+  HeartHandshake, Handshake, Shirt,
+  Toilet, Utensils, ChevronRight, TrendingDown, UserX,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -86,15 +86,8 @@ function PengenalanLayout() {
           <div className="w-3 h-3 rounded-full bg-yellow-300 border border-black" />
           <div className="w-3 h-3 rounded-full bg-lime-400 border border-black" />
           <span className="ml-3 font-black text-xs uppercase tracking-widest text-white dark:text-black">
-            HIV vs AIDS — Apa Bedanya?
+            HIV & AIDS
           </span>
-        </div>
-
-        {/* Intro strip */}
-        <div className="bg-yellow-200 dark:bg-yellow-800 border-b-4 border-black dark:border-white px-6 py-3">
-          <p className="font-black text-sm uppercase tracking-wide text-black dark:text-white">
-            ⚡ HIV dan AIDS adalah dua hal BERBEDA. Pahami perbedaannya di sini.
-          </p>
         </div>
 
         {/* 2-Column Comparison */}
@@ -269,17 +262,17 @@ const faseData = [
   },
   {
     label: "Fase Laten",
-    subtitle: "Bisa Bertahun-Tahun",
+    subtitle: "3–10 Tahun",
     color: "bg-amber-200 dark:bg-amber-900",
     accent: "bg-amber-500",
     headerBg: "bg-amber-500",
     gejala: [
-      { icon: Activity, text: "Hampir tanpa gejala" },
-      { icon: Bug, text: "Infeksi minor berulang" },
-      { icon: Thermometer, text: "Keringat malam" },
-      { icon: Heart, text: "Penurunan BB bertahap" },
-      { icon: Wind, text: "Batuk ringan persisten" },
-    ],
+      { icon: Thermometer, text: "Demam" },
+      { icon: Wind, text: "Batuk lebih dari sebulan" },
+      { icon: TrendingDown, text: "Menurunnya berat badan lebih dari 10%" },
+      { icon: Droplets, text: "Diare" },
+      { icon: Bug, text: "Herpes" },
+    ]
   },
   {
     label: "Fase AIDS",
@@ -373,21 +366,22 @@ function GejalaLayout() {
 // ─── MODULE 4: Penularan — Do's & Don'ts Layout ───────────────────────────────
 
 const menularMelalui = [
-  { icon: Droplets, label: "Hubungan Seksual Tanpa Kondom", bg: "bg-rose-200 dark:bg-rose-900" },
-  { icon: Syringe, label: "Berbagi Jarum Suntik", bg: "bg-rose-300 dark:bg-rose-800" },
-  { icon: Baby, label: "Ibu ke Bayi (Kehamilan/ASI)", bg: "bg-rose-200 dark:bg-rose-900" },
-  { icon: Droplets, label: "Transfusi Darah Tercemar", bg: "bg-rose-300 dark:bg-rose-800" },
+  { icon: UserX, label: "Seksual Berisiko, Ganti Pasangan", bg: "bg-rose-200 dark:bg-rose-900" },
+  { icon: Syringe, label: "Alat Tercemar (Jarum, Tindik, Tato)", bg: "bg-rose-300 dark:bg-rose-800" },
+  { icon: Baby, label: "Ibu ke Anak (Hamil, Lahir, Menyusui)", bg: "bg-rose-200 dark:bg-rose-900" },
+  { icon: Droplets, label: "Transfusi Darah Tercemar HIV", bg: "bg-rose-300 dark:bg-rose-800" },
 ];
 
 const tidakMenularMelalui = [
-  { icon: Handshake, label: "Jabat Tangan" },
-  { icon: Coffee, label: "Berbagi Makanan" },
-  { icon: Shirt, label: "Berbagi Pakaian" },
-  { icon: Toilet, label: "Toilet Umum" },
-  { icon: Wind, label: "Bersin / Batuk" },
-  { icon: HeartHandshake, label: "Pelukan" },
-  { icon: Users, label: "Kontak Sosial Biasa" },
-  { icon: Utensils, label: "Peralatan Makan" },
+  { icon: Shirt, label: "Bertukar Pakaian" },
+  { icon: Toilet, label: "Penggunaan Toilet Bersama" },
+  { icon: Droplets, label: "Berenang di Kolam yang Sama" },
+  { icon: Utensils, label: "Berbagi Makanan atau Minuman" },
+  { icon: Bug, label: "Gigitan Nyamuk" },
+  { icon: Wind, label: "Berkeringat" },
+  { icon: Users, label: "Tinggal Serumah dengan Penderita" },
+  { icon: Handshake, label: "Bersalaman atau Berjabat Tangan" },
+  { icon: HeartHandshake, label: "Berciuman" },
 ];
 
 function PenularanLayout() {
@@ -446,7 +440,7 @@ function PenularanLayout() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-cyan-50 dark:bg-cyan-950">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-6 bg-cyan-50 dark:bg-cyan-950">
             {tidakMenularMelalui.map((item, i) => (
               <motion.div
                 key={i}
@@ -645,16 +639,6 @@ function PengobatanLayout() {
             </p>
           </div>
 
-          {/* Image — full width, below text */}
-          <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827]`}>
-            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
-              <Image src="/images/pengobatan-arv.png" alt="Ilustrasi terapi ARV" fill className="object-contain" />
-            </div>
-            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
-              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
-            </p>
-          </div>
-
           {/* Benefits */}
           <div className={`${neo} bg-yellow-300 dark:bg-yellow-700 px-4 py-2 rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] w-fit`}>
             <p className="font-black text-xs uppercase tracking-widest text-black">✅ Manfaat Terapi ARV</p>
@@ -679,6 +663,16 @@ function PengobatanLayout() {
                 </p>
               </motion.div>
             ))}
+          </div>
+
+          {/* Image — dipindah ke bawah, sebelum note penutup */}
+          <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827]`}>
+            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
+              <Image src="/images/pengobatan-arv.png" alt="Ilustrasi terapi ARV" fill className="object-contain" />
+            </div>
+            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
+              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
+            </p>
           </div>
 
           <div className={`${neo} bg-black dark:bg-white rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]`}>
@@ -751,16 +745,6 @@ function StigmaLayout() {
             ))}
           </ul>
 
-          {/* Image — full width, below */}
-          <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827]`}>
-            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
-              <Image src="/images/stop-stigma.png" alt="Ilustrasi stop stigma ODHA" fill className="object-contain" />
-            </div>
-            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
-              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
-            </p>
-          </div>
-
           <div className={`${neo} bg-lime-400 dark:bg-lime-700 px-4 py-2 rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] w-fit`}>
             <p className="font-black text-xs uppercase tracking-widest text-black">✅ Yang Bisa Kita Lakukan</p>
           </div>
@@ -780,6 +764,16 @@ function StigmaLayout() {
                 <p className="font-black text-sm uppercase tracking-tight text-black dark:text-white leading-snug">{action.label}</p>
               </motion.div>
             ))}
+          </div>
+
+          {/* Image — dipindah ke bawah, sebelum note penutup */}
+          <div className={`${neo} ${neoShadow} rounded-xl overflow-hidden bg-slate-50 dark:bg-[#111827]`}>
+            <div className="relative w-full min-h-[260px] sm:min-h-[400px]">
+              <Image src="/images/stop-stigma.png" alt="Ilustrasi stop stigma ODHA" fill className="object-contain" />
+            </div>
+            <p className="px-3 py-1.5 text-[11px] font-medium text-black/40 dark:text-white/40 text-center">
+              🔍 Zoom / Putar layar HP untuk membaca lebih jelas
+            </p>
           </div>
 
           <div className={`${neo} bg-black dark:bg-white rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]`}>

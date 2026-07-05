@@ -1,6 +1,6 @@
 /*layout.tsx*/
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,12 @@ export const metadata: Metadata = {
   description: "Platform edukasi HIV/AIDS yang modern, interaktif, dan asik untuk remaja.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -31,14 +37,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={cn(jakarta.variable, space.variable)} suppressHydrationWarning>
-      <body className="bg-gray-50 dark:bg-[#0a0a0f] text-gray-900 dark:text-white font-sans antialiased transition-colors duration-300">
+      <body className="bg-gray-50 dark:bg-[#0a0a0f] text-gray-900 dark:text-white font-sans antialiased transition-colors duration-300 overflow-x-hidden flex min-h-screen flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
         >
           <Navbar />
-          {children}
+          <main className="flex-1">{children}</main>
           <Footer />
 
           <BackToTop />

@@ -207,6 +207,21 @@ export const quizData: Record<string, QuizItem[]> = {
     explanation:
       "Abstinence atau menghindari hubungan seksual berisiko adalah cara paling efektif menurut prinsip ABCDE. Meskipun demikian, setiap huruf dalam ABCDE tetap penting dan relevan sesuai kondisi individu masing-masing.",
   },
+  {
+    id: 3,
+    question:
+      "Selain ABCDE, PrEP (Pre-Exposure Prophylaxis) adalah salah satu strategi pencegahan HIV yang berupa...",
+    options: [
+      "Vaksin HIV yang wajib diberikan sejak lahir",
+      "Obat antiretroviral yang diminum rutin oleh orang HIV-negatif berisiko tinggi, sebelum kontak dengan virus",
+      "Obat yang diminum ODHA agar tidak menularkan ke orang lain",
+      "Suplemen vitamin untuk meningkatkan imun sebelum berhubungan seksual",
+    ],
+    correctAnswer:
+      "Obat antiretroviral yang diminum rutin oleh orang HIV-negatif berisiko tinggi, sebelum kontak dengan virus",
+    explanation:
+      "PrEP adalah obat antiretroviral yang dikonsumsi oleh orang yang belum terinfeksi HIV namun berisiko tinggi tertular, sebagai lapisan pencegahan tambahan di luar ABCDE. Berbeda dengan ARV pada ODHA yang berfungsi menekan virus yang sudah ada di tubuh.",
+  },
 ],
 
 pengobatan: [
@@ -238,6 +253,21 @@ pengobatan: [
     explanation:
       "Hingga saat ini belum ada obat yang bisa menyembuhkan HIV secara total. Namun dengan terapi ARV yang konsisten, penderita dapat menekan perkembangan virus, menjaga imunitas, dan menjalani hidup sehat — bahkan dengan harapan hidup yang hampir setara orang tanpa HIV.",
   },
+  {
+    id: 3,
+    question:
+      "Istilah 'U=U' (Undetectable = Untransmittable) dalam konteks pengobatan HIV berarti...",
+    options: [
+      "ODHA yang viral load-nya tidak terdeteksi sudah sembuh total dari HIV",
+      "ODHA yang viral load-nya tidak terdeteksi (karena ARV rutin) secara praktis tidak dapat menularkan HIV ke pasangan",
+      "Virus HIV yang tidak terdeteksi berarti sudah bermutasi menjadi lebih berbahaya",
+      "Tes HIV yang hasilnya undetectable berarti orang tersebut tidak pernah terinfeksi",
+    ],
+    correctAnswer:
+      "ODHA yang viral load-nya tidak terdeteksi (karena ARV rutin) secara praktis tidak dapat menularkan HIV ke pasangan",
+    explanation:
+      "U=U adalah kesimpulan berbasis bukti ilmiah: ODHA yang rutin minum ARV hingga viral load-nya tidak terdeteksi dalam darah, secara praktis tidak berisiko menularkan HIV secara seksual ke pasangannya. Ini bukan berarti sembuh — ARV tetap harus diminum seumur hidup.",
+  },
 ],
 
 stigma: [
@@ -267,6 +297,21 @@ stigma: [
       "Membuat ODHA enggan berobat sehingga kondisi kesehatan makin memburuk",
     explanation:
       "Stigma dan diskriminasi membuat ODHA takut terbuka dan enggan memeriksakan diri atau mengakses pengobatan. Akibatnya, virus semakin berkembang tanpa terkontrol dan kondisi kesehatan terus memburuk. Dukungan sosial yang positif justru mendorong ODHA untuk tetap konsisten menjalani terapi.",
+  },
+  {
+    id: 3,
+    question:
+      "Aktivitas sehari-hari seperti berjabat tangan, berbagi alat makan, atau menggunakan toilet yang sama dengan ODHA...",
+    options: [
+      "Berisiko tinggi menularkan HIV",
+      "Tidak menularkan HIV, karena virus tidak menyebar lewat kontak sehari-hari",
+      "Berisiko hanya jika ODHA sedang dalam stadium AIDS",
+      "Aman hanya jika ODHA sudah minum ARV",
+    ],
+    correctAnswer:
+      "Tidak menularkan HIV, karena virus tidak menyebar lewat kontak sehari-hari",
+    explanation:
+      "HIV hanya menular melalui darah, cairan seksual, ASI, dan dari ibu ke bayi — bukan lewat kontak fisik biasa, berbagi alat makan, atau toilet. Memahami fakta ini penting untuk mengurangi stigma yang tidak berdasar terhadap ODHA di lingkungan sosial.",
   },
 ],
 };

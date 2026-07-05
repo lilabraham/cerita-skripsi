@@ -11,8 +11,8 @@ import {
   ExternalLink,
   CheckCircle2,
 } from "lucide-react";
-import { Metadata } from "next";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 import Badge from "@/components/ui/Badge";
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -25,6 +25,17 @@ const containerVariants = {
     },
   },
 };
+function FloatingShape({ className, style }: { className: string; style?: React.CSSProperties }) {
+  return (
+    <motion.div
+      aria-hidden="true"
+      className={cn("absolute pointer-events-none select-none hidden sm:block", className)}
+      style={style}
+      animate={{ y: [0, -14, 0], rotate: [0, 8, -8, 0], opacity: [0.4, 0.7, 0.4] }}
+      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+    />
+  );
+}
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -49,48 +60,48 @@ const slideLeft = {
 // ─── Static Data ──────────────────────────────────────────────────────────────
 
 const researcher = {
-  name:     "Putik Aulia Rachma",
-  nim:      "P1337424425146",
-  prodi:    "Kebidanan Semarang – Sarjana Terapan",
-  kampus:   "Poltekkes Kemenkes Semarang",
-  tahun:    "2026",
-  email:    "humas@poltekkes-smg.ac.id",
+  name: "Putik Aulia Rachma",
+  nim: "P1337424425146",
+  prodi: "Kebidanan Semarang – Sarjana Terapan",
+  kampus: "Poltekkes Kemenkes Semarang",
+  tahun: "2026",
+  email: "humas@poltekkes-smg.ac.id",
   initials: "PA",
 };
 
 const supervisors = [
   {
     label: "Pembimbing I",
-    name:  "Ida Ariyanti, S.SiT, Bdn., M.Kes",
-    nip:   "NIP. 19700514 199803 2 001",
+    name: "Ida Ariyanti, S.SiT, Bdn., M.Kes",
+    nip: "NIP. 19700514 199803 2 001",
     color: "bg-cyan-300",
   },
   {
     label: "Pembimbing II",
-    name:  "Dinar Indri Bakti Salsabila, S.Tr.Keb., M.Tr.Keb",
-    nip:   "NIP. 19970306 202506 2 010",
+    name: "Dinar Indri Bakti Salsabila, S.Tr.Keb., M.Tr.Keb",
+    nip: "NIP. 19970306 202506 2 010",
     color: "bg-pink-300",
   },
 ];
 
 const researchDetails = [
   {
-    icon:  School,
+    icon: School,
     label: "Lokasi Penelitian",
     value: "SMA Mardisiswa Semarang",
-    bg:    "bg-lime-300",
+    bg: "bg-lime-300",
   },
   {
-    icon:  FlaskConical,
+    icon: FlaskConical,
     label: "Metode Penelitian",
-    value: "Quasi Eksperimen · One Group Pre-Post Test Design",
-    bg:    "bg-yellow-300",
+    value: "Quasi Eksperimen · Non-equivalent Control Group Design",
+    bg: "bg-yellow-300",
   },
   {
-    icon:  Users,
+    icon: Users,
     label: "Populasi / Sampel",
-    value: "Remaja kelas XI usia 15–21 tahun",
-    bg:    "bg-orange-300",
+    value: "Remaja kelas XI aktif usia 17–20 tahun",
+    bg: "bg-orange-300",
   },
 ];
 
@@ -98,21 +109,34 @@ const researchTitle =
   "Pengaruh Pendidikan Kesehatan dengan Media Website terhadap Tingkat Pengetahuan dan Sikap Remaja Mengenai HIV/AIDS";
 
 const timeline = [
-  { phase: "Penyusunan Proposal",  period: "Sep – Okt 2025", done: true  },
-  { phase: "Seminar Proposal",     period: "Nov 2025",        done: true  },
-  { phase: "Pengembangan Website", period: "Des – Jan 2026",  done: true  },
-  { phase: "Pengambilan Data",     period: "Feb – Mar 2026",  done: false },
-  { phase: "Analisis Data",        period: "Apr 2026",        done: false },
-  { phase: "Sidang Skripsi",       period: "Mei 2026",        done: false },
+  { phase: "Penyusunan Proposal", period: "Jan – Mei 2026", done: true },
+  { phase: "Seminar Proposal", period: "Jun 2026", done: true },
+  { phase: "Pengembangan Website", period: "Jul 2026", done: true },
+  { phase: "Pengambilan Data", period: "Agu 2026", done: false },
+  { phase: "Analisis Data", period: "Agu – Sep 2026", done: false },
+  { phase: "Sidang Skripsi", period: "Sep 2026", done: false },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function TentangPage() {
   return (
-    <main className="min-h-screen bg-[var(--bg-base)] pt-24 pb-20 px-4 sm:px-6 transition-colors duration-300">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--bg-base)] pt-24 pb-20 px-4 sm:px-6 transition-colors duration-300">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none opacity-60 dark:opacity-30"
+        style={{
+          backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.08) 1.2px, transparent 1.2px)`,
+          backgroundSize: "24px 24px",
+        }}
+      />
+      <FloatingShape className="w-16 h-16 rounded-full border-4 border-black bg-cyan-300/40" style={{ top: "8%", left: "4%" }} />
+      <FloatingShape className="w-10 h-10 rounded-lg border-4 border-black bg-yellow-300/50 rotate-12" style={{ top: "18%", right: "6%" }} />
+      <FloatingShape className="w-20 h-20 rounded-full border-4 border-black bg-pink-300/30" style={{ bottom: "12%", left: "3%" }} />
+      <FloatingShape className="w-12 h-12 rounded-lg border-4 border-black bg-lime-300/40 -rotate-6" style={{ bottom: "20%", right: "5%" }} />
+
       <motion.div
-        className="max-w-4xl mx-auto space-y-6"
+        className="relative z-10 max-w-4xl mx-auto space-y-6"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -134,7 +158,7 @@ export default function TentangPage() {
         {/* ── JUDUL PENELITIAN (Hero Card) ──────────── */}
         <motion.div
           variants={slideUp}
-          className="rounded-2xl border-4 border-black dark:border-white bg-cyan-300 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-6 space-y-2"
+          className="rounded-2xl border-4 border-black dark:border-white bg-cyan-300 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-5 sm:p-6 space-y-2"
         >
           <p className="text-xs font-black text-black uppercase tracking-widest flex items-center gap-1.5">
             <BookOpen size={12} />
@@ -148,7 +172,7 @@ export default function TentangPage() {
         {/* ── PROFIL PENELITI (Bright Yellow Card) ─── */}
         <motion.div
           variants={slideUp}
-          className="rounded-2xl border-4 border-black dark:border-white bg-yellow-300 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-6"
+          className="rounded-2xl border-4 border-black dark:border-white bg-yellow-300 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-5 sm:p-6"
         >
           <p className="text-xs font-black text-black uppercase tracking-widest mb-5">
             Profil Peneliti
@@ -198,7 +222,9 @@ export default function TentangPage() {
           {/* Dosen Pembimbing */}
           <motion.div
             variants={slideLeft}
-            className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-6 space-y-4"
+            whileHover={{ y: -4, boxShadow: "10px 10px 0px 0px rgba(0,0,0,1)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-5 sm:p-6 space-y-4"
           >
             <p className="text-xs font-black text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5">
               <GraduationCap size={12} />
@@ -228,7 +254,9 @@ export default function TentangPage() {
           {/* Detail Penelitian */}
           <motion.div
             variants={slideUp}
-            className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-6 space-y-4"
+            whileHover={{ y: -4, boxShadow: "10px 10px 0px 0px rgba(0,0,0,1)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-5 sm:p-6 space-y-4"
           >
             <p className="text-xs font-black text-black dark:text-white uppercase tracking-widest flex items-center gap-1.5">
               <FlaskConical size={12} />
@@ -259,7 +287,7 @@ export default function TentangPage() {
         {/* ── TIMELINE ──────────────────────────────── */}
         <motion.div
           variants={slideUp}
-          className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-6 space-y-5"
+          className="rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] p-5 sm:p-6 space-y-5"
         >
           <p className="text-xs font-black text-black dark:text-white uppercase tracking-widest">
             Timeline Penelitian
@@ -277,20 +305,18 @@ export default function TentangPage() {
               >
                 {/* Dot */}
                 <div
-                  className={`absolute -left-5 w-4 h-4 rounded-full border-2 border-black dark:border-white flex items-center justify-center shrink-0 ${
-                    item.done ? "bg-lime-300" : "bg-white dark:bg-gray-900"
-                  }`}
+                  className={`absolute -left-5 w-4 h-4 rounded-full border-2 border-black dark:border-white flex items-center justify-center shrink-0 ${item.done ? "bg-lime-300" : "bg-white dark:bg-gray-900"
+                    }`}
                 >
                   {item.done && <CheckCircle2 size={9} className="text-black" />}
                 </div>
 
                 <div className="flex-1 flex items-center justify-between gap-3 min-w-0">
                   <p
-                    className={`text-sm font-bold truncate ${
-                      item.done
-                        ? "text-black dark:text-white"
-                        : "text-gray-400 dark:text-gray-600"
-                    }`}
+                    className={`text-sm font-bold truncate ${item.done
+                      ? "text-black dark:text-white"
+                      : "text-gray-400 dark:text-gray-600"
+                      }`}
                   >
                     {item.phase}
                   </p>

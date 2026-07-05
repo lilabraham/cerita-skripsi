@@ -65,7 +65,7 @@ export default function HeroSection() {
   return (
     <section
       className={cn(
-        "relative min-h-screen flex items-center justify-center overflow-hidden pt-20",
+        "relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-20",
         // ── GRADIENT FLOW (Light → section below) ──
         "bg-gradient-to-b from-yellow-300 via-yellow-200 to-cyan-50",
         // ── DARK MODE FLOW ──
@@ -102,23 +102,23 @@ export default function HeroSection() {
 
       {/* Main Content */}
       <motion.div
-        className="relative z-10 max-w-6xl mx-auto px-6 py-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center"
+        className="relative z-10 max-w-6xl mx-auto px-6 py-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* ── Left Column ── */}
-        <div className="lg:col-span-7 text-center lg:text-left space-y-7">
+        <div className="lg:col-span-7 text-center lg:text-left space-y-5 sm:space-y-7">
 
           {/* Badge */}
           <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
             <span
               className={cn(
-                "inline-flex items-center gap-2 px-4 py-1.5 rounded-none",
+                "inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-none",
                 "border-2 border-black dark:border-white",
                 "bg-black dark:bg-white",
                 "text-[#FFF000] dark:text-black",
-                "text-sm font-black tracking-widest uppercase",
+                "text-xs sm:text-sm font-black tracking-widest uppercase",
                 "shadow-[4px_4px_0px_0px_#FF2D78] dark:shadow-[4px_4px_0px_0px_rgba(255,45,120,0.8)]",
               )}
             >
@@ -130,7 +130,7 @@ export default function HeroSection() {
           {/* Headline */}
           <motion.h1
             variants={itemVariants}
-            className="text-[3rem] md:text-[4.5rem] lg:text-[5.5rem] font-black tracking-tighter leading-[0.9] uppercase"
+            className="text-[2.25rem] sm:text-[3rem] md:text-[4.5rem] lg:text-[5.5rem] font-black tracking-tighter leading-[1] sm:leading-[0.9] uppercase"
           >
             <span className="text-black dark:text-white">Jadilah Generasi</span>
             <br />
@@ -152,8 +152,8 @@ export default function HeroSection() {
           <motion.p
             variants={itemVariants}
             className={cn(
-              "text-base md:text-lg font-semibold max-w-xl mx-auto lg:mx-0 leading-relaxed",
-              "border-l-4 border-black dark:border-white pl-4 py-2",
+              "text-sm sm:text-base md:text-lg font-semibold max-w-xl mx-auto lg:mx-0 leading-relaxed",
+              "border-l-4 border-black dark:border-white pl-3 sm:pl-4 py-2",
               "bg-white/60 dark:bg-white/5",
               "text-black dark:text-white/80",
             )}
@@ -216,7 +216,7 @@ export default function HeroSection() {
         {/* ── Right Column: New Illustration ── */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-5 flex justify-center lg:justify-end items-center relative mt-8 lg:mt-0"
+          className="lg:col-span-5 flex justify-center lg:justify-end items-center relative mt-4 sm:mt-8 lg:mt-0"
         >
           {/* Layer 1: Pink Backing Frame (The drop shadow base) */}
           <div
@@ -269,7 +269,7 @@ export default function HeroSection() {
         {/* ── Stat Cards ── */}
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto lg:mx-0 w-full lg:col-span-12 pt-8 lg:pt-4"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto lg:mx-0 w-full lg:col-span-12 pt-6 lg:pt-4"
         >
           {floatingCards.map((card, i) => (
             <motion.div

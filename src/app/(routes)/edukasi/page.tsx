@@ -41,7 +41,7 @@ const modules: ModuleData[] = [
     title: "Apa Itu HIV dan AIDS?",
     desc: "Mengenal virus yang menyerang sistem kekebalan tubuh dan perbedaannya dengan AIDS.",
     icon: Activity,
-    imageSrc: "/images/virus-hiv.png",
+    imageSrc: "/images/icons/Apa-itu-HIV-AIDS.png",
     cardBg: "#A8D8FF",
     accentBg: "#FFE566",
   },
@@ -50,7 +50,7 @@ const modules: ModuleData[] = [
     title: "Bagaimana HIV Menyerang Tubuh?",
     desc: "Pahami proses bertahap bagaimana virus HIV menginfeksi dan menghancurkan sel CD4.",
     icon: AlertTriangle,
-    imageSrc: "/images/remaja-sehat.png",
+    imageSrc: "/images/icons/Apa-itu-HIV-AIDS.png",
     cardBg: "#FFE566",
     accentBg: "#FF8DC7",
   },
@@ -59,7 +59,7 @@ const modules: ModuleData[] = [
     title: "Gejala HIV Per Fase",
     desc: "Ketahui ciri-ciri dan gejala yang muncul pada fase akut, laten, hingga AIDS.",
     icon: ShieldAlert,
-    imageSrc: "/images/remaja-demam.png",
+    imageSrc: "/images/icons/Gejala.png",
     cardBg: "#B5F5A0",
     accentBg: "#A8D8FF",
   },
@@ -68,7 +68,7 @@ const modules: ModuleData[] = [
     title: "Cara Penularan HIV",
     desc: "Fakta medis tentang bagaimana HIV dapat dan tidak dapat ditularkan.",
     icon: HeartPulse,
-    imageSrc: "/images/botol-arv.png",
+    imageSrc: "/images/icons/Penularan.png",
     cardBg: "#D4D4D4",
     accentBg: "#9CA3AF",
   },
@@ -77,7 +77,7 @@ const modules: ModuleData[] = [
     title: "Cara Mencegah HIV",
     desc: "Terapkan prinsip ABCDE untuk melindungi diri dari risiko penularan HIV.",
     icon: ShieldCheck,
-    imageSrc: "/images/pencegahan-hiv.png",
+    imageSrc: "/images/icons/Mencegah.png",
     cardBg: "#FF8DC7",
     accentBg: "#FFF000",
   },
@@ -86,7 +86,7 @@ const modules: ModuleData[] = [
     title: "Pengobatan HIV",
     desc: "Kenali terapi ARV dan bagaimana ODHA bisa hidup sehat dan produktif.",
     icon: Pill,
-    imageSrc: "/images/pengobatan-arv.png",
+    imageSrc: "/images/icons/Pengobatan.png",
     cardBg: "#C4F135",
     accentBg: "#A8D8FF",
   },
@@ -95,7 +95,7 @@ const modules: ModuleData[] = [
     title: "Stop Stigma terhadap ODHA",
     desc: "Pahami hak ODHA dan peran kita dalam menghapus diskriminasi di masyarakat.",
     icon: Heart,
-    imageSrc: "/images/stop-stigma.png",
+    imageSrc: "/images/icons/Mitos.png",
     cardBg: "#FDBA74",
     accentBg: "#C4F135",
   },
@@ -253,24 +253,22 @@ function UnlockedCard({ mod, index, progress }: { mod: ModuleData; index: number
         style={{ backgroundColor: mod.cardBg }}
       />
 
-      {/* Top row: image box + status pill */}
-      <div className="flex items-start justify-between gap-2 mt-1">
-        <div
-          className="w-16 h-16 shrink-0 rounded-xl border-2 flex items-center justify-center overflow-hidden"
-          style={{ borderColor: mod.cardBg, backgroundColor: `${mod.cardBg}33` }}
-        >
-          <Image
-            src={mod.imageSrc}
-            alt={mod.title}
-            width={52}
-            height={52}
-            className="object-contain transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
-          />
-        </div>
+      {/* Hero image canvas */}
+      <div
+        className="relative w-full aspect-[4/3] sm:aspect-video rounded-xl border-2 border-black/15 overflow-hidden mb-4 flex items-center justify-center"
+        style={{ backgroundColor: mod.cardBg + "33" }}
+      >
+        <Image
+          src={mod.imageSrc}
+          alt={mod.title}
+          fill
+          sizes="(max-width: 640px) 100vw, 50vw"
+          className="object-contain p-4 drop-shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:rotate-2"
+        />
 
-        {/* Status pill */}
+        {/* Status pill — mengambang di atas kanvas */}
         <div
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-black/20 shrink-0"
+          className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-black/20"
           style={{ backgroundColor: mod.accentBg }}
         >
           <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
@@ -360,31 +358,20 @@ function LockedCard({ mod, index }: { mod: ModuleData; index: number }) {
       <div className="hidden dark:block h-6 w-full shrink-0" style={{ background: STRIPE_DARK }} />
 
       <div className="flex flex-col gap-3 p-5">
-        {/* Top row */}
-        <div className="flex items-start justify-between gap-2">
-          <div
-            className={cn(
-              "w-16 h-16 shrink-0 rounded-xl border-2 flex items-center justify-center overflow-hidden",
-              "border-black/15 dark:border-slate-700",
-              "bg-black/5 dark:bg-slate-800",
-            )}
-          >
-            <Image
-              src={mod.imageSrc}
-              alt={mod.title}
-              width={52}
-              height={52}
-              className="object-contain grayscale opacity-20"
-            />
-          </div>
+        {/* Hero image canvas — muted/locked state */}
+        <div
+          className="relative w-full aspect-[4/3] sm:aspect-video rounded-xl border-2 border-black/15 dark:border-slate-700 overflow-hidden mb-1 flex items-center justify-center bg-black/5 dark:bg-slate-800"
+        >
+          <Image
+            src={mod.imageSrc}
+            alt={mod.title}
+            fill
+            sizes="(max-width: 640px) 100vw, 50vw"
+            className="object-contain p-4 grayscale opacity-25"
+          />
 
-          {/* Lock pill */}
-          <div
-            className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 shrink-0",
-              "border-black/20 bg-black/8 dark:border-slate-600 dark:bg-slate-800",
-            )}
-          >
+          {/* Lock pill — mengambang di atas kanvas */}
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-black/15 bg-black/5 dark:bg-slate-800">
             <Lock size={11} className="text-black/40 dark:text-slate-400" />
             <span className="text-black/40 dark:text-slate-400 text-[11px] font-black uppercase tracking-widest">
               Terkunci
@@ -620,8 +607,7 @@ export default function EdukasiPage() {
           >
             {modules.map((mod, i) => {
               const score = progressMap[mod.id]?.score ?? 0;
-              const isLocked = isModuleLocked(mod.id); // ← satu baris ini menggantikan semua logika lama
-
+              const isLocked = false //isModuleLocked(mod.id);
               return (
                 <motion.div key={mod.id} variants={cardVariants}>
                   <Link

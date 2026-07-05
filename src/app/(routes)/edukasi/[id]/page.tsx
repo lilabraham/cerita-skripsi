@@ -7,10 +7,13 @@ import DetailEdukasiClient from "./client";
 // ─── Kamus gambar per modul ─────────────────────────────────────────────────
 
 const imageMapping: Record<string, string> = {
-  pengenalan: "/images/virus-hiv.png",
-  penularan: "/images/remaja-sehat.png",
-  pencegahan: "/images/remaja-demam.png",
-  pengobatan: "/images/botol-arv.png",
+  pengenalan: "/images/icons/Apa-itu-HIV-AIDS.png",
+  cara_kerja: "/images/icons/Apa-itu-HIV-AIDS.png",
+  gejala: "/images/icons/Gejala.png",
+  penularan: "/images/icons/Penularan.png",
+  pencegahan: "/images/icons/Mencegah.png",
+  pengobatan: "/images/icons/Pengobatan.png",
+  stigma: "/images/icons/Mitos.png",
 };
 
 // ─── Server Component (Data Fetching) ──────────────────────────────────────
@@ -27,8 +30,8 @@ export default async function DetailEdukasi({
   if (!materi) notFound();
 
   // Gambar dinamis per modul, fallback ke virus-hiv
-  const currentImage = imageMapping[id] || "/images/virus-hiv.png";
-
+  const currentImage = imageMapping[id] || "/images/icons/Apa-itu-HIV-AIDS.png";
+  
   // Split konten menjadi array paragraf
   const paragraphs = materi.content
     .trim()
