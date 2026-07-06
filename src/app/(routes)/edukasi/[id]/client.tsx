@@ -402,10 +402,10 @@ function PenularanLayout() {
         <div className="border-b-4 border-black dark:border-white">
           {/* Section header */}
           <div className="bg-rose-500 border-b-4 border-black dark:border-white px-6 py-3 flex items-center gap-3">
-            <span className="text-2xl">⚠️</span>
-            <div>
-              <p className="font-black text-lg uppercase tracking-widest text-white">MENULAR MELALUI</p>
-              <p className="font-bold text-xs uppercase tracking-widest text-rose-100">4 jalur transmisi utama</p>
+            <span className="text-2xl flex-shrink-0">⚠️</span>
+            <div className="min-w-0 flex-1">
+              <p className="font-black text-lg uppercase tracking-widest text-white break-words">MENULAR MELALUI</p>
+              <p className="font-bold text-xs uppercase tracking-widest text-rose-100 break-words">4 jalur transmisi utama</p>
             </div>
           </div>
 
@@ -418,12 +418,12 @@ function PenularanLayout() {
                 transition={{ delay: i * 0.08, type: "spring", stiffness: 300, damping: 18 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -3 }}
-                className={`${item.bg} p-5 flex flex-col items-center text-center gap-3 cursor-default transition-transform duration-100`}
+                className={`${item.bg} p-5 flex flex-col items-center text-center gap-3 cursor-default transition-transform duration-100 min-w-0`}
               >
-                <div className="w-14 h-14 rounded-xl bg-rose-600 border-4 border-black flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                <div className="w-14 h-14 rounded-xl bg-rose-600 border-4 border-black flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
                   <item.icon size={26} strokeWidth={2.5} className="text-white" />
                 </div>
-                <p className="font-black text-xs uppercase tracking-tight text-black dark:text-white leading-snug">{item.label}</p>
+                <p className="font-black text-xs uppercase tracking-tight text-black dark:text-white leading-snug break-words w-full">{item.label}</p>
               </motion.div>
             ))}
           </div>
@@ -440,7 +440,7 @@ function PenularanLayout() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-6 bg-cyan-50 dark:bg-cyan-950">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 bg-cyan-50 dark:bg-cyan-950">
             {tidakMenularMelalui.map((item, i) => (
               <motion.div
                 key={i}
@@ -449,7 +449,7 @@ function PenularanLayout() {
                 transition={{ delay: i * 0.06, type: "spring", stiffness: 300, damping: 20 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -3, boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)" }}
-                className={`${neo} rounded-xl p-3 bg-white dark:bg-cyan-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3 transition-all duration-100 cursor-default`}
+                className={`${neo} rounded-xl p-3 bg-white dark:bg-cyan-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3 transition-all duration-100 cursor-default min-w-0`}
               >
                 {/* Checkmark + icon */}
                 <div className="relative flex-shrink-0">
@@ -458,7 +458,7 @@ function PenularanLayout() {
                   </div>
                   <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-lime-400 border-2 border-black rounded-full flex items-center justify-center text-[9px] font-black text-black">✓</span>
                 </div>
-                <p className="font-black text-xs uppercase tracking-tight text-black dark:text-white leading-tight">{item.label}</p>
+                <p className="font-black text-xs uppercase tracking-tight text-black dark:text-white leading-tight break-words min-w-0 flex-1">{item.label}</p>
               </motion.div>
             ))}
           </div>

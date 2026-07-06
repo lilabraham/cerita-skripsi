@@ -65,7 +65,7 @@ const researcher = {
   prodi: "Kebidanan Semarang – Sarjana Terapan",
   kampus: "Poltekkes Kemenkes Semarang",
   tahun: "2026",
-  email: "humas@poltekkes-smg.ac.id",
+  email: "putikrachma@gmail.com",
   initials: "PA",
 };
 

@@ -36,8 +36,8 @@ interface SessionState {
   score:          number;
   wrongIndices:   number[];
   phase:          "quiz" | "result";
-  finalPercentage: number; // ← disimpan di state agar konsisten
-  isAnswering:    boolean; // ← NEW: lock untuk mencegah spam-click
+  finalPercentage: number;
+  isAnswering:    boolean;
 }
 
 type SessionAction =
@@ -60,7 +60,6 @@ const initialState = (): SessionState => ({
 function sessionReducer(state: SessionState, action: SessionAction): SessionState {
   switch (action.type) {
     case "ANSWER":
-      // ✅ Extra safety: ignore if already answering
       if (state.isAnswering) return state;
       return {
         ...state,
@@ -122,30 +121,26 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
   // ── Handlers ────────────────────────────────────────────────────────────────
 
   const handleAnswer = useCallback(
-    (answer: string) => {
-      // ✅ Double guard: selectedAnswer AND isAnswering lock
-      if (session.selectedAnswer !== null || session.isAnswering) return;
-      const isCorrect = answer === currentQ.correctAnswer;
-      dispatch({ type: "ANSWER", answer, isCorrect, questionIndex: session.currentIndex });
-    },
-    [session.selectedAnswer, session.isAnswering, session.currentIndex, currentQ.correctAnswer]
-  );
+  (answer: string) => {
+    if (session.selectedAnswer !== null || session.isAnswering) return;
+    const isCorrect = answer === currentQ.correctAnswer;
+    console.log("[DEBUG]", { answer, correctAnswer: currentQ.correctAnswer, isCorrect }); // ← temporary
+    dispatch({ type: "ANSWER", answer, isCorrect, questionIndex: session.currentIndex });
+  },
+  [session.selectedAnswer, session.isAnswering, session.currentIndex, currentQ.correctAnswer]
+);
 
   const handleNext = useCallback(() => {
     const isLast = session.currentIndex + 1 >= totalQuestions;
 
     if (isLast) {
-      // ✅ Safety net: clamp score ke [0, totalQuestions]
-      const clampedScore = Math.min(
-        Math.max(session.score + (session.isCorrect ? 1 : 0), 0),
-        totalQuestions
+      const clampedScore = Math.min(Math.max(session.score, 0), totalQuestions
       );
       const finalPct = Math.min(
         Math.round((clampedScore / totalQuestions) * 100),
         100
       );
 
-      // ✅ Simpan ke Zustand store dengan nilai yang aman
       updateProgress(modulId, finalPct);
 
       dispatch({ type: "FINISH", finalPercentage: finalPct });
