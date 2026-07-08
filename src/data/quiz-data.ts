@@ -180,138 +180,138 @@ export const quizData: Record<string, QuizItem[]> = {
     },
   ],
   pencegahan: [
-  {
-    id: 1,
-    question: "Huruf 'D' dalam prinsip ABCDE pencegahan HIV singkatan dari...",
-    options: [
-      "Diet ketat dan hidup sehat",
-      "No Drugs (Hindari narkoba suntik)",
-      "Deteksi dini melalui tes HIV",
-      "Diskusi rutin dengan dokter",
-    ],
-    correctAnswer: "No Drugs (Hindari narkoba suntik)",
-    explanation:
-      "D dalam ABCDE adalah No Drugs — hindari penggunaan narkoba suntik dan jangan pernah berbagi jarum suntik. Berbagi jarum adalah jalur penularan HIV yang sangat berisiko karena darah yang terinfeksi masuk langsung ke aliran darah.",
-  },
-  {
-    id: 2,
-    question:
-      "Berdasarkan prinsip ABCDE, cara yang dinyatakan paling efektif untuk mencegah penularan HIV secara seksual adalah...",
-    options: [
-      "C - Condom (penggunaan kondom secara konsisten)",
-      "B - Be Faithful (setia pada satu pasangan)",
-      "A - Abstinence (menghindari hubungan seksual berisiko)",
-      "E - Education (mencari informasi yang benar)",
-    ],
-    correctAnswer: "A - Abstinence (menghindari hubungan seksual berisiko)",
-    explanation:
-      "Abstinence atau menghindari hubungan seksual berisiko adalah cara paling efektif menurut prinsip ABCDE. Meskipun demikian, setiap huruf dalam ABCDE tetap penting dan relevan sesuai kondisi individu masing-masing.",
-  },
-  {
-    id: 3,
-    question:
-      "Selain ABCDE, PrEP (Pre-Exposure Prophylaxis) adalah salah satu strategi pencegahan HIV yang berupa...",
-    options: [
-      "Vaksin HIV yang wajib diberikan sejak lahir",
-      "Obat antiretroviral yang diminum rutin oleh orang HIV-negatif berisiko tinggi, sebelum kontak dengan virus",
-      "Obat yang diminum ODHA agar tidak menularkan ke orang lain",
-      "Suplemen vitamin untuk meningkatkan imun sebelum berhubungan seksual",
-    ],
-    correctAnswer:
-      "Obat antiretroviral yang diminum rutin oleh orang HIV-negatif berisiko tinggi, sebelum kontak dengan virus",
-    explanation:
-      "PrEP adalah obat antiretroviral yang dikonsumsi oleh orang yang belum terinfeksi HIV namun berisiko tinggi tertular, sebagai lapisan pencegahan tambahan di luar ABCDE. Berbeda dengan ARV pada ODHA yang berfungsi menekan virus yang sudah ada di tubuh.",
-  },
-],
+    {
+      id: 1,
+      question: "Huruf 'D' dalam prinsip ABCDE pencegahan HIV singkatan dari...",
+      options: [
+        "Diet ketat dan hidup sehat",
+        "No Drugs (Hindari narkoba suntik)",
+        "Deteksi dini melalui tes HIV",
+        "Diskusi rutin dengan dokter",
+      ],
+      correctAnswer: "No Drugs (Hindari narkoba suntik)",
+      explanation:
+        "D dalam ABCDE adalah No Drugs — hindari penggunaan narkoba suntik dan jangan pernah berbagi jarum suntik. Berbagi jarum adalah jalur penularan HIV yang sangat berisiko karena darah yang terinfeksi masuk langsung ke aliran darah.",
+    },
+    {
+      id: 2,
+      question:
+        "Berdasarkan prinsip ABCDE, cara yang dinyatakan paling efektif untuk mencegah penularan HIV secara seksual adalah...",
+      options: [
+        "C - Condom (penggunaan kondom secara konsisten)",
+        "B - Be Faithful (setia pada satu pasangan)",
+        "A - Abstinence (menghindari hubungan seksual berisiko)",
+        "E - Education (mencari informasi yang benar)",
+      ],
+      correctAnswer: "A - Abstinence (menghindari hubungan seksual berisiko)",
+      explanation:
+        "Abstinence atau menghindari hubungan seksual berisiko adalah cara paling efektif menurut prinsip ABCDE. Meskipun demikian, setiap huruf dalam ABCDE tetap penting dan relevan sesuai kondisi individu masing-masing.",
+    },
+    {
+      id: 3,
+      question:
+        "Mengapa 'Education' (E) atau pendidikan dimasukkan sebagai salah satu prinsip pencegahan HIV?",
+      options: [
+        "Karena pendidikan menjamin seseorang bebas dari penyakit",
+        "Karena informasi yang benar akan membantu seseorang membuat keputusan yang sehat dan aman",
+        "Agar masyarakat tahu cara menyembuhkan HIV secara mandiri",
+        "Untuk memudahkan tenaga medis mendata pasien",
+      ],
+      correctAnswer:
+        "Karena informasi yang benar akan membantu seseorang membuat keputusan yang sehat dan aman",
+      explanation:
+        "Prinsip Education menekankan pentingnya memperoleh informasi yang benar mengenai HIV/AIDS. Pengetahuan yang tepat membantu seseorang memahami cara penularan, pencegahan, serta menghindari perilaku berisiko sehingga dapat mengambil keputusan yang sehat dan aman.",
+    },
+  ],
 
-pengobatan: [
-  {
-    id: 1,
-    question: "Terapi ARV bekerja dengan cara...",
-    options: [
-      "Membunuh semua virus HIV secara permanen dalam 30 hari",
-      "Menekan jumlah virus HIV agar sistem kekebalan tubuh tetap terjaga",
-      "Menyembuhkan AIDS secara total dalam 3 bulan pengobatan",
-      "Mengganti sel CD4 yang rusak dengan sel imun baru",
-    ],
-    correctAnswer:
-      "Menekan jumlah virus HIV agar sistem kekebalan tubuh tetap terjaga",
-    explanation:
-      "ARV tidak menyembuhkan HIV secara total, tetapi menekan viral load (jumlah virus dalam darah) hingga tidak terdeteksi. Hasilnya, sistem kekebalan tubuh tetap berfungsi optimal dan penderita dapat hidup sehat serta produktif.",
-  },
-  {
-    id: 2,
-    question: "Pernyataan yang BENAR mengenai HIV dan pengobatan saat ini adalah...",
-    options: [
-      "HIV sudah bisa disembuhkan total dengan obat terbaru",
-      "Penderita HIV tidak perlu minum obat jika masih merasa sehat",
-      "HIV belum bisa disembuhkan, tetapi bisa dikendalikan dengan terapi ARV",
-      "ARV hanya efektif di stadium awal dan tidak berguna di stadium lanjut",
-    ],
-    correctAnswer:
-      "HIV belum bisa disembuhkan, tetapi bisa dikendalikan dengan terapi ARV",
-    explanation:
-      "Hingga saat ini belum ada obat yang bisa menyembuhkan HIV secara total. Namun dengan terapi ARV yang konsisten, penderita dapat menekan perkembangan virus, menjaga imunitas, dan menjalani hidup sehat — bahkan dengan harapan hidup yang hampir setara orang tanpa HIV.",
-  },
-  {
-    id: 3,
-    question:
-      "Istilah 'U=U' (Undetectable = Untransmittable) dalam konteks pengobatan HIV berarti...",
-    options: [
-      "ODHA yang viral load-nya tidak terdeteksi sudah sembuh total dari HIV",
-      "ODHA yang viral load-nya tidak terdeteksi (karena ARV rutin) secara praktis tidak dapat menularkan HIV ke pasangan",
-      "Virus HIV yang tidak terdeteksi berarti sudah bermutasi menjadi lebih berbahaya",
-      "Tes HIV yang hasilnya undetectable berarti orang tersebut tidak pernah terinfeksi",
-    ],
-    correctAnswer:
-      "ODHA yang viral load-nya tidak terdeteksi (karena ARV rutin) secara praktis tidak dapat menularkan HIV ke pasangan",
-    explanation:
-      "U=U adalah kesimpulan berbasis bukti ilmiah: ODHA yang rutin minum ARV hingga viral load-nya tidak terdeteksi dalam darah, secara praktis tidak berisiko menularkan HIV secara seksual ke pasangannya. Ini bukan berarti sembuh — ARV tetap harus diminum seumur hidup.",
-  },
-],
+  pengobatan: [
+    {
+      id: 1,
+      question: "Terapi ARV bekerja dengan cara...",
+      options: [
+        "Membunuh semua virus HIV secara permanen dalam 30 hari",
+        "Menekan jumlah virus HIV agar sistem kekebalan tubuh tetap terjaga",
+        "Menyembuhkan AIDS secara total dalam 3 bulan pengobatan",
+        "Mengganti sel CD4 yang rusak dengan sel imun baru",
+      ],
+      correctAnswer:
+        "Menekan jumlah virus HIV agar sistem kekebalan tubuh tetap terjaga",
+      explanation:
+        "ARV tidak menyembuhkan HIV secara total, tetapi menekan viral load (jumlah virus dalam darah) hingga tidak terdeteksi. Hasilnya, sistem kekebalan tubuh tetap berfungsi optimal dan penderita dapat hidup sehat serta produktif.",
+    },
+    {
+      id: 2,
+      question: "Pernyataan yang BENAR mengenai HIV dan pengobatan saat ini adalah...",
+      options: [
+        "HIV sudah bisa disembuhkan total dengan obat terbaru",
+        "Penderita HIV tidak perlu minum obat jika masih merasa sehat",
+        "HIV belum bisa disembuhkan, tetapi bisa dikendalikan dengan terapi ARV",
+        "ARV hanya efektif di stadium awal dan tidak berguna di stadium lanjut",
+      ],
+      correctAnswer:
+        "HIV belum bisa disembuhkan, tetapi bisa dikendalikan dengan terapi ARV",
+      explanation:
+        "Hingga saat ini belum ada obat yang bisa menyembuhkan HIV secara total. Namun dengan terapi ARV yang konsisten, penderita dapat menekan perkembangan virus, menjaga imunitas, dan menjalani hidup sehat — bahkan dengan harapan hidup yang hampir setara orang tanpa HIV.",
+    },
+    {
+      id: 3,
+      question:
+        "Berikut ini yang merupakan manfaat terapi ARV adalah...",
+      options: [
+        "Menyembuhkan HIV secara total",
+        "Menghilangkan kebutuhan pemeriksaan kesehatan",
+        "Menjaga daya tahan tubuh dan mengurangi risiko infeksi oportunistik",
+        "Mencegah semua jenis penyakit",
+      ],
+      correctAnswer:
+        "Menjaga daya tahan tubuh dan mengurangi risiko infeksi oportunistik",
+      explanation:
+        "Terapi ARV membantu menjaga sistem kekebalan tubuh, menekan perkembangan HIV, serta mengurangi risiko infeksi oportunistik. Namun, ARV belum dapat menyembuhkan HIV secara total.",
+    },
+  ],
 
-stigma: [
-  {
-    id: 1,
-    question: "Apa kepanjangan dari ODHA?",
-    options: [
-      "Orang Dengan Harapan Abadi",
-      "Orang Dengan HIV/AIDS",
-      "Organisasi Dukungan HIV dan AIDS",
-      "Orang Dengan Hambatan Aktivitas",
-    ],
-    correctAnswer: "Orang Dengan HIV/AIDS",
-    explanation:
-      "ODHA adalah singkatan dari Orang Dengan HIV/AIDS. Mereka adalah individu yang terinfeksi HIV dan tetap memiliki hak yang sama dengan orang lain untuk belajar, bekerja, bergaul, dan hidup di masyarakat.",
-  },
-  {
-    id: 2,
-    question: "Apa dampak stigma dan diskriminasi terhadap ODHA?",
-    options: [
-      "Mendorong ODHA lebih rajin memeriksakan diri ke dokter",
-      "Mempercepat proses penyembuhan karena tekanan sosial",
-      "Membuat ODHA enggan berobat sehingga kondisi kesehatan makin memburuk",
-      "Tidak berpengaruh apapun terhadap kesehatan ODHA",
-    ],
-    correctAnswer:
-      "Membuat ODHA enggan berobat sehingga kondisi kesehatan makin memburuk",
-    explanation:
-      "Stigma dan diskriminasi membuat ODHA takut terbuka dan enggan memeriksakan diri atau mengakses pengobatan. Akibatnya, virus semakin berkembang tanpa terkontrol dan kondisi kesehatan terus memburuk. Dukungan sosial yang positif justru mendorong ODHA untuk tetap konsisten menjalani terapi.",
-  },
-  {
-    id: 3,
-    question:
-      "Aktivitas sehari-hari seperti berjabat tangan, berbagi alat makan, atau menggunakan toilet yang sama dengan ODHA...",
-    options: [
-      "Berisiko tinggi menularkan HIV",
-      "Tidak menularkan HIV, karena virus tidak menyebar lewat kontak sehari-hari",
-      "Berisiko hanya jika ODHA sedang dalam stadium AIDS",
-      "Aman hanya jika ODHA sudah minum ARV",
-    ],
-    correctAnswer:
-      "Tidak menularkan HIV, karena virus tidak menyebar lewat kontak sehari-hari",
-    explanation:
-      "HIV hanya menular melalui darah, cairan seksual, ASI, dan dari ibu ke bayi — bukan lewat kontak fisik biasa, berbagi alat makan, atau toilet. Memahami fakta ini penting untuk mengurangi stigma yang tidak berdasar terhadap ODHA di lingkungan sosial.",
-  },
-],
+  stigma: [
+    {
+      id: 1,
+      question: "Apa kepanjangan dari ODHA?",
+      options: [
+        "Orang Dengan Harapan Abadi",
+        "Orang Dengan HIV/AIDS",
+        "Organisasi Dukungan HIV dan AIDS",
+        "Orang Dengan Hambatan Aktivitas",
+      ],
+      correctAnswer: "Orang Dengan HIV/AIDS",
+      explanation:
+        "ODHA adalah singkatan dari Orang Dengan HIV/AIDS. Mereka adalah individu yang terinfeksi HIV dan tetap memiliki hak yang sama dengan orang lain untuk belajar, bekerja, bergaul, dan hidup di masyarakat.",
+    },
+    {
+      id: 2,
+      question: "Apa dampak stigma dan diskriminasi terhadap ODHA?",
+      options: [
+        "Mendorong ODHA lebih rajin memeriksakan diri ke dokter",
+        "Mempercepat proses penyembuhan karena tekanan sosial",
+        "Membuat ODHA enggan berobat sehingga kondisi kesehatan makin memburuk",
+        "Tidak berpengaruh apapun terhadap kesehatan ODHA",
+      ],
+      correctAnswer:
+        "Membuat ODHA enggan berobat sehingga kondisi kesehatan makin memburuk",
+      explanation:
+        "Stigma dan diskriminasi membuat ODHA takut terbuka dan enggan memeriksakan diri atau mengakses pengobatan. Akibatnya, virus semakin berkembang tanpa terkontrol dan kondisi kesehatan terus memburuk. Dukungan sosial yang positif justru mendorong ODHA untuk tetap konsisten menjalani terapi.",
+    },
+    {
+      id: 3,
+      question:
+        "Aktivitas sehari-hari seperti berjabat tangan, berbagi alat makan, atau menggunakan toilet yang sama dengan ODHA...",
+      options: [
+        "Berisiko tinggi menularkan HIV",
+        "Tidak menularkan HIV, karena virus tidak menyebar lewat kontak sehari-hari",
+        "Berisiko hanya jika ODHA sedang dalam stadium AIDS",
+        "Aman hanya jika ODHA sudah minum ARV",
+      ],
+      correctAnswer:
+        "Tidak menularkan HIV, karena virus tidak menyebar lewat kontak sehari-hari",
+      explanation:
+        "HIV hanya menular melalui darah, cairan seksual, ASI, dan dari ibu ke bayi — bukan lewat kontak fisik biasa, berbagi alat makan, atau toilet. Memahami fakta ini penting untuk mengurangi stigma yang tidak berdasar terhadap ODHA di lingkungan sosial.",
+    },
+  ],
 };
