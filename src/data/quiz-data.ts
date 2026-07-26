@@ -12,17 +12,17 @@ export const quizData: Record<string, QuizItem[]> = {
   pengenalan: [
     {
       id: 1,
-      question: "Apakah HIV dan AIDS itu hal yang sama?",
+      question: "Apakah HIV dan AIDS itu?",
       options: [
-        "Ya, keduanya adalah penyakit yang persis sama",
-        "Tidak, HIV adalah virusnya, sedangkan AIDS adalah stadium akhir infeksinya",
-        "Tidak, AIDS adalah virusnya, HIV adalah gejalanya",
-        "Ya, hanya berbeda istilah medis saja",
+        "HIV adalah virus yang menyerang sistem kekebalan tubuh, sedangkan AIDS adalah tahap lanjut dari infeksi HIV ketika sistem kekebalan tubuh sangat lemah.",
+        "HIV adalah penyakit yang disebabkan oleh bakteri, sedangkan AIDS adalah virus yang menyerang paru-paru.",
+        "HIV dan AIDS adalah penyakit yang berbeda dan tidak saling berhubungan.",
+        "HIV dan AIDS adalah penyakit yang sama, hanya berbeda nama.",
       ],
       correctAnswer:
-        "Tidak, HIV adalah virusnya, sedangkan AIDS adalah stadium akhir infeksinya",
+        "HIV adalah virus yang menyerang sistem kekebalan tubuh, sedangkan AIDS adalah tahap lanjut dari infeksi HIV ketika sistem kekebalan tubuh sangat lemah.",
       explanation:
-        "HIV adalah virus yang menyerang sistem kekebalan tubuh, sementara AIDS adalah kondisi lanjut yang terjadi ketika sistem kekebalan sudah sangat lemah akibat infeksi HIV yang tidak ditangani.",
+        "HIV (Human Immunodeficiency Virus) adalah virus yang menyerang sistem kekebalan tubuh, terutama sel CD4. Jika infeksi HIV tidak diobati, sistem kekebalan akan semakin melemah dan dapat berkembang menjadi AIDS (Acquired Immunodeficiency Syndrome), yaitu tahap lanjut infeksi HIV.",
     },
     {
       id: 2,

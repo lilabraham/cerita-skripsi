@@ -35,27 +35,42 @@ Semakin sedikit jumlah sel CD4, semakin sulit tubuh melawan infeksi dan penyakit
   gejala: {
     title: "Gejala HIV Per Fase",
     subtitle: "Kenali Tanda-Tanda dari Setiap Tahapan",
-    content: `Fase Akut
-Fase ini biasanya terjadi dalam beberapa minggu setelah seseorang terinfeksi HIV. Gejala yang dapat muncul antara lain:
-- Demam
-- Sakit tenggorokan
-- Sakit kepala
-- Kelelahan
-- Nyeri otot dan sendi
-- Ruam kulit
+    content: `Fase Perkembangan HIV
 
-Gejala tersebut sering menyerupai flu sehingga banyak orang tidak menyadari bahwa dirinya telah terinfeksi HIV.
+1. Periode Jendela (Window Period)
+Terjadi sekitar 2–4 minggu setelah terinfeksi HIV.
+Umumnya belum menunjukkan gejala, tetapi sebagian orang mengalami gejala mirip flu, seperti demam, pusing, lemas, dan nyeri tenggorokan.
+Antibodi HIV belum terbentuk sehingga hasil tes HIV dapat masih negatif.
+Berlangsung sekitar 3–6 bulan.
 
-Fase Laten
-Pada fase ini penderita biasanya tidak merasakan gejala apa pun. Meskipun terlihat sehat, virus tetap berada di dalam tubuh dan masih dapat ditularkan kepada orang lain. Fase ini dapat berlangsung selama 3-10 tahun.
+2. Fase Tanpa Gejala (Asymptomatic)
+Tidak menunjukkan gejala meskipun sudah terinfeksi HIV.
+HIV tetap berkembang dan secara perlahan merusak sel CD4 (sel kekebalan tubuh).
+Dapat terjadi pembengkakan kelenjar getah bening.
+Fase ini dapat berlangsung 3–10 tahun atau lebih.
 
-Fase AIDS
-Jika HIV tidak diobati, sistem kekebalan tubuh akan semakin melemah dan muncul berbagai gejala berat seperti:
-- Demam
-- Batuk lebih dari sebulan
-- Menurunnya berat badan lebih dari 10%
-- Diare
-- Herpes`,
+3. Fase Bergejala (Symptomatic)
+Mulai muncul gejala akibat menurunnya sistem kekebalan tubuh.
+Gejala yang sering muncul meliputi:
+- Demam lebih dari 1 bulan
+- Penurunan berat badan lebih dari 10%
+- Diare berkepanjangan
+- Berkeringat pada malam hari
+- Batuk lebih dari 1 bulan
+- Mudah lelah
+- Sariawan atau infeksi jamur pada mulut
+- Ruam atau infeksi pada kulit
+Jika tidak diobati, infeksi HIV dapat berkembang menjadi AIDS.
+
+4. Fase AIDS
+Merupakan stadium akhir infeksi HIV.
+Sistem kekebalan tubuh sangat lemah.
+Muncul infeksi oportunistik, seperti:
+- Tuberkulosis (TB)
+- Pneumonia
+- Kandidiasis (infeksi jamur)
+- Sarkoma Kaposi (kanker tertentu)
+Dapat disertai penurunan berat badan drastis, diare kronis, gangguan daya ingat, perubahan perilaku, hingga gangguan saraf.`,
     nextModule: "penularan",
   },
   penularan: {
