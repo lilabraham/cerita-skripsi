@@ -21,7 +21,7 @@ const LECTURER_MODE = process.env.NEXT_PUBLIC_LECTURER_MODE === "true";
 const DEFAULT_STATE: FormState = {
     currentStep: 0,
     direction: 1,
-    dataDiri: { nama: "", umur: "", jenisKelamin: "", kelas: "", sumberInformasi: "" },
+    dataDiri: { nama: "", umur: "", jenisKelamin: "", kelas: "" },
     pengetahuan: {},
     sikap: {},
 };
@@ -59,8 +59,7 @@ function validateStep(step: number, state: FormState): string | null {
             if (!state.dataDiri.nama.trim()) return "Nama / inisial wajib diisi.";
             if (!state.dataDiri.umur) return "Umur wajib diisi.";
             if (!state.dataDiri.jenisKelamin) return "Pilih jenis kelamin.";
-            if (!state.dataDiri.kelas) return "Pilih kelas / jurusan.";
-            if (!state.dataDiri.sumberInformasi) return "Pilih sumber informasi HIV/AIDS kamu.";
+            if (!state.dataDiri.kelas.trim()) return "Kelas wajib diisi.";
             return null;
         }
         case 2: {
@@ -204,7 +203,6 @@ function StepKonfirmasi({ state, onBack, onSubmit }: {
                                 ["Umur", state.dataDiri.umur ? `${state.dataDiri.umur} tahun` : "—"],
                                 ["Jenis Kelamin", state.dataDiri.jenisKelamin === "L" ? "Laki-laki" : state.dataDiri.jenisKelamin === "P" ? "Perempuan" : "—"],
                                 ["Kelas", state.dataDiri.kelas || "—"],
-                                ["Sumber Info", state.dataDiri.sumberInformasi || "—"],
                             ].map(([label, value]) => (
                                 <div key={label}>
                                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{label}</p>
