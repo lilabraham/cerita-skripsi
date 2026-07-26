@@ -96,45 +96,45 @@ export const quizData: Record<string, QuizItem[]> = {
   gejala: [
     {
       id: 1,
-      question: "Pada fase akut (2–4 minggu pertama setelah terinfeksi), gejala HIV umumnya menyerupai...",
+      question:
+        "Pada fase manakah hasil tes HIV dapat masih negatif karena antibodi HIV belum terbentuk?",
       options: [
-        "Patah tulang dan nyeri sendi parah",
-        "Penyakit flu biasa seperti demam, ruam, dan pembengkakan kelenjar",
-        "Gangguan penglihatan dan pendengaran",
-        "Tidak ada gejala sama sekali",
+        "Fase AIDS",
+        "Fase Bergejala (Symptomatic)",
+        "Periode Jendela (Window Period)",
+        "Fase Tanpa Gejala (Asymptomatic)",
       ],
-      correctAnswer:
-        "Penyakit flu biasa seperti demam, ruam, dan pembengkakan kelenjar",
+      correctAnswer: "Periode Jendela (Window Period)",
       explanation:
-        "Fase akut sering disebut 'acute retroviral syndrome'. Gejalanya memang sangat mirip flu sehingga banyak orang tidak menyadarinya. Inilah mengapa tes HIV sangat penting, terutama setelah adanya perilaku berisiko.",
+        "Pada periode jendela, antibodi HIV belum terbentuk sehingga hasil tes antibodi HIV masih dapat menunjukkan hasil negatif meskipun seseorang telah terinfeksi.",
     },
     {
       id: 2,
-      question: "Pada fase laten, seseorang yang terinfeksi HIV biasanya...",
+      question:
+        "Fase perkembangan HIV yang dapat berlangsung selama 3–10 tahun atau lebih tanpa menunjukkan gejala adalah...",
       options: [
-        "Sudah tidak bisa menularkan HIV ke orang lain",
-        "Menunjukkan gejala berat sehingga mudah dikenali",
-        "Tidak menunjukkan gejala, tetapi HIV tetap aktif dan bisa menular",
-        "Sudah sembuh total dari infeksi HIV",
+        "Fase Tanpa Gejala (Asymptomatic)",
+        "Periode Jendela (Window Period)",
+        "Fase Bergejala (Symptomatic)",
+        "Fase AIDS",
       ],
-      correctAnswer:
-        "Tidak menunjukkan gejala, tetapi HIV tetap aktif dan bisa menular",
+      correctAnswer: "Fase Tanpa Gejala (Asymptomatic)",
       explanation:
-        "Fase laten bisa berlangsung selama 10 tahun atau lebih. Orang yang terinfeksi tampak dan merasa sehat, namun virus tetap bereplikasi di dalam tubuh dan tetap bisa menularkan HIV kepada orang lain. Pengobatan ARV pada fase ini sangat efektif.",
+        "Pada fase Asymptomatic, penderita tampak sehat meskipun HIV tetap berkembang dan merusak sistem kekebalan tubuh.",
     },
     {
       id: 3,
-      question: "Salah satu tanda seseorang telah memasuki stadium AIDS adalah...",
+      question: "Manakah yang merupakan tanda seseorang telah memasuki fase AIDS?",
       options: [
-        "Kulit menjadi lebih cerah dan bersih",
-        "Nafsu makan meningkat drastis",
-        "Penurunan berat badan drastis dan rentan terkena TBC atau infeksi berat lainnya",
-        "Sistem kekebalan tubuh pulih dengan sendirinya",
+        "Tidak menunjukkan gejala sama sekali.",
+        "Mengalami infeksi oportunistik seperti tuberkulosis (TB), pneumonia, atau kandidiasis.",
+        "Hanya mengalami gejala mirip flu selama beberapa hari.",
+        "Hasil tes HIV masih negatif karena antibodi belum terbentuk.",
       ],
       correctAnswer:
-        "Penurunan berat badan drastis dan rentan terkena TBC atau infeksi berat lainnya",
+        "Mengalami infeksi oportunistik seperti tuberkulosis (TB), pneumonia, atau kandidiasis.",
       explanation:
-        "Pada stadium AIDS, sistem kekebalan sudah rusak parah sehingga tubuh tidak mampu melawan infeksi oportunistik seperti TBC, pneumonia, atau infeksi jamur yang pada orang sehat tidak berbahaya. Penurunan berat badan drastis juga merupakan salah satu tanda khas.",
+        "Fase AIDS ditandai dengan sistem kekebalan tubuh yang sangat lemah sehingga muncul infeksi oportunistik, seperti TB, pneumonia, dan kandidiasis.",
     },
   ],
 

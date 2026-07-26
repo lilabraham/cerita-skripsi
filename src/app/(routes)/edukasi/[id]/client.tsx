@@ -247,32 +247,45 @@ function CaraKerjaLayout() {
 
 const faseData = [
   {
-    label: "Fase Akut",
-    subtitle: "2–4 Minggu Pertama",
+    label: "Periode Jendela",
+    subtitle: "2–4 Minggu (Window Period)",
     color: "bg-emerald-200 dark:bg-emerald-900",
     accent: "bg-emerald-500",
     headerBg: "bg-emerald-500",
     gejala: [
-      { icon: Thermometer, text: "Demam tinggi mendadak" },
-      { icon: Activity, text: "Kelelahan ekstrem" },
-      { icon: Wind, text: "Sakit tenggorokan" },
-      { icon: Bug, text: "Ruam kulit" },
-      { icon: Heart, text: "Pembengkakan kelenjar" },
+      { icon: Thermometer, text: "Gejala mirip flu (demam)" },
+      { icon: Activity, text: "Pusing dan lemas" },
+      { icon: Wind, text: "Nyeri tenggorokan" },
+      { icon: AlertTriangle, text: "Antibodi belum terbentuk, tes bisa negatif" },
+      { icon: Bug, text: "Berlangsung sekitar 3–6 bulan" },
     ],
   },
   {
-    label: "Fase Laten",
-    subtitle: "3–10 Tahun",
+    label: "Fase Tanpa Gejala",
+    subtitle: "3–10 Tahun (Asymptomatic)",
+    color: "bg-sky-200 dark:bg-sky-900",
+    accent: "bg-sky-500",
+    headerBg: "bg-sky-500",
+    gejala: [
+      { icon: Bug, text: "Tidak menunjukkan gejala" },
+      { icon: Activity, text: "HIV diam-diam merusak sel CD4" },
+      { icon: Heart, text: "Pembengkakan kelenjar getah bening" },
+      { icon: Thermometer, text: "Dapat berlangsung 3–10 tahun atau lebih" },
+    ],
+  },
+  {
+    label: "Fase Bergejala",
+    subtitle: "Symptomatic",
     color: "bg-amber-200 dark:bg-amber-900",
     accent: "bg-amber-500",
     headerBg: "bg-amber-500",
     gejala: [
-      { icon: Thermometer, text: "Demam" },
-      { icon: Wind, text: "Batuk lebih dari sebulan" },
-      { icon: TrendingDown, text: "Menurunnya berat badan lebih dari 10%" },
-      { icon: Droplets, text: "Diare" },
-      { icon: Bug, text: "Herpes" },
-    ]
+      { icon: Thermometer, text: "Demam lebih dari 1 bulan" },
+      { icon: TrendingDown, text: "Penurunan BB lebih dari 10%" },
+      { icon: Droplets, text: "Diare berkepanjangan" },
+      { icon: Wind, text: "Batuk lebih dari 1 bulan, keringat malam" },
+      { icon: Bug, text: "Sariawan, ruam kulit, mudah lelah" },
+    ],
   },
   {
     label: "Fase AIDS",
@@ -281,11 +294,10 @@ const faseData = [
     accent: "bg-rose-500",
     headerBg: "bg-rose-500",
     gejala: [
-      { icon: AlertTriangle, text: "Infeksi oportunistik berat" },
-      { icon: Thermometer, text: "Demam persisten > 38°C" },
-      { icon: Activity, text: "Penurunan BB drastis" },
-      { icon: Wind, text: "Pneumonia berulang" },
-      { icon: Bug, text: "Kanker terkait (KS, dll)" },
+      { icon: AlertTriangle, text: "Infeksi oportunistik (TB, pneumonia, kandidiasis)" },
+      { icon: Bug, text: "Sarkoma Kaposi (kanker terkait)" },
+      { icon: TrendingDown, text: "Penurunan BB drastis, diare kronis" },
+      { icon: Activity, text: "Gangguan daya ingat, perilaku, dan saraf" },
     ],
   },
 ];
@@ -300,7 +312,7 @@ function GejalaLayout() {
           <div className="w-3 h-3 rounded-full bg-yellow-300 border border-black" />
           <div className="w-3 h-3 rounded-full bg-lime-400 border border-black" />
           <span className="ml-3 font-black text-xs uppercase tracking-widest text-white dark:text-black">
-            Gejala HIV — 3 Fase Perjalanan Penyakit
+            Gejala HIV — 4 Fase Perjalanan Penyakit
           </span>
         </div>
 
@@ -311,8 +323,8 @@ function GejalaLayout() {
           </p>
         </div>
 
-        {/* 3 Columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y-4 sm:divide-y-0 sm:divide-x-4 divide-black dark:divide-white">
+        {/* 4 Columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y-4 sm:divide-y-0 sm:divide-x-4 divide-black dark:divide-white">
           {faseData.map((fase, fi) => (
             <motion.div
               key={fase.label}
