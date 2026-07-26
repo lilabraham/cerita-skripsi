@@ -1,10 +1,6 @@
 // src/types/questionnaire.ts
 
 export type JenisKelamin = "L" | "P";
-export type Kelas = "IPA" | "IPS";
-export type SumberInfo =
-  | "Buku" | "Koran" | "Majalah" | "Leaflet" | "Televisi"
-  | "Internet" | "Guru" | "Tenaga Kesehatan" | "Teman" | "Orang Tua" | "Lainnya";
 
 export type JawabanBS = "B" | "S";
 export type JawabanSikap = "SS" | "S" | "TS" | "STS";
@@ -13,8 +9,7 @@ export interface DataDiri {
   nama: string;
   umur: string;
   jenisKelamin: JenisKelamin | "";
-  kelas: Kelas | "";
-  sumberInformasi: SumberInfo | "";
+  kelas: string;
 }
 
 export interface FormState {
