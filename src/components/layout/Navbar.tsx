@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { cn } from "@/lib/utils";
 import {
   motion,
   AnimatePresence,
@@ -16,7 +17,7 @@ const navLinks = [
   { label: "Home",          href: "/"        },
   { label: "Edukasi",       href: "/edukasi" },
   { label: "Video",         href: "/video"   },
-  { label: "Forum",         href: "/forum"   },
+  { label: "Kuesioner",     href: "/kuesioner" },
 ];
 
 export default function Navbar() {
@@ -36,6 +37,23 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && menuOpen) setMenuOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
 
   return (
     <>
@@ -160,6 +178,8 @@ export default function Navbar() {
                 "active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
               )}
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {menuOpen ? (
@@ -206,6 +226,7 @@ export default function Navbar() {
 
             {/* Panel */}
             <motion.div
+              id="mobile-menu"
               key="mobile-menu"
               initial={{ opacity: 0, y: -12, scale: 0.97 }}
               animate={{ opacity: 1, y: 0,   scale: 1    }}
@@ -358,9 +379,4 @@ function NavItem({ href, label, isActive }: NavItemProps) {
     </li>
   );
 }
-
-/* ── UTILITY ────────────────────────────────────────────────── */
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ");
-}
+

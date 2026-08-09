@@ -1,4 +1,3 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\components\ui\MarqueeBanner.tsx
 "use client";
 import { cn } from "@/lib/utils";
 

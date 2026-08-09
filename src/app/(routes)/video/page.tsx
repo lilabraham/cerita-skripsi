@@ -93,18 +93,6 @@ function Tag({ label, index }: { label: string; index: number }) {
   );
 }
 
-// ─── Stat Pill ────────────────────────────────────────────────────────────────
-function StatPill({ icon, label, value }: { icon: string; label: string; value: string }) {
-  return (
-    <div className="flex items-center gap-2 px-4 py-2 border-2 border-black dark:border-white bg-white dark:bg-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.5)]" style={{ borderRadius: "8px" }}>
-      <span className="text-xl">{icon}</span>
-      <div>
-        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">{label}</p>
-        <p className="text-sm font-black text-black dark:text-white leading-none">{value}</p>
-      </div>
-    </div>
-  );
-}
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function VideoPage() {

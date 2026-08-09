@@ -51,6 +51,9 @@ function AnswerBtn({ option, selected, onClick }: AnswerBtnProps) {
     return (
         <motion.button
             type="button"
+            role="radio"
+            aria-checked={selected}
+            aria-label={option.label}
             onClick={onClick}
             animate={
                 selected
@@ -94,7 +97,7 @@ function QuestionCard({
     return (
         <motion.div
             variants={cardVariants}
-            className="bg-white border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
+            className="bg-white dark:bg-slate-900 border-4 border-black dark:border-white rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] overflow-hidden"
         >
             {/* Card header */}
             <div

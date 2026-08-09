@@ -1,4 +1,3 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\components\ui\Button.tsx
 
 "use client";
 

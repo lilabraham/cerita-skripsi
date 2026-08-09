@@ -30,8 +30,7 @@ interface QuizState {
   resetModul: (modulId: ModulId) => void;
   resetAllProgress: () => void;
 
-  // Derived helpers (pure functions, not computed — avoids selector boilerplate)
-  isModul4Unlocked: () => boolean;
+  // Derived helpers
   getScore: (modulId: ModulId) => number;
 }
 
@@ -44,12 +43,7 @@ const defaultModulProgress = (): ModulProgress => ({
   lastCompletedAt: null,
 });
 
-// Modul yang harus diselesaikan dengan nilai 100 untuk membuka modul 4
-const UNLOCK_REQUIRED_MODULS: ModulId[] = [
-  "pengenalan",
-  "penularan",
-  "pencegahan",
-];
+
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 
@@ -89,14 +83,6 @@ export const useQuizStore = create<QuizState>()(
 
       // ── resetAllProgress ────────────────────────────────────────────────────
       resetAllProgress: () => set({ progress: {} }),
-
-      // ── isModul4Unlocked ────────────────────────────────────────────────────
-      isModul4Unlocked: () => {
-        const { progress } = get();
-        return UNLOCK_REQUIRED_MODULS.every(
-          (id) => (progress[id]?.score ?? 0) === 100
-        );
-      },
 
       // ── getScore ────────────────────────────────────────────────────────────
       getScore: (modulId) => get().progress[modulId]?.score ?? 0,

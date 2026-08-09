@@ -74,21 +74,21 @@ function QuestionCard({
   return (
     <motion.div
       variants={cardVariants}
-      className="bg-white border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
+      className="bg-white dark:bg-slate-900 border-4 border-black dark:border-white rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] overflow-hidden"
     >
       {/* Card header */}
-      <div className="flex items-center gap-3 px-6 py-3 border-b-4 border-black bg-gray-50">
+      <div className="flex items-center gap-3 px-6 py-3 border-b-4 border-black dark:border-white bg-gray-50 dark:bg-slate-800">
         <span className="bg-lime-400 border-4 border-black rounded-lg w-8 h-8 flex items-center justify-center font-black text-xs text-black flex-shrink-0">
           {item.no}
         </span>
-        <span className="font-bold text-xs text-gray-500 uppercase tracking-widest">
+        <span className="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest">
           Soal {item.no}
         </span>
       </div>
 
       {/* Question text */}
       <div className="px-6 pt-5 pb-4">
-        <p className="font-bold text-base sm:text-lg leading-snug text-black">
+        <p className="font-bold text-base sm:text-lg leading-snug text-black dark:text-white">
           {item.pertanyaan}
         </p>
       </div>

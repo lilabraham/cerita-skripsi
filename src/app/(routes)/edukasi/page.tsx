@@ -2,6 +2,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, type Variants } from "framer-motion";
 import {
   ShieldAlert,
@@ -446,19 +447,25 @@ function LockedCard({ mod, index }: { mod: ModuleData; index: number }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function EdukasiPage() {
+  const [mounted, setMounted] = useState(false);
   const progressMap = useQuizStore((s) => s.progress);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  // Before hydration, use empty progress to match server render
+  const safeProgress = mounted ? progressMap : {};
 
   // Helper: cek apakah modul terkunci berdasarkan LOCK_RULES
   const isModuleLocked = (id: string): boolean =>
     id in LOCK_RULES &&
-    !LOCK_RULES[id].every((req) => (progressMap[req]?.score ?? 0) === 100);
+    !LOCK_RULES[id].every((req) => (safeProgress[req]?.score ?? 0) === 100);
 
   // Jumlah modul yang sudah terbuka (untuk hero bar label)
   const unlockedCount = modules.filter((m) => !isModuleLocked(m.id)).length;
 
   // Rata-rata progress semua chapter → hero progress bar
   const heroProgress = Math.round(
-    modules.reduce((acc, m) => acc + (progressMap[m.id]?.score ?? 0), 0) /
+    modules.reduce((acc, m) => acc + (safeProgress[m.id]?.score ?? 0), 0) /
     modules.length
   );
 
@@ -492,28 +499,29 @@ export default function EdukasiPage() {
         />
 
         {/* ── DECORATIVE ELEMENTS ──────────────────────────────────────────── */}
+        <div className="hidden md:block pointer-events-none absolute inset-0 overflow-hidden">
+          <FloatingPill color="#fde68a" width={80} height={34} top="8%" left="5%" rotate={-20} delay={0} duration={5.5} />
+          <FloatingPill color="#a5f3fc" width={55} height={24} top="14%" left="82%" rotate={15} delay={1.2} duration={6.2} />
+          <FloatingPill color="#bbf7d0" width={100} height={40} top="72%" left="88%" rotate={-35} delay={0.5} duration={7.0} />
+          <FloatingPill color="#fca5a5" width={64} height={28} top="85%" left="3%" rotate={25} delay={2.0} duration={5.8} />
+          <FloatingPill color="#e9d5ff" width={48} height={22} top="52%" left="92%" rotate={-10} delay={0.8} duration={6.8} />
+          <FloatingPill color="#fde68a" width={36} height={18} top="40%" left="1%" rotate={40} delay={1.8} duration={4.9} />
+          <FloatingPill color="#a5f3fc" width={72} height={30} top="92%" left="55%" rotate={-8} delay={3.0} duration={7.5} />
 
-        <FloatingPill color="#fde68a" width={80} height={34} top="8%" left="5%" rotate={-20} delay={0} duration={5.5} />
-        <FloatingPill color="#a5f3fc" width={55} height={24} top="14%" left="82%" rotate={15} delay={1.2} duration={6.2} />
-        <FloatingPill color="#bbf7d0" width={100} height={40} top="72%" left="88%" rotate={-35} delay={0.5} duration={7.0} />
-        <FloatingPill color="#fca5a5" width={64} height={28} top="85%" left="3%" rotate={25} delay={2.0} duration={5.8} />
-        <FloatingPill color="#e9d5ff" width={48} height={22} top="52%" left="92%" rotate={-10} delay={0.8} duration={6.8} />
-        <FloatingPill color="#fde68a" width={36} height={18} top="40%" left="1%" rotate={40} delay={1.8} duration={4.9} />
-        <FloatingPill color="#a5f3fc" width={72} height={30} top="92%" left="55%" rotate={-8} delay={3.0} duration={7.5} />
+          <SparkleStar size={28} color="#facc15" top="6%" left="72%" delay={0} duration={8} />
+          <SparkleStar size={20} color="#22d3ee" top="22%" left="10%" delay={1.5} duration={10} />
+          <SparkleStar size={36} color="#a3e635" top="62%" left="5%" delay={0.7} duration={9} />
+          <SparkleStar size={24} color="#f472b6" top="78%" left="75%" delay={2.2} duration={7} />
+          <SparkleStar size={18} color="#facc15" top="88%" left="42%" delay={1.0} duration={11} />
+          <SparkleStar size={32} color="#c4b5fd" top="32%" left="88%" delay={3.5} duration={8.5} />
+          <SparkleStar size={16} color="#22d3ee" top="48%" left="50%" delay={2.8} duration={9.5} />
 
-        <SparkleStar size={28} color="#facc15" top="6%" left="72%" delay={0} duration={8} />
-        <SparkleStar size={20} color="#22d3ee" top="22%" left="10%" delay={1.5} duration={10} />
-        <SparkleStar size={36} color="#a3e635" top="62%" left="5%" delay={0.7} duration={9} />
-        <SparkleStar size={24} color="#f472b6" top="78%" left="75%" delay={2.2} duration={7} />
-        <SparkleStar size={18} color="#facc15" top="88%" left="42%" delay={1.0} duration={11} />
-        <SparkleStar size={32} color="#c4b5fd" top="32%" left="88%" delay={3.5} duration={8.5} />
-        <SparkleStar size={16} color="#22d3ee" top="48%" left="50%" delay={2.8} duration={9.5} />
-
-        <FloatingRing size={90} color="rgba(250,204,21,0.35)" thickness={4} top="18%" left="75%" delay={0} duration={7} />
-        <FloatingRing size={140} color="rgba(34,211,238,0.25)" thickness={5} top="60%" left="2%" delay={1.5} duration={9} />
-        <FloatingRing size={60} color="rgba(163,230,53,0.40)" thickness={3} top="40%" left="60%" delay={0.8} duration={6.5} />
-        <FloatingRing size={200} color="rgba(196,181,253,0.20)" thickness={6} top="80%" left="70%" delay={2.5} duration={11} />
-        <FloatingRing size={50} color="rgba(251,113,133,0.35)" thickness={3} top="10%" left="40%" delay={1.0} duration={8} />
+          <FloatingRing size={90} color="rgba(250,204,21,0.35)" thickness={4} top="18%" left="75%" delay={0} duration={7} />
+          <FloatingRing size={140} color="rgba(34,211,238,0.25)" thickness={5} top="60%" left="2%" delay={1.5} duration={9} />
+          <FloatingRing size={60} color="rgba(163,230,53,0.40)" thickness={3} top="40%" left="60%" delay={0.8} duration={6.5} />
+          <FloatingRing size={200} color="rgba(196,181,253,0.20)" thickness={6} top="80%" left="70%" delay={2.5} duration={11} />
+          <FloatingRing size={50} color="rgba(251,113,133,0.35)" thickness={3} top="10%" left="40%" delay={1.0} duration={8} />
+        </div>
 
         {/* ── MAIN CONTENT ─────────────────────────────────────────────────── */}
         <div className="relative z-10 max-w-3xl mx-auto">
@@ -607,7 +615,7 @@ export default function EdukasiPage() {
           >
             {modules.map((mod, i) => {
               const score = progressMap[mod.id]?.score ?? 0;
-              const isLocked = false //isModuleLocked(mod.id);
+              const isLocked = isModuleLocked(mod.id);
               return (
                 <motion.div key={mod.id} variants={cardVariants}>
                   <Link

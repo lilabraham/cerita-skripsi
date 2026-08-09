@@ -1,4 +1,4 @@
-// src/app/(routes)/forum/page.tsx
+// src/app/(routes)/kuesioner/page.tsx
 "use client";
 
 import { useReducer, useEffect, useCallback, useState, useMemo } from "react";
@@ -58,6 +58,8 @@ function validateStep(step: number, state: FormState): string | null {
         case 1: {
             if (!state.dataDiri.nama.trim()) return "Nama / inisial wajib diisi.";
             if (!state.dataDiri.umur) return "Umur wajib diisi.";
+            const umurNum = Number(state.dataDiri.umur);
+            if (!Number.isFinite(umurNum) || umurNum < 10 || umurNum > 25) return "Umur harus antara 10–25 tahun.";
             if (!state.dataDiri.jenisKelamin) return "Pilih jenis kelamin.";
             if (!state.dataDiri.kelas.trim()) return "Kelas wajib diisi.";
             return null;
@@ -171,17 +173,18 @@ function ProgressBar({ currentStep }: { currentStep: number }) {
 
 // ─── Step Konfirmasi (inline — simple, no separate file needed yet) ───────
 
-function StepKonfirmasi({ state, onBack, onSubmit }: {
+function StepKonfirmasi({ state, onBack, onSubmit, isSubmitting }: {
     state: FormState;
     onBack: () => void;
     onSubmit: () => void;
+    isSubmitting?: boolean;
 }) {
     const totalPengetahuan = Object.keys(state.pengetahuan).length;
     const totalSikap = Object.keys(state.sikap).length;
 
     return (
         <div className="max-w-2xl mx-auto">
-            <div className="bg-white border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden mb-6">
+            <div className="bg-white dark:bg-slate-900 border-4 border-black dark:border-white rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] overflow-hidden mb-6">
                 {/* Header */}
                 <div className="px-6 py-4 border-b-4 border-black bg-lime-400">
                     <h2 className="font-black text-2xl uppercase tracking-tighter text-black">
@@ -196,7 +199,7 @@ function StepKonfirmasi({ state, onBack, onSubmit }: {
                 <div className="divide-y-4 divide-black">
                     {/* Data Diri */}
                     <div className="px-6 py-4">
-                        <p className="font-black text-xs uppercase tracking-widest text-gray-500 mb-3">Data Diri</p>
+                        <p className="font-black text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">Data Diri</p>
                         <div className="grid grid-cols-2 gap-x-6 gap-y-2">
                             {[
                                 ["Nama", state.dataDiri.nama || "—"],
@@ -242,13 +245,14 @@ function StepKonfirmasi({ state, onBack, onSubmit }: {
                 </motion.button>
                 <motion.button
                     onClick={onSubmit}
+                    disabled={isSubmitting}
                     animate={{ boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)" }}
-                    whileHover={{ y: -3, boxShadow: "9px 9px 0px 0px rgba(0,0,0,1)", scale: 1.01 }}
-                    whileTap={{ x: 6, y: 6, boxShadow: "0px 0px 0px 0px rgba(0,0,0,1)", scale: 0.99 }}
+                    whileHover={isSubmitting ? {} : { y: -3, boxShadow: "9px 9px 0px 0px rgba(0,0,0,1)", scale: 1.01 }}
+                    whileTap={isSubmitting ? {} : { x: 6, y: 6, boxShadow: "0px 0px 0px 0px rgba(0,0,0,1)", scale: 0.99 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                    className="flex-[2] py-4 rounded-xl border-4 border-black bg-black text-white font-black uppercase tracking-widest text-base"
+                    className={`flex-[2] py-4 rounded-xl border-4 border-black font-black uppercase tracking-widest text-base ${isSubmitting ? "bg-gray-600 text-gray-300 cursor-wait" : "bg-black text-white"}`}
                 >
-                    Kirim Jawaban ✓
+                    {isSubmitting ? "Mengirim..." : "Kirim Jawaban ✓"}
                 </motion.button>
             </div>
         </div>
@@ -321,6 +325,7 @@ export default function KuesionerPage() {
     const [unlockDateText, setUnlockDateText] = useState("");
 
     useEffect(() => {
+        // Combine mount + lock checks + draft hydration into single effect to prevent flicker
         try {
             const saved = sessionStorage.getItem(STORAGE_KEY);
             if (saved) {
@@ -328,17 +333,7 @@ export default function KuesionerPage() {
                 dispatch({ type: "HYDRATE", payload: { ...parsed, currentStep: 0 } });
             }
         } catch { /* silent */ }
-        setMounted(true);
-    }, []);
 
-    useEffect(() => {
-        if (!mounted) return;
-        try {
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch { /* silent */ }
-    }, [state, mounted]);
-
-    useEffect(() => {
         if (localStorage.getItem("hasCompletedPostTest") === "true") {
             setIsAlreadyDone(true);
         }
@@ -347,6 +342,7 @@ export default function KuesionerPage() {
             if (raw) {
                 try {
                     const firstVisit = Number(atob(raw));
+                    if (!Number.isFinite(firstVisit) || firstVisit <= 0) throw new Error("invalid");
                     const unlockTime = firstVisit + 3 * 24 * 60 * 60 * 1000;
                     if (Date.now() < unlockTime) {
                         setIsLockedByTime(true);
@@ -357,10 +353,19 @@ export default function KuesionerPage() {
                             })
                         );
                     }
-                } catch { /* silent */ }
+                } catch { /* corrupted timestamp — allow access */ }
             }
         }
+        setMounted(true);
     }, []);
+
+    // Persist draft to sessionStorage on every state change
+    useEffect(() => {
+        if (!mounted) return;
+        try {
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch { /* silent — quota exceeded in private browsing */ }
+    }, [state, mounted]);
 
     // ─── Handlers ─────────────────────────────────────────────────────────
 
@@ -382,22 +387,39 @@ export default function KuesionerPage() {
         dispatch({ type: "SET_SIKAP", payload: { key, value } });
     }, []);
 
-    const handleSubmit = useCallback(() => {
-        // TODO: replace with actual API call
-        console.log("Submitting:", { dataDiri: state.dataDiri, pengetahuan: state.pengetahuan, sikap: state.sikap });
-        try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* silent */ }
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-        // Tandai permanen bahwa user sudah menyelesaikan kuesioner ini
-        try { localStorage.setItem("hasCompletedPostTest", "true"); } catch { /* silent */ }
+    const handleSubmit = useCallback(async () => {
+        if (isSubmitting) return; // guard against double-submit
+        setIsSubmitting(true);
+        try {
+            const res = await fetch("/api/submit-survey", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    dataDiri: state.dataDiri,
+                    pengetahuan: state.pengetahuan,
+                    sikap: state.sikap,
+                }),
+            });
+            if (!res.ok) {
+                const data = await res.json().catch(() => null);
+                throw new Error(data?.message || "Gagal mengirim");
+            }
 
-        setSubmitted(true);
-    }, [state]);
+            try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* silent */ }
+            try { localStorage.setItem("hasCompletedPostTest", "true"); } catch { /* silent */ }
+            setSubmitted(true);
+        } catch (err) {
+            console.error(err);
+            setError(err instanceof Error ? err.message : "Gagal mengirim jawaban. Periksa koneksi internet dan coba lagi.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    }, [state, isSubmitting]);
 
     // ─── Step content — memoised, re-evaluates only when step/answers change
 
-    const dataDiriKey = JSON.stringify(state.dataDiri);
-    const pengetahuanKey = JSON.stringify(state.pengetahuan);
-    const sikapKey = JSON.stringify(state.sikap);
 
     const stepContent = useMemo(() => {
         switch (state.currentStep) {
@@ -450,12 +472,12 @@ export default function KuesionerPage() {
                     state={state}
                     onBack={handleBack}
                     onSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
                 />
             );
             default: return null;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.currentStep, dataDiriKey, pengetahuanKey, sikapKey]);
+    }, [state.currentStep, state.dataDiri, state.pengetahuan, state.sikap, isSubmitting]);
 
     if (!mounted) return null; // gate — cegah flicker sebelum localStorage dibaca
 

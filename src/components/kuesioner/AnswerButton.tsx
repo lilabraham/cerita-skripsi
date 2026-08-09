@@ -24,6 +24,8 @@ export default function AnswerButton({
   return (
     <motion.button
       type="button"
+      role="radio"
+      aria-checked={selected}
       onClick={onClick}
       // Pressed/selected: translate down + shadow collapses
       animate={

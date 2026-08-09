@@ -81,10 +81,4 @@ export const STEP_META: StepMeta[] = [
 ];
 
 export const TOTAL_STEPS = STEP_META.length - 1; // 6
-
-// ─── SUMBER_INFO options ───────────────────────────────────────────────────
-
-export const SUMBER_INFO_OPTIONS = [
-  "Buku", "Koran", "Majalah", "Leaflet", "Televisi",
-  "Internet", "Guru", "Tenaga Kesehatan", "Teman", "Orang Tua", "Lainnya",
-] as const;
+

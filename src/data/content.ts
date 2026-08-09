@@ -27,7 +27,10 @@ Acquired Immune Deficiency Syndrome (AIDS) adalah tahap lanjut dari infeksi HIV.
     content: `Setelah masuk ke dalam tubuh, HIV akan mencari dan menyerang sel CD4, yaitu sel darah putih yang berfungsi menjaga sistem kekebalan tubuh.
 
 Prosesnya terjadi secara bertahap:
-[PLACEHOLDER_GAMBAR_ALUR]
+1. Virus HIV masuk ke dalam tubuh.
+2. HIV menempel dan masuk ke dalam sel CD4.
+3. HIV membajak sel CD4 untuk memperbanyak diri.
+4. Sel CD4 hancur dan virus baru menyebar mencari sel CD4 lainnya.
 
 Semakin sedikit jumlah sel CD4, semakin sulit tubuh melawan infeksi dan penyakit.`,
     nextModule: "gejala",

@@ -1,4 +1,3 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\components\ui\Badge.tsx
 
 import { type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
