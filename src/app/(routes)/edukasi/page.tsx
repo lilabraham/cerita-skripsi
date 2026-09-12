@@ -456,9 +456,7 @@ export default function EdukasiPage() {
   const safeProgress = (mounted ? progressMap : {}) as typeof progressMap;
 
   // Helper: cek apakah modul terkunci berdasarkan LOCK_RULES
-  const isModuleLocked = (id: string): boolean =>
-    id in LOCK_RULES &&
-    !LOCK_RULES[id].every((req) => (safeProgress[req as keyof typeof safeProgress]?.score ?? 0) === 100);
+  const isModuleLocked = (id: string): boolean => false; // ponytail: all chapters open
 
   // Jumlah modul yang sudah terbuka (untuk hero bar label)
   const unlockedCount = modules.filter((m) => !isModuleLocked(m.id)).length;
