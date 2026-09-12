@@ -68,7 +68,7 @@ function AnswerBtn({ option, selected, onClick }: AnswerBtnProps) {
                 "font-black text-xs uppercase tracking-wider leading-tight",
                 "focus:outline-none transition-colors duration-100",
                 "flex flex-col items-center gap-0.5",
-                selected ? `${option.accent} text-black` : "bg-white text-black",
+                selected ? `${option.accent} text-black` : "bg-white dark:bg-[#0B0F19] text-black dark:text-white",
             ].join(" ")}
         >
             {/* Short code badge */}
@@ -102,7 +102,7 @@ function QuestionCard({
             {/* Card header */}
             <div
                 className={[
-                    "flex items-center gap-3 px-6 py-3 border-b-4 border-black transition-colors duration-200",
+                    "flex items-center gap-3 px-6 py-3 border-b-4 border-black dark:border-white transition-colors duration-200",
                     activeOption ? activeOption.headerBg : "bg-gray-50 dark:bg-gray-900",
                 ].join(" ")}
             >

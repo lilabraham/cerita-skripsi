@@ -52,7 +52,7 @@ function AnswerBtn({ label, value, selected, accent, onClick }: AnswerBtnProps) 
         "w-full py-3 rounded-xl border-4 border-black",
         "font-black text-sm uppercase tracking-widest",
         "focus:outline-none transition-colors duration-100",
-        selected ? `${accent} text-black` : "bg-white text-black",
+        selected ? `${accent} text-black` : "bg-white dark:bg-[#0B0F19] text-black dark:text-white",
       ].join(" ")}
     >
       {label}

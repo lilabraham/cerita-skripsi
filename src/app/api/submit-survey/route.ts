@@ -76,11 +76,10 @@ export async function POST(request: Request) {
 
     // ── Validate & sanitize data diri ──
     const nama = sanitize(dataDiri.nama, 100);
-    const umur = sanitize(dataDiri.umur, 3);
-    const kelas = sanitize(dataDiri.kelas, 20);
+    const kelas = isValidAnswer(dataDiri.kelas, ["XI 1", "XI 2", "XI 5"]) ? dataDiri.kelas : "";
     const jenisKelamin = isValidAnswer(dataDiri.jenisKelamin, ["L", "P"]) ? dataDiri.jenisKelamin : "";
 
-    if (!nama || !umur || !jenisKelamin || !kelas) {
+    if (!nama || !jenisKelamin || !kelas) {
       return NextResponse.json({ success: false, message: "Data diri tidak lengkap" }, { status: 400 });
     }
 
@@ -145,7 +144,6 @@ export async function POST(request: Request) {
     const row = {
       Timestamp: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }),
       Nama: nama,
-      Umur: umur,
       JenisKelamin: jenisKelamin,
       Kelas: kelas,
       ...pengetahuanCols,

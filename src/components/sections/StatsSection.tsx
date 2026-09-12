@@ -1,4 +1,3 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\components\sections\StatsSection.tsx
 
 "use client";
 

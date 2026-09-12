@@ -1,4 +1,3 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\components\sections\FeaturesSection.tsx
 
 "use client";
 
@@ -74,8 +73,6 @@ export default function FeaturesSection() {
       className={cn(
         "relative section-padding overflow-hidden",
         // Gradient flow: continues from Stats violet-50/slate-900
-        "bg-gradient-to-b from-violet-50 via-lavender-50 to-pink-50",
-        // Tailwind doesn't have lavender — use fuchsia-50 as midpoint
         "bg-gradient-to-b from-violet-50 via-fuchsia-50 to-pink-50",
         "dark:from-slate-900 dark:via-slate-800 dark:to-slate-900",
       )}

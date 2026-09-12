@@ -1,4 +1,3 @@
-// D:\Project coding\cerita-app\src\app\(routes)\edukasi\[id]\client.tsx
 
 "use client";
 
@@ -819,8 +818,8 @@ function FallbackLayout({ paragraphs }: { paragraphs: string[] }) {
                   <div className="bg-indigo-600 dark:bg-indigo-500 px-4 py-2 border-b-4 border-black dark:border-white">
                     <span className="font-black text-xs uppercase tracking-widest text-white">📊 Ilustrasi</span>
                   </div>
-                  <div className="relative w-full aspect-[16/7]">
-                    <Image src="/images/alur-kerja-hiv.png" alt="Ilustrasi alur HIV" fill className="object-contain p-4" />
+                  <div className="relative w-full aspect-[16/7] bg-gray-200 dark:bg-slate-800 flex flex-col items-center justify-center p-6 text-center">
+                    <p className="font-bold text-gray-500 dark:text-gray-400">Ilustrasi (Aset Belum Tersedia)</p>
                   </div>
                 </div>
               );

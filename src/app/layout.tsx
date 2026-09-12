@@ -44,7 +44,7 @@ export default function RootLayout({
           enableSystem
         >
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <div className="flex-1">{children}</div>
           <Footer />
 
           <BackToTop />

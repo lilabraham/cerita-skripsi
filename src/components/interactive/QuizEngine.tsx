@@ -124,7 +124,6 @@ export default function QuizEngine({ questions, modulId }: QuizEngineProps) {
   (answer: string) => {
     if (session.selectedAnswer !== null || session.isAnswering) return;
     const isCorrect = answer === currentQ.correctAnswer;
-    console.log("[DEBUG]", { answer, correctAnswer: currentQ.correctAnswer, isCorrect }); // ← temporary
     dispatch({ type: "ANSWER", answer, isCorrect, questionIndex: session.currentIndex });
   },
   [session.selectedAnswer, session.isAnswering, session.currentIndex, currentQ.correctAnswer]

@@ -1,8 +1,7 @@
-// C:\Users\LENOVO\Documents\cerita-app\src\components\layout\Footer.tsx
-
 import Link from "next/link";
-import { ShieldAlert, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 /* ── SOCIAL ICONS (inline SVG) ───────────────────────────────── */
 function IconInstagram({ size = 14 }: { size?: number }) {
@@ -11,13 +10,6 @@ function IconInstagram({ size = 14 }: { size?: number }) {
       <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-function IconTwitterX({ size = 14 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   );
 }
@@ -201,9 +193,4 @@ export default function Footer() {
     </footer>
   );
 }
-
-/* ── UTILITY ─────────────────────────────────────────────────── */
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ");
-}
+

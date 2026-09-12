@@ -4,7 +4,7 @@
 import { useReducer, useEffect, useCallback, useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { CheckCircle, Lock } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import type { FormState, FormAction, DataDiri, JawabanBS, JawabanSikap } from "@/types/questionnaire";
 import { STEP_META, TOTAL_STEPS, SLICES } from "@/data/questionnaire-data";
 import StepWelcome from "@/components/kuesioner/StepWelcome";
@@ -14,14 +14,14 @@ import StepSikap from "@/components/kuesioner/StepSikap";
 import ScrollIndicator from "@/components/ui/ScrollIndicator";
 
 // ─── Di LUAR komponen ──────────────────────────────────────────────
-const LECTURER_MODE = process.env.NEXT_PUBLIC_LECTURER_MODE === "true";
+
 
 // ─── Constants ────────────────────────────────────────────────────────────
 
 const DEFAULT_STATE: FormState = {
     currentStep: 0,
     direction: 1,
-    dataDiri: { nama: "", umur: "", jenisKelamin: "", kelas: "" },
+    dataDiri: { nama: "", jenisKelamin: "", kelas: "" },
     pengetahuan: {},
     sikap: {},
 };
@@ -57,11 +57,8 @@ function validateStep(step: number, state: FormState): string | null {
     switch (step) {
         case 1: {
             if (!state.dataDiri.nama.trim()) return "Nama / inisial wajib diisi.";
-            if (!state.dataDiri.umur) return "Umur wajib diisi.";
-            const umurNum = Number(state.dataDiri.umur);
-            if (!Number.isFinite(umurNum) || umurNum < 10 || umurNum > 25) return "Umur harus antara 10–25 tahun.";
             if (!state.dataDiri.jenisKelamin) return "Pilih jenis kelamin.";
-            if (!state.dataDiri.kelas.trim()) return "Kelas wajib diisi.";
+            if (!state.dataDiri.kelas) return "Pilih kelas.";
             return null;
         }
         case 2: {
@@ -203,7 +200,6 @@ function StepKonfirmasi({ state, onBack, onSubmit, isSubmitting }: {
                         <div className="grid grid-cols-2 gap-x-6 gap-y-2">
                             {[
                                 ["Nama", state.dataDiri.nama || "—"],
-                                ["Umur", state.dataDiri.umur ? `${state.dataDiri.umur} tahun` : "—"],
                                 ["Jenis Kelamin", state.dataDiri.jenisKelamin === "L" ? "Laki-laki" : state.dataDiri.jenisKelamin === "P" ? "Perempuan" : "—"],
                                 ["Kelas", state.dataDiri.kelas || "—"],
                             ].map(([label, value]) => (
@@ -321,8 +317,7 @@ export default function KuesionerPage() {
     const [validationError, setError] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState(false);
     const [isAlreadyDone, setIsAlreadyDone] = useState(false);
-    const [isLockedByTime, setIsLockedByTime] = useState(false);
-    const [unlockDateText, setUnlockDateText] = useState("");
+
 
     useEffect(() => {
         // Combine mount + lock checks + draft hydration into single effect to prevent flicker
@@ -336,25 +331,6 @@ export default function KuesionerPage() {
 
         if (localStorage.getItem("hasCompletedPostTest") === "true") {
             setIsAlreadyDone(true);
-        }
-        if (!LECTURER_MODE) {
-            const raw = localStorage.getItem("_crt_init_ts");
-            if (raw) {
-                try {
-                    const firstVisit = Number(atob(raw));
-                    if (!Number.isFinite(firstVisit) || firstVisit <= 0) throw new Error("invalid");
-                    const unlockTime = firstVisit + 3 * 24 * 60 * 60 * 1000;
-                    if (Date.now() < unlockTime) {
-                        setIsLockedByTime(true);
-                        setUnlockDateText(
-                            new Date(unlockTime).toLocaleString("id-ID", {
-                                day: "numeric", month: "long", year: "numeric",
-                                hour: "2-digit", minute: "2-digit",
-                            })
-                        );
-                    }
-                } catch { /* corrupted timestamp — allow access */ }
-            }
         }
         setMounted(true);
     }, []);
@@ -521,149 +497,7 @@ export default function KuesionerPage() {
         );
     }
 
-    if (!LECTURER_MODE && isLockedByTime) {
-        return (
-            <main className="relative min-h-screen overflow-hidden flex items-center justify-center p-6 bg-amber-50 dark:bg-[#04060A]">
-
-                {/* Dot grid — light */}
-                <div
-                    className="absolute inset-0 pointer-events-none dark:hidden"
-                    style={{
-                        backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.10) 1.5px, transparent 1.5px)",
-                        backgroundSize: "28px 28px",
-                    }}
-                />
-                {/* Dot grid — dark */}
-                <div
-                    className="absolute inset-0 pointer-events-none hidden dark:block"
-                    style={{
-                        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.06) 1.5px, transparent 1.5px)",
-                        backgroundSize: "28px 28px",
-                    }}
-                />
-
-                {/* ── Floating Viruses — fillClass includes dark: variant ── */}
-                <FloatingVirus size={120} fillClass="fill-rose-500/20   dark:fill-rose-400/30" top="4%" left="3%" floatDuration={5} rotateDuration={14} initialY={0} />
-                <FloatingVirus size={72} fillClass="fill-yellow-500/25 dark:fill-yellow-400/35" top="12%" right="6%" floatDuration={3.5} rotateDuration={9} initialY={-8} />
-                <FloatingVirus size={96} fillClass="fill-rose-500/20   dark:fill-rose-500/35" bottom="8%" left="8%" floatDuration={4.5} rotateDuration={18} initialY={4} />
-                <FloatingVirus size={56} fillClass="fill-black/10      dark:fill-white/15" bottom="15%" right="4%" floatDuration={3.8} rotateDuration={11} initialY={0} />
-                <FloatingVirus size={84} fillClass="fill-yellow-500/20 dark:fill-yellow-300/25" top="42%" left="-2%" floatDuration={6} rotateDuration={22} initialY={-4} />
-                <FloatingVirus size={64} fillClass="fill-rose-400/20   dark:fill-rose-300/30" top="30%" right="2%" floatDuration={4.2} rotateDuration={16} initialY={6} />
-
-                {/* ── Card ── */}
-                <div className="
-        border-4 border-black dark:border-white
-        shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.2)]
-        rounded-2xl overflow-hidden max-w-lg w-full relative z-10
-      ">
-
-                    {/* Top header bar */}
-                    <div className="bg-black dark:bg-white px-5 py-3 flex items-center gap-2 border-b-4 border-black dark:border-white">
-                        <div className="w-3 h-3 rounded-full bg-rose-500  border border-white/30 dark:border-black/30 flex-shrink-0" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-400 border border-white/30 dark:border-black/30 flex-shrink-0" />
-                        <div className="w-3 h-3 rounded-full bg-lime-400   border border-white/30 dark:border-black/30 flex-shrink-0" />
-                        <span className="ml-3 font-black text-xs uppercase tracking-widest text-white dark:text-black">
-                            ⚠️ Akses Dibatasi — Post-Test
-                        </span>
-                    </div>
-
-                    {/* Body */}
-                    <div className="bg-rose-200 dark:bg-rose-950 px-6 pt-8 pb-8 flex flex-col items-center gap-6">
-
-                        {/* Lock icon box */}
-                        <motion.div
-                            className="
-              w-24 h-24 rounded-2xl flex items-center justify-center
-              bg-white dark:bg-slate-800
-              border-4 border-black dark:border-white
-              shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)]
-            "
-                            animate={{ y: [0, -10, 0] }}
-                            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            <Lock size={52} strokeWidth={2.5} className="text-black dark:text-white" />
-                        </motion.div>
-
-                        {/* Title + subtitle */}
-                        <div className="text-center">
-                            <h1 className="font-black text-3xl sm:text-4xl uppercase tracking-tighter text-black dark:text-white leading-none mb-2">
-                                KUESIONER<br />DIKUNCI
-                            </h1>
-                            <p className="font-semibold text-sm text-black/70 dark:text-white/70 leading-relaxed max-w-xs mx-auto">
-                                Sesuai prosedur penelitian, Post-Test baru dapat diakses{" "}
-                                <span className="font-black text-black dark:text-white">3 hari</span> setelah
-                                Anda mulai belajar di platform ini.
-                            </p>
-                        </div>
-
-                        {/* Unlock date box */}
-                        <div className="
-            w-full rounded-2xl overflow-hidden
-            border-4 border-black dark:border-white
-            shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.15)]
-          ">
-                            {/* Sticker tape */}
-                            <div className="bg-yellow-400 dark:bg-yellow-500 border-b-4 border-black dark:border-white px-4 py-1.5">
-                                <span className="font-black text-[10px] uppercase tracking-widest text-black">
-                                    📅 Dapat Diakses Mulai
-                                </span>
-                            </div>
-                            <div className="px-5 py-4 bg-white dark:bg-slate-800">
-                                <p className="font-black text-xl sm:text-2xl text-black dark:text-white tracking-tight leading-snug text-center">
-                                    {unlockDateText}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Instruction chips */}
-                        <div className="flex flex-wrap justify-center gap-2 w-full">
-                            {["✅ Selesaikan semua modul", "⏳ Tunggu 3 hari", "📋 Isi Post-Test"].map((chip) => (
-                                <span
-                                    key={chip}
-                                    className="
-                  border-2 border-black dark:border-white rounded-full
-                  bg-white dark:bg-slate-800
-                  px-3 py-1 font-bold text-xs uppercase tracking-widest
-                  text-black dark:text-white
-                  shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)]
-                "
-                                >
-                                    {chip}
-                                </span>
-                            ))}
-                        </div>
-
-                        {/* CTA Button — shadow via Tailwind so dark: variant works */}
-                        <motion.div
-                            className="
-              w-full rounded-xl
-              shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]       dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.25)]
-              hover:shadow-[9px_9px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[9px_9px_0px_0px_rgba(255,255,255,0.35)]
-              transition-shadow duration-100
-            "
-                            whileHover={{ y: -3 }}
-                            whileTap={{ y: 4, x: 4 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                        >
-                            <Link
-                                href="/"
-                                className="
-                w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl
-                border-4 border-black dark:border-white
-                bg-black dark:bg-white
-                text-rose-300 dark:text-rose-600
-                font-black text-sm uppercase tracking-widest
-              "
-                            >
-                                ← Kembali ke Beranda
-                            </Link>
-                        </motion.div>
-
-                    </div>
-                </div>
-            </main>
-        );
-    }
+    // ─── Post-submit screen ───────────────────────────────────────────────
     // ─── Post-submit screen ───────────────────────────────────────────────
 
     if (submitted) {

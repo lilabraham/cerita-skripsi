@@ -23,7 +23,7 @@ export const videoData: VideoItem[] = [
   },
   {
     id: "vid-3",
-    youtubeId: "xZ4VbU2P8R", 
+    youtubeId: "xZ4VbU2P8Rw", // dummy ID, ganti dengan ID asli 
     title: "Cara Efektif Melindungi Diri & Sesama",
     category: "Pencegahan",
     duration: "06:15"

@@ -10,7 +10,7 @@ import { Zap } from "lucide-react";
 interface QuizHeaderProps {
   currentIndex:   number;
   totalQuestions: number;
-  onQuit:         () => void; // Prop dipertahankan agar tidak break interface, tapi tidak dirender
+  onQuit?:        () => void; // Prop dipertahankan agar tidak break interface, tapi tidak dirender
 }
 
 // ─── Segment Bar ─────────────────────────────────────────────────────────────
@@ -78,7 +78,7 @@ function Segment({ filled, isActive, index }: SegmentProps) {
 export default function QuizHeader({
   currentIndex,
   totalQuestions,
-  // onQuit prop diterima tapi TIDAK dirender — tombol Keluar sudah ada di page.tsx
+  onQuit: _onQuit,
 }: QuizHeaderProps) {
   const progressPercent = Math.round((currentIndex / totalQuestions) * 100);
 

@@ -1,4 +1,3 @@
-/*C:\Users\LENOVO\Documents\cerita-app\src\app\(routes)\edukasi\[id]\page.tsx*/
 
 import { materiData } from "@/data/content";
 import { notFound } from "next/navigation";

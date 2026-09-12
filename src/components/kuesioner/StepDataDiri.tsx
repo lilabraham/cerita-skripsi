@@ -5,7 +5,7 @@
 import { useId } from "react";
 import { motion } from "framer-motion";
 import { User } from "lucide-react";
-import type { DataDiri, JenisKelamin } from "@/types/questionnaire";
+import type { DataDiri, JenisKelamin, Kelas } from "@/types/questionnaire";
 
 interface StepDataDiriProps {
   data: DataDiri;
@@ -93,6 +93,12 @@ const JENIS_KELAMIN_OPTIONS: ToggleOption<JenisKelamin>[] = [
   { value: "P", label: "Perempuan", accent: "bg-pink-400 dark:bg-pink-500" },
 ];
 
+const KELAS_OPTIONS: ToggleOption<Kelas>[] = [
+  { value: "XI 1", label: "XI 1", accent: "bg-lime-400 dark:bg-lime-500" },
+  { value: "XI 2", label: "XI 2", accent: "bg-orange-400 dark:bg-orange-500" },
+  { value: "XI 5", label: "XI 5", accent: "bg-violet-400 dark:bg-violet-500" },
+];
+
 // ─── Main Component ────────────────────────────────────────────────────────
 
 export default function StepDataDiri({ data, onChange }: StepDataDiriProps) {
@@ -144,29 +150,6 @@ export default function StepDataDiri({ data, onChange }: StepDataDiriProps) {
           />
         </motion.div>
 
-        {/* Umur */}
-        <motion.div variants={itemVariants}>
-          <FieldLabel>Umur</FieldLabel>
-          <input
-            id={`${uid}-umur`}
-            type="number"
-            min={10}
-            max={25}
-            value={data.umur}
-            onChange={(e) => onChange({ umur: e.target.value })}
-            placeholder="Contoh: 17"
-            className={[
-              "w-full py-4 px-5 rounded-xl border-4 border-black dark:border-white",
-              "bg-white dark:bg-[#0B0F19] text-black dark:text-white",
-              "font-bold text-base placeholder:text-gray-400 dark:placeholder:text-gray-600",
-              "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]",
-              "focus:outline-none focus:ring-0",
-              "focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[3px] focus:translate-y-[3px]",
-              "transition-all duration-150",
-            ].join(" ")}
-          />
-        </motion.div>
-
         {/* Jenis Kelamin */}
         <motion.div variants={itemVariants}>
           <FieldLabel>Jenis Kelamin</FieldLabel>
@@ -177,26 +160,14 @@ export default function StepDataDiri({ data, onChange }: StepDataDiriProps) {
           />
         </motion.div>
 
-        {/* Kelas — free text input */}
+        {/* Kelas */}
         <motion.div variants={itemVariants}>
           <FieldLabel>Kelas</FieldLabel>
-          <input
-            id={`${uid}-kelas`}
-            type="text"
-            value={data.kelas}
-            onChange={(e) => onChange({ kelas: e.target.value })}
-            placeholder="Contoh: 11 IPA 2"
-            maxLength={30}
-            autoComplete="off"
-            className={[
-              "w-full py-4 px-5 rounded-xl border-4 border-black dark:border-white",
-              "bg-white dark:bg-[#0B0F19] text-black dark:text-white",
-              "font-bold text-base placeholder:text-gray-400 dark:placeholder:text-gray-600",
-              "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]",
-              "focus:outline-none focus:ring-0",
-              "focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[3px] focus:translate-y-[3px]",
-              "transition-all duration-150",
-            ].join(" ")}
+          <ToggleGrid<Kelas>
+            options={KELAS_OPTIONS}
+            selected={data.kelas}
+            onSelect={(v) => onChange({ kelas: v })}
+            cols="grid-cols-3"
           />
         </motion.div>
       </div>

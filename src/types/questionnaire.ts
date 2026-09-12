@@ -5,11 +5,12 @@ export type JenisKelamin = "L" | "P";
 export type JawabanBS = "B" | "S";
 export type JawabanSikap = "SS" | "S" | "TS" | "STS";
 
+export type Kelas = "XI 1" | "XI 2" | "XI 5";
+
 export interface DataDiri {
   nama: string;
-  umur: string;
   jenisKelamin: JenisKelamin | "";
-  kelas: string;
+  kelas: Kelas | "";
 }
 
 export interface FormState {

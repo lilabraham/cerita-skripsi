@@ -453,19 +453,19 @@ export default function EdukasiPage() {
   useEffect(() => { setMounted(true); }, []);
 
   // Before hydration, use empty progress to match server render
-  const safeProgress = mounted ? progressMap : {};
+  const safeProgress = (mounted ? progressMap : {}) as typeof progressMap;
 
   // Helper: cek apakah modul terkunci berdasarkan LOCK_RULES
   const isModuleLocked = (id: string): boolean =>
     id in LOCK_RULES &&
-    !LOCK_RULES[id].every((req) => (safeProgress[req]?.score ?? 0) === 100);
+    !LOCK_RULES[id].every((req) => (safeProgress[req as keyof typeof safeProgress]?.score ?? 0) === 100);
 
   // Jumlah modul yang sudah terbuka (untuk hero bar label)
   const unlockedCount = modules.filter((m) => !isModuleLocked(m.id)).length;
 
   // Rata-rata progress semua chapter → hero progress bar
   const heroProgress = Math.round(
-    modules.reduce((acc, m) => acc + (safeProgress[m.id]?.score ?? 0), 0) /
+    modules.reduce((acc, m) => acc + (safeProgress[m.id as keyof typeof safeProgress]?.score ?? 0), 0) /
     modules.length
   );
 
@@ -614,7 +614,7 @@ export default function EdukasiPage() {
             animate="show"
           >
             {modules.map((mod, i) => {
-              const score = progressMap[mod.id]?.score ?? 0;
+              const score = safeProgress[mod.id as keyof typeof safeProgress]?.score ?? 0;
               const isLocked = isModuleLocked(mod.id);
               return (
                 <motion.div key={mod.id} variants={cardVariants}>

@@ -6,10 +6,12 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 export type ModulId =
   | "pengenalan"
+  | "cara_kerja"
+  | "gejala"
   | "penularan"
   | "pencegahan"
   | "pengobatan"
-  | string; // extensible untuk modul baru
+  | "stigma";
 
 export interface ModulProgress {
   score: number; // 0–100
@@ -18,7 +20,7 @@ export interface ModulProgress {
   lastCompletedAt: string | null; // ISO timestamp
 }
 
-export type ProgressMap = Record<ModulId, ModulProgress>;
+export type ProgressMap = Partial<Record<ModulId, ModulProgress>>;
 
 // ─── Store Interface ──────────────────────────────────────────────────────────
 

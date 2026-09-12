@@ -19,7 +19,7 @@ const STICKERS = [
     bg: "bg-[#FF2D78] dark:bg-pink-600",
     textColor: "text-white",
     shadow: "shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.6)]",
-    rotate: "-rotate-6",
+    rotate: -6,
     pos: "top-6 left-6 md:left-10",
   },
   {
@@ -27,7 +27,7 @@ const STICKERS = [
     bg: "bg-black dark:bg-slate-900",
     textColor: "text-[#FFF000]",
     shadow: "shadow-[4px_4px_0px_0px_#FF2D78]",
-    rotate: "rotate-3",
+    rotate: 3,
     pos: "top-6 right-6 md:right-10",
   },
   {
@@ -35,7 +35,7 @@ const STICKERS = [
     bg: "bg-[#FFF000]",
     textColor: "text-black",
     shadow: "shadow-[4px_4px_0px_0px_#FF2D78]",
-    rotate: "rotate-6",
+    rotate: 6,
     pos: "bottom-6 left-6 md:left-14",
   },
   {
@@ -43,7 +43,7 @@ const STICKERS = [
     bg: "bg-white dark:bg-slate-200",
     textColor: "text-black",
     shadow: "shadow-[4px_4px_0px_0px_#000]",
-    rotate: "-rotate-3",
+    rotate: -3,
     pos: "bottom-6 right-6 md:right-10",
   },
 ];
@@ -140,8 +140,8 @@ export default function CTASection() {
             {STICKERS.map((s) => (
               <motion.div
                 key={s.text}
-                initial={{ opacity: 0, scale: 0.7, rotate: -10 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: parseInt(s.rotate) }}
+                initial={{ opacity: 0, scale: 0.7, rotate: s.rotate }}
+                whileInView={{ opacity: 1, scale: 1, rotate: s.rotate }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, type: "spring", bounce: 0.5 }}
                 className={cn(
@@ -152,8 +152,7 @@ export default function CTASection() {
                   "border-2 border-black",
                   s.textColor,
                   "font-black text-[11px] uppercase tracking-widest",
-                  s.shadow,
-                  s.rotate,
+                  s.shadow
                 )}
               >
                 {s.text}

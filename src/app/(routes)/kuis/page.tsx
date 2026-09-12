@@ -141,7 +141,7 @@ function QuizBoard() {
     );
   }
 
-  return <QuizEngine questions={questions} modulId={modulId} />;
+  return <QuizEngine questions={questions} modulId={modulId as import("@/store/quizStore").ModulId} />;
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
