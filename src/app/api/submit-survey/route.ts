@@ -162,16 +162,16 @@ export async function POST(request: Request) {
       await sheet.setHeaderRow(cols);
     }
 
-    let retries = 3;
-    while (retries > 0) {
+    // ponytail: 5 retries with exponential backoff covers Google Sheets rate limits + transient errors under load
+    const MAX_RETRIES = 5;
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
         await sheet.addRow(row);
         break;
       } catch (err: any) {
-        if (err?.response?.status === 429 && retries > 1) {
-          retries--;
-          // Tunggu 1,5 detik sebelum mencoba lagi (Exponential backoff sederhana)
-          await new Promise(resolve => setTimeout(resolve, 1500));
+        if (attempt < MAX_RETRIES - 1) {
+          const delay = 1000 * Math.pow(2, attempt); // 1s, 2s, 4s, 8s, 16s
+          await new Promise(resolve => setTimeout(resolve, delay));
         } else {
           throw err;
         }

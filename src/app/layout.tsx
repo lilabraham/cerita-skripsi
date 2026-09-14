@@ -40,7 +40,7 @@ export default function RootLayout({
       <body className="bg-gray-50 dark:bg-[#0a0a0f] text-gray-900 dark:text-white font-sans antialiased transition-colors duration-300 overflow-x-hidden flex min-h-screen flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
         >
           <Navbar />
