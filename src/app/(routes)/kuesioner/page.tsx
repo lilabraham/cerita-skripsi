@@ -366,7 +366,7 @@ export default function KuesionerPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = useCallback(async () => {
-        if (isSubmitting) return; // guard against double-submit
+        if (isSubmitting) return;
         setIsSubmitting(true);
         try {
             const payload = JSON.stringify({
@@ -375,8 +375,8 @@ export default function KuesionerPage() {
                 sikap: state.sikap,
             });
 
-            // ponytail: client-side retry — cheapest safety net against Google Sheets quota bursts
-            const MAX_ATTEMPTS = 3;
+            // ponytail: client-side retry with retryable-error awareness
+            const MAX_ATTEMPTS = 5;
             let lastError: Error | null = null;
             for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
                 try {
@@ -385,16 +385,18 @@ export default function KuesionerPage() {
                         headers: { "Content-Type": "application/json" },
                         body: payload,
                     });
-                    if (!res.ok) {
-                        const data = await res.json().catch(() => null);
-                        throw new Error(data?.message || "Gagal mengirim");
-                    }
-                    lastError = null;
-                    break;
-                } catch (err) {
+                    if (res.ok) { lastError = null; break; }
+                    const data = await res.json().catch(() => null);
+                    // Don't retry validation errors (400) — they'll never succeed
+                    if (res.status === 400) throw new Error(data?.message || "Data tidak valid");
+                    // Retryable: 429, 500, 503
+                    throw Object.assign(new Error(data?.message || "Server sibuk"), { retryable: true });
+                } catch (err: any) {
                     lastError = err instanceof Error ? err : new Error("Gagal mengirim");
-                    if (attempt < MAX_ATTEMPTS - 1) {
-                        await new Promise(r => setTimeout(r, 2000 * Math.pow(2, attempt) + Math.random() * 1000));
+                    if (err?.retryable && attempt < MAX_ATTEMPTS - 1) {
+                        await new Promise(r => setTimeout(r, 1500 * Math.pow(2, attempt) + Math.random() * 1000));
+                    } else if (!err?.retryable) {
+                        break; // non-retryable, stop immediately
                     }
                 }
             }
