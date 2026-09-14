@@ -133,14 +133,7 @@ export async function POST(request: Request) {
     });
 
     const doc = new GoogleSpreadsheet(sheetId, auth);
-    await doc.loadInfo();
 
-    let sheet = doc.sheetsByIndex[0];
-    if (!sheet) {
-      sheet = await doc.addSheet({ title: "Responses" });
-    }
-
-    // ── Build & append row ──
     const row = {
       Timestamp: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }),
       Nama: nama,
@@ -150,28 +143,35 @@ export async function POST(request: Request) {
       ...sikapCols,
     };
 
-    try {
-      await sheet.loadHeaderRow();
-    } catch {
-      // If loadHeaderRow fails, it means the sheet is completely empty.
-      const cols = Object.keys(row);
-      // Ensure the sheet has enough columns to hold all our data (Google Sheets default is A-Z = 26 cols)
-      if (sheet.columnCount < cols.length) {
-        await sheet.resize({ rowCount: sheet.rowCount || 1000, columnCount: cols.length + 5 });
-      }
-      await sheet.setHeaderRow(cols);
-    }
-
-    // ponytail: 5 retries with exponential backoff covers Google Sheets rate limits + transient errors under load
+    // ponytail: wrap ALL Google Sheets ops in one retry loop — loadInfo, header setup, and addRow all hit the same quota
     const MAX_RETRIES = 5;
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
+        await doc.loadInfo();
+
+        let sheet = doc.sheetsByIndex[0];
+        if (!sheet) {
+          sheet = await doc.addSheet({ title: "Responses" });
+        }
+
+        try {
+          await sheet.loadHeaderRow();
+        } catch {
+          const cols = Object.keys(row);
+          if (sheet.columnCount < cols.length) {
+            await sheet.resize({ rowCount: sheet.rowCount || 1000, columnCount: cols.length + 5 });
+          }
+          await sheet.setHeaderRow(cols);
+        }
+
         await sheet.addRow(row);
         break;
       } catch (err: any) {
         if (attempt < MAX_RETRIES - 1) {
-          const delay = 1000 * Math.pow(2, attempt); // 1s, 2s, 4s, 8s, 16s
-          await new Promise(resolve => setTimeout(resolve, delay));
+          // Exponential backoff + random jitter to break thundering herd
+          const base = 1000 * Math.pow(2, attempt);
+          const jitter = Math.random() * 1000;
+          await new Promise(resolve => setTimeout(resolve, base + jitter));
         } else {
           throw err;
         }

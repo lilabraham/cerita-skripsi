@@ -369,19 +369,36 @@ export default function KuesionerPage() {
         if (isSubmitting) return; // guard against double-submit
         setIsSubmitting(true);
         try {
-            const res = await fetch("/api/submit-survey", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    dataDiri: state.dataDiri,
-                    pengetahuan: state.pengetahuan,
-                    sikap: state.sikap,
-                }),
+            const payload = JSON.stringify({
+                dataDiri: state.dataDiri,
+                pengetahuan: state.pengetahuan,
+                sikap: state.sikap,
             });
-            if (!res.ok) {
-                const data = await res.json().catch(() => null);
-                throw new Error(data?.message || "Gagal mengirim");
+
+            // ponytail: client-side retry — cheapest safety net against Google Sheets quota bursts
+            const MAX_ATTEMPTS = 3;
+            let lastError: Error | null = null;
+            for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+                try {
+                    const res = await fetch("/api/submit-survey", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: payload,
+                    });
+                    if (!res.ok) {
+                        const data = await res.json().catch(() => null);
+                        throw new Error(data?.message || "Gagal mengirim");
+                    }
+                    lastError = null;
+                    break;
+                } catch (err) {
+                    lastError = err instanceof Error ? err : new Error("Gagal mengirim");
+                    if (attempt < MAX_ATTEMPTS - 1) {
+                        await new Promise(r => setTimeout(r, 2000 * Math.pow(2, attempt) + Math.random() * 1000));
+                    }
+                }
             }
+            if (lastError) throw lastError;
 
             try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* silent */ }
             try { localStorage.setItem("hasCompletedPostTest", "true"); } catch { /* silent */ }
