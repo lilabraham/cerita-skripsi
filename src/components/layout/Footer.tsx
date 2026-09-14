@@ -36,7 +36,6 @@ const navLinks = [
   { label: "Edukasi",  href: "/edukasi" },
   { label: "Kuis",     href: "/kuis"    },
   { label: "Kuesioner",  href: "/kuesioner" },
-  { label: "Privasi",  href: "/privacy" },
   { label: "Tentang",   href: "/tentang#kontak" },
 ];
 
